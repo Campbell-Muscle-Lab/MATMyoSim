@@ -2,8 +2,8 @@ remote_theme: pmarsceill/just-the-docs
 
 # Auxiliary links for the upper right navigation.
 aux_links:
-  "howtos_linear_mixed_models":
-  - "https://github.com/Campbell-Muscle-Lab/howtos_linear_mixed_models"
+  "MATMyoSim":
+  - "https://github.com/Campbell-Muscle-Lab/MATMyoSim"
 
 # Not a big fan of dark mode. I think the light looks better.
 # color_scheme: "dark"
@@ -15,4 +15,4 @@ aux_links:
 footer_content: ""
 
 # This is the title of the website
-title: "Linear mixed models"
+title: "MATMyoSim"
