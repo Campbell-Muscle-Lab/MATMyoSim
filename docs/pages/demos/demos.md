@@ -6,6 +6,9 @@ has_children: True
 
 ## Demonstrations
 
+* TOC
+{:toc}
+
 ### Overview
 
 + Getting started
