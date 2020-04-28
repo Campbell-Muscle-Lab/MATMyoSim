@@ -1,13 +1,13 @@
-function demo_ramp_1
+function demo_ramp_3
 % Function illustrates how to run a simulation of a single-half-sarcomere
 % connected in series with a spring, activated at a constant pCa
-% Myosin heads do not attach to the thin filament
+% Myosin heads cycle and generate active force
 
 % Variables
-protocol_file_string = '..\..\temp\ramp_1_protocol.txt';
-model_parameters_json_file_string = 'ramp_1_parameters.json';
-options_file_string = 'ramp_1_options.json';
-model_output_file_string = '..\..\temp\ramp_1_output.myo';
+protocol_file_string = '..\..\temp\ramp_3_protocol.txt';
+model_parameters_json_file_string = 'ramp_3_parameters.json';
+options_file_string = 'ramp_3_options.json';
+model_output_file_string = '..\..\temp\ramp_3_output.myo';
 
 % Make sure the path allows us to find the right files
 addpath('..\..\..\generate_protocols','..\..\..\..\code');
