@@ -6,14 +6,16 @@ has_children: True
 
 ## Demonstrations
 
-* TOC
 {:toc}
 
-### Overview
+### Started
+
++ Ramps
+
+### Still to do
 
 + Getting started
 + pCa curves
-+ Ramps
 + Fitting in time domain
 + Fitting in pCa domain
 + Fitting in frequency domain
