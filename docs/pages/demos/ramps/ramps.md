@@ -1,17 +1,12 @@
 ---
-title: Demos
-nav_order: 3
+title: Ramps
+nav_order: 1
+parent: Demos
 has_children: True
 ---
 
-## Demonstrations
+## Ramp demonstrations
 
-### Overview
+### Single ramp, 2 state model
 
-+ Getting started
-+ pCa curves
-+ Ramps
-+ Fitting in time domain
-+ Fitting in pCa domain
-+ Fitting in frequency domain
 
