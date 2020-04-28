@@ -7,12 +7,14 @@ grand_parent: Demos
 
 ## Ramp demonstration
 
+Force response is solely due to a passive linear spring
+
 + In MATLAB, change directory to `repo\code\demos\ramps\ramp_1`
 + Run ramp_1_demo.m
 
-### Passive only
+### Output
 
-![ramp_1_demo](ramp_1_output.png)
+![ramp_1_output](ramp_1_output.png)
 
 
 
