@@ -1,12 +1,15 @@
 ---
 title: Ramps
-nav_order: 1
-parent: Demos
 has_children: True
+parent: Demos
+nav_order: 1
 ---
 
 ## Ramp demonstrations
 
-### Single ramp, 2 state model
+* TOC
+{:toc}
+
+
 
 
