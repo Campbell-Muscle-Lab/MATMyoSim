@@ -21,7 +21,7 @@ Optimization structures are stored using the JSON format. Here is an example.
         "fit_variable": "muscle_force",
 
         "figure_current_fit": 2,
-        "figure_simulation_progress": 3, 
+        "figure_optimization_progress": 3, 
         
         "job":
         [
@@ -76,26 +76,41 @@ Optimization structures are stored using the JSON format. Here is an example.
     }
 }
 ````
+#### model_template_file_string
+
+This is the base version of the MATMyoSim model file. One or more of the parameters in this file will be modified in an attempt to fit the simulations to the target data. The template file itself is never changed.
+
+#### model_working_file_string
+
+This is the file that defines the simulations. It changes each time the parameters are adjusted.
+
+#### simulation_options_file_string
+
+This is the [simulation_options_file](..\simulation_options\simulation_options.html) that will be used to run all of the simulations. This file never changes.
+
+#### best_model_file_string
+
+This is the model file for the best-fit attained to date. It is updated each time the simulation gets closer to the experimental data. When the optimization finishes, it describes the best model that was found.
+
+#### fit_mode
+
+One of:
++ fit_in_time_domain
++ fit_pCa_curves
++ fit_in_frequency_domain
+
+
+### figure_current_fit
+
+A figure number that shows the current model, the best-fit attained to date, and some information about the current parameter values. Set to 0 to avoid showing the figure.
 
 
 
-In this context, fitting means adjusting model parameters to obtain the best possible fit between the simulations and experimental data.
+Options depend on the fit_mode
 
-This can be done by fitting:
-+ in the time domain
-  + matching simulations and experimental traces plotted against time
-+ pCa curves
-  + matching simulations and experimental data plotted as a function of activating Ca<sup>concentration</sup>
-+ in the frequency domain
-  + matching Nyquist plots showing elastic and viscous moduli as a function of frequency
++ fit_in_time_domain
+  + muscle_force
 
-Fitting in MATMyoSim is performed using an [Optimization structure](optimization_structure.html)
-
-
-
-
-
-
-
-
+        "figure_current_fit": 2,
+        "figure_simulation_progress": 3, 
 

@@ -9,7 +9,7 @@
         "fit_variable": "muscle_force",
 
         "figure_current_fit": 2,
-        "figure_simulation_progress": 3, 
+        "figure_optimization_progress": 3, 
         
         "job":
         [

@@ -10,7 +10,7 @@
         "run_simulations_in_parallel": 1,
 
         "figure_current_fit": 2,
-        "figure_simulation_progress": 3, 
+        "figure_optimization_progress": 3, 
         
         "job":
         [

@@ -38,8 +38,8 @@ y_best = [];
         end
         
         % Update figures
-        if (opt_structure.figure_simulation_progress)
-            draw_figure_simulation_progress(opt_structure, all_e_values);
+        if (opt_structure.figure_optimization_progress)
+            draw_figure_optimization_progress(opt_structure, all_e_values);
         end
         
         if (opt_structure.figure_current_fit)
