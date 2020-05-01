@@ -1,66 +1,49 @@
-function e = fit_worker(p_vector,worker_structure)
-
-ws = worker_structure
+function [e, trial_e, sim_output, y_attempt, target_data] = ...
+    fit_worker(p_vector,opt_structure)
 
 % Update the working model file
 update_json_model_file( ...
-    worker_structure.model_template_file_string, ...
-    worker_structure.model_working_file_string, ...
-    worker_structure.optimization_structure, ...
+    opt_structure.model_template_file_string, ...
+    opt_structure.model_working_file_string, ...
+    opt_structure.parameter, ...
     p_vector);
 
 % Get the options
-json_struct = loadjson(worker_structure.simulation_options_file_string);
-obj.myosim_options = json_struct.MyoSim_options
+json_struct = loadjson(opt_structure.simulation_options_file_string);
+obj.myosim_options = json_struct.MyoSim_options;
 
 % Cycle through the trials
-if (obj.myosim_options.run_in_parallel)
-    parfor i=1:numel(worker_structure.protocol_file_strings)
 
-        % Evaluate the trial
-        [trial_e(i), sim_output{i}, target_data{i}] = ...
-            evaluate_single_trial( ...
-                'model_json_file_string',worker_structure.model_working_file_string, ...
-                'simulation_protocol_file_string',worker_structure.protocol_file_strings{i}, ...
-                'options_file_string',worker_structure.simulation_options_file_string, ...
-                'fit_mode',worker_structure.fit_mode, ...
-                'target_data',worker_structure.target_data(:,i))
-    end
-else
-    for i=1:numel(worker_structure.protocol_file_strings)
+job_structure = opt_structure.job;
 
-        % Evaluate the trial
-        [trial_e(i), sim_output{i}, target_data{i}] = ...
-            evaluate_single_trial( ...
-                'model_json_file_string',worker_structure.model_working_file_string, ...
-                'simulation_protocol_file_string',worker_structure.protocol_file_strings{i}, ...
-                'options_file_string',worker_structure.simulation_options_file_string, ...
-                'fit_mode',worker_structure.fit_mode, ...
-                'target_data',worker_structure.target_data(:,i))
+if (opt_structure.run_simulations_in_parallel)
+    
+    switch opt_structure.fit_mode
+        case 'fit_in_time_domain'
+
+            parfor i=1:numel(job_structure)
+                
+                % Pull off the target data
+                target_data{i} = dlmread(job_structure{i}.target_file_string);
+
+                % Evaluate the trial
+                [trial_e(i), sim_output{i}, y_attempt{i}, target_data{i}] = ...
+                    evaluate_single_trial( ...
+                        'model_json_file_string',opt_structure.model_working_file_string, ...
+                        'simulation_protocol_file_string',job_structure{i}.protocol_file_string, ...
+                        'options_file_string',opt_structure.simulation_options_file_string, ...
+                        'fit_mode',opt_structure.fit_mode, ...
+                        'fit_variable',opt_structure.fit_variable, ...
+                        'target_data',target_data{i});
+            end
+            
+        otherwise
+            error('Fit mode not yet implemented');
     end
+        
 end
 
-% Return e
+% Calculate e
 e = mean(trial_e);
 
-if (worker_structure.figure_current_fit)
-    figure(worker_structure.figure_current_fit)
-    clf;
-    if (strcmp(worker_structure.fit_mode,'time_fit'))
-        subplot(2,1,1);
-        hold on;
-        tn = numel(target_data{1});
-        for i=1:numel(worker_structure.protocol_file_strings)
-            plot(sim_output{i}.time_s(end-tn+1:end),target_data{i},'k-');
-            switch (worker_structure.fit_variable)
-                case 'muscle_force'
-                    y_attempt = sim_output{i}.muscle_force;
-                otherwise
-            end
-            plot(sim_output{i}.time_s,y_attempt,'b-');
-        end
-    end
-    subplot(2,1,2);
-    plot(trial_e,'bo');
-end
   

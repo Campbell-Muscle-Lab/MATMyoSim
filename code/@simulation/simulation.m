@@ -38,7 +38,7 @@ classdef simulation < handle
             
             % Create the model
             json_struct = loadjson(model_json_file_string);
-            obj.myosim_model = json_struct.MyoSim_model
+            obj.myosim_model = json_struct.MyoSim_model;
             
             % Create the muscle
             obj.m = muscle(obj.myosim_model);

@@ -1,4 +1,4 @@
-function e = evaluate_time_fit(sim_output,target_data,varargin)
+function [e, y_attempt] = evaluate_time_fit(sim_output,target_data,varargin)
 
 p = inputParser;
 p.addParamValue('figure_time_fit',0);

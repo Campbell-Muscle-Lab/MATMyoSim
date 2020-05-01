@@ -4,7 +4,7 @@ function sim_output = simulation_driver(varargin)
 p = inputParser;
 addOptional(p,'model_json_file_string',[]);
 addOptional(p,'simulation_protocol_file_string',[]);
-addOptional(p,'options_file_string',[]);
+addOptional(p,'options_json_file_string',[]);
 addOptional(p,'output_file_string',[]);
 addOptional(p,'tag',[]);
 parse(p,varargin{:});
@@ -14,7 +14,7 @@ p = p.Results;
 myosim_simulation = simulation( ...
     p.model_json_file_string, ...
     p.simulation_protocol_file_string, ...
-    p.options_file_string);
+    p.options_json_file_string);
 
 % Implement the protocol
 myosim_simulation.implement_protocol;
