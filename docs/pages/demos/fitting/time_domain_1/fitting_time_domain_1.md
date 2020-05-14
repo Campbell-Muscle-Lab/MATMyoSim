@@ -1,8 +1,8 @@
 ---
 title: Time domain 1
-has_children: False
 parent: Fitting
-nav_order: 3
+grand_parent: Demos
+nav_order: 1
 ---
 
 ## Fitting in time domain 1
@@ -51,18 +51,20 @@ Fig 3 summarizes the fit.
 + top panel, compares the current simulation to the target data
 + middle panel, shows the relative errors for the different trials (although there is only 1 in this case)
 + bottom panel, shows the parameter values
+
 ![simulation](fig_3_initial.png)
 
 ### After optimization
 
 Fig 2 shows a single value for the objective function. The lower this value, the closer the simulations are to the target data.
-![simulation](fig_2_initial.png)
+![simulation](fig_2_final.png)
 
 Fig 3 summarizes the fit.
 + top panel, compares the current simulation to the target data
   + in this case, the red line (best fit) lines on top of 3 nearly identical traces
 + middle panel, shows the relative errors for the different trials (although there is only 1 in this case)
 + bottom panel, shows the parameter values
+
 ![simulation](fig_3_final.png)
 
 

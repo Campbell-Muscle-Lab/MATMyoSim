@@ -24,5 +24,5 @@ else
     obj.muscle_length = obj.muscle_length + delta_hsl;
     obj.hs(1).hs_length = obj.hs(1).hs_length + delta_hsl;
     obj.muscle_force = obj.hs(1).hs_force;
-    
+   
 end

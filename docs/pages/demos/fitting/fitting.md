@@ -13,7 +13,7 @@ This can be done by fitting:
 + in the time domain
   + matching simulations and experimental traces plotted against time
 + pCa curves
-  + matching simulations and experimental data plotted as a function of activating Ca<sup>concentration</sup>
+  + matching simulations and experimental data plotted as a function of activating Ca<sup>2+</sup> concentration
 + in the frequency domain
   + matching Nyquist plots showing elastic and viscous moduli as a function of frequency
 
@@ -24,15 +24,11 @@ The general strategy in pseudo-code is as follows:
 
 ````
 define a starting_model
-
 set the working_model equal to the starting_model
-
 while (fit_is_not_good_enough)
 {    
     run a simulation using the working_model
-    
     evaluate fit by comparing the simulation to a target 
-
     adjust the working_model by tweaking the parameters
 }
 ````

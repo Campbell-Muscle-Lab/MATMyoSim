@@ -11,4 +11,5 @@ optimization_job_file_string = 'optimization_job.json';
 opt_structure = loadjson(optimization_job_file_string);
 
 % Call controller
-fit_controller(opt_structure.MyoSim_optimization);
+fit_controller(opt_structure.MyoSim_optimization, ...
+    'single_run',1);

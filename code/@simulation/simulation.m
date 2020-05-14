@@ -76,6 +76,15 @@ classdef simulation < handle
                             obj.m.no_of_half_sarcomeres, ...
                             obj.m.hs(1).myofilaments.no_of_x_bins);
                         
+                case '3state_with_SRX_and_exp_k4'
+                    obj.sim_output.M1 = NaN_matrix;
+                    obj.sim_output.M2 = NaN_matrix;
+                    obj.sim_output.M3 = NaN_matrix;
+                    obj.sim_output.cb_pops = NaN * ones( ...
+                            obj.sim_output.no_of_time_points, ...
+                            obj.m.no_of_half_sarcomeres, ...
+                            obj.m.hs(1).myofilaments.no_of_x_bins);                        
+                        
                 case '4state_with_SRX'
                     obj.sim_output.M1 = NaN_matrix;
                     obj.sim_output.M2 = NaN_matrix;
@@ -117,6 +126,11 @@ classdef simulation < handle
                     10^(-obj.myosim_protocol.pCa(t_counter)), ...
                     obj.myosim_protocol.Mode(t_counter));
                 
+                % Draw rates on first iteration
+                if (t_counter==1)
+                    draw_rates(obj);
+                end
+                
                 % Store results
                 obj.sim_output.muscle_force(t_counter) = ...
                     obj.m.muscle_force;
@@ -153,6 +167,19 @@ classdef simulation < handle
                             M3_indices = 2+(1:obj.m.hs(i).myofilaments.no_of_x_bins);
                             obj.sim_output.cb_pops(t_counter,i,:) = ...
                                 obj.m.hs(i).myofilaments.y(M3_indices);
+                            
+                        case '3state_with_SRX_and_exp_k4'
+                            obj.sim_output.M1(t_counter,i) = ...
+                                obj.m.hs(i).state_pops.M1;
+                            obj.sim_output.M2(t_counter,i) = ...
+                                obj.m.hs(i).state_pops.M2;
+                            obj.sim_output.M3(t_counter,i) = ...
+                                obj.m.hs(i).state_pops.M3;
+                            % Pull out the bin_distributions which need
+                            % an extra dimension
+                            M3_indices = 2+(1:obj.m.hs(i).myofilaments.no_of_x_bins);
+                            obj.sim_output.cb_pops(t_counter,i,:) = ...
+                                obj.m.hs(i).myofilaments.y(M3_indices);                            
                         
                         case '4state_with_SRX'
                             obj.sim_output.M1(t_counter,i) = ...
@@ -176,8 +203,7 @@ classdef simulation < handle
                             error('cb scheme not yet implemented');
                     end
                 end
-                
-                % Draw if appropriate
+               
                 if (obj.myosim_options.figure_simulation_output)
                     if ((mod(t_counter,obj.myosim_options.drawing_skip)==0) || ...
                             (t_counter == obj.sim_output.no_of_time_points))

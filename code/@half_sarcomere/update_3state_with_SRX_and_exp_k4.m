@@ -1,4 +1,4 @@
-function update_3state_with_SRC(obj,time_step);
+function update_3state_with_SRX_and_exp_k4(obj,time_step);
 % Function updates kinetics for thick and thin filaments based on 3 state
 % SRX model descripbed by Campbell et al, 2018
 
@@ -9,18 +9,20 @@ y = obj.myofilaments.y;
 N_overlap = return_f_overlap(obj);
 
 % Pre-calculate rate
+
 r1 = min([obj.parameters.max_rate ...
             obj.parameters.k_1 * ...
                 (1+(obj.parameters.k_force * obj.hs_force))]);
+            
 r2 = min([obj.parameters.max_rate obj.parameters.k_2]);
+
 r3 = obj.parameters.k_3 * ...
             exp(-obj.parameters.k_cb * (obj.myofilaments.x).^2 / ...
                 (2 * 1e18 * obj.parameters.k_boltzmann * ...
                     obj.parameters.temperature));
 r3(r3>obj.parameters.max_rate)=obj.parameters.max_rate;
-r4 = obj.parameters.k_4_0 + ...
-                (obj.parameters.k_4_1 * ...
-                    ((obj.myofilaments.x + 0 * obj.parameters.x_ps).^4));
+
+r4 = obj.parameters.k_4_0 + exp(-obj.parameters.k_4_1 * obj.myofilaments.x);
 r4(r4>obj.parameters.max_rate)=obj.parameters.max_rate;
 
 % Evolve the system

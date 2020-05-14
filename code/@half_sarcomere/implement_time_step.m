@@ -20,6 +20,12 @@ switch (obj.kinetic_scheme)
         obj.state_pops.M3 = ...
             sum(obj.myofilaments.y(2+(1:obj.myofilaments.no_of_x_bins)));
         
+    case '3state_with_SRX_and_exp_k4'
+        obj.state_pops.M1 = obj.myofilaments.y(1);
+        obj.state_pops.M2 = obj.myofilaments.y(2);
+        obj.state_pops.M3 = ...
+            sum(obj.myofilaments.y(2+(1:obj.myofilaments.no_of_x_bins)));        
+        
     case '4state_with_SRX'
         obj.state_pops.M1 = obj.myofilaments.y(1);
         obj.state_pops.M2 = obj.myofilaments.y(2);

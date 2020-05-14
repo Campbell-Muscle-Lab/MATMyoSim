@@ -13,6 +13,16 @@ switch (obj.kinetic_scheme)
                         (obj.parameters.compliance_factor * delta_hs_length)));
                     
         delta_cb_force = temp_cb_force - obj.cb_force;
+        
+    case '3state_with_SRX_and_exp_k4'
+        bin_pops = obj.myofilaments.y(2+(1:obj.myofilaments.no_of_x_bins));
+        temp_cb_force = ...
+                obj.parameters.cb_number_density * obj.parameters.k_cb * 1e-9 * ...
+                sum(bin_pops' .* ...
+                    (obj.myofilaments.x + obj.parameters.x_ps + ...
+                        (obj.parameters.compliance_factor * delta_hs_length)));
+                    
+        delta_cb_force = temp_cb_force - obj.cb_force;        
 
     case '4state_with_SRX'
         M3_indices = 2+(1:obj.myofilaments.no_of_x_bins);

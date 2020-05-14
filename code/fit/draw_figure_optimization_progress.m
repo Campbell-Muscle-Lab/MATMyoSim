@@ -1,6 +1,6 @@
 function draw_figure_optimization_progress(opt_structure, all_e_values)
 
-figure(opt_structure.figure_simulation_progress);
+figure(opt_structure.figure_optimization_progress);
 clf
 if (numel(all_e_values)==1)
     plot(log10(all_e_values),'bo');

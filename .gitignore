@@ -1,2 +1,4 @@
 **/*.asv
 **/temp/**
+**/_site/**
+**/time_domain_3/**

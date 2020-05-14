@@ -1,4 +1,4 @@
-function update_4state_with_SRC(obj,time_step);
+function rate_structure = update_4state_with_SRC(obj,time_step)
 % Function updates kinetics for thick and thin filaments
 
 % Pull out the myofilaments vector
@@ -34,7 +34,9 @@ r5 = obj.parameters.k_5_0 ./ ...
             (obj.myofilaments.x + obj.parameters.x_ps/2)));
 r5(r5>obj.parameters.max_rate) = obj.parameters.max_rate;
 
-r6 = obj.parameters.k_6*ones(numel(obj.myofilaments.x),1);
+r6 = (obj.parameters.k_6_0 * ones(numel(obj.myofilaments.x),1)) + ...
+        (obj.parameters.k_6_1 .* ...
+            (obj.myofilaments.x' + (obj.parameters.x_ps/2)).^4);
 r6(r6>obj.parameters.max_rate) = obj.parameters.max_rate;
 
 r7 = obj.parameters.k_7_0 + ...
@@ -54,8 +56,15 @@ obj.f_on = obj.myofilaments.y(end);
 obj.f_bound = sum(obj.myofilaments.y(M3_indices)) + ...
     sum(obj.myofilaments.y(M4_indices)); 
 
-
-
+% Store rates
+obj.rate_structure.r1 = r1;
+obj.rate_structure.r2 = r2;
+obj.rate_structure.r3 = r3;
+obj.rate_structure.r4 = r4;
+obj.rate_structure.r5 = r5;
+obj.rate_structure.r6 = r6;
+obj.rate_structure.r7 = r7;
+obj.rate_structure.r8 = r8;
 
     % Nested function
     function dy = derivs(time_step,y)
@@ -98,36 +107,5 @@ obj.f_bound = sum(obj.myofilaments.y(M3_indices)) + ...
         end
         dy(end-1) = -J_on + J_off;
         dy(end) = J_on - J_off;
-
-% obj.myofilaments.r1 = r1;
-% obj.myofilaments.r2 = r2;
-% obj.myofilaments.r3 = r3;
-% obj.myofilaments.r4 = r4;
-% obj.myofilaments.r5 = r5;
-% obj.myofilaments.r6 = r6;
-% obj.myofilaments.r7 = r7;
-% obj.myofilaments.r8 = r8;
-        
-% figure(91);
-% clf
-% subplot(4,1,1);
-% hold on;
-% plot(obj.myofilaments.x,log10(obj.myofilaments.r1 * ...
-%     ones(numel(obj.myofilaments.x),1)),'r-');
-% plot(obj.myofilaments.x,log10(obj.myofilaments.r2 * ...
-%     ones(numel(obj.myofilaments.x),1)),'b-');
-% subplot(4,1,2);
-% hold on;
-% plot(obj.myofilaments.x,log10(obj.myofilaments.r3),'r-');
-% plot(obj.myofilaments.x,log10(obj.myofilaments.r4),'b-');
-% subplot(4,1,3);
-% hold on;
-% plot(obj.myofilaments.x,log10(obj.myofilaments.r5),'r-');
-% plot(obj.myofilaments.x,log10(obj.myofilaments.r6),'b-');
-% subplot(4,1,4);
-% hold on;
-% plot(obj.myofilaments.x,log10(obj.myofilaments.r7),'r-');
-% plot(obj.myofilaments.x,log10(obj.myofilaments.r8),'b-');
-
     end
 end

@@ -1,6 +1,5 @@
 function draw_figure_current_fit(opt_structure, sim_output, ...
-    y_attempt, target_data, ...
-    trial_e, y_best, p_vector)
+    y_attempt, target_data, trial_e, y_best, p_vector, best_p)
 
 figure(opt_structure.figure_current_fit)
 clf;
@@ -39,6 +38,7 @@ hold on;
 for i=1:numel(p_vector)
     y = 2+numel(p_vector)-i;
     plot(p_vector(i), y, 'bo');
+    plot(best_p(i), y, 'rs');
     text(-5, y, opt_structure.parameter{i}.name, ...
         'HorizontalAlignment','left', ...
         'Interpreter','none');

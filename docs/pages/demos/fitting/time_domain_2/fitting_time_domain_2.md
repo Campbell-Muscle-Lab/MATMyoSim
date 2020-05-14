@@ -1,8 +1,8 @@
 ---
 title: Time domain 2
-has_children: False
 parent: Fitting
-nav_order: 3
+grand_parent: Demos
+nav_order: 2
 ---
 
 ## Fitting in time domain 2
@@ -124,7 +124,7 @@ Fig 3 summarizes the fit.
 ### After optimization
 
 Fig 2 shows a single value for the objective function. The lower this value, the closer the simulations are to the target data.
-![simulation](fig_2_initial.png)
+![simulation](fig_2_final.png)
 
 Fig 3 summarizes the fit.
 + top panel, compares the current simulation to the target data

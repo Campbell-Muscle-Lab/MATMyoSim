@@ -28,7 +28,9 @@ classdef half_sarcomere < handle
                             
         parameters = [];    % a structure that holds the model parameters
                             % precise format depends on the kinetic scheme
-
+                            
+        rate_structure = [];
+                            % a structure holding myofilament rates
 
     end
     
@@ -85,6 +87,17 @@ classdef half_sarcomere < handle
                     % binding sites off
                     obj.myofilaments.y(1)=1.0;
                     obj.myofilaments.y(end-1) = 1.0;
+                    
+                case '3state_with_SRX_and_exp_k4'
+                    obj.myofilaments.y_length = ...
+                        obj.myofilaments.no_of_x_bins + 4;
+                    obj.myofilaments.y = ...
+                        zeros(obj.myofilaments.y_length,1);
+                    
+                    % Start with all the cross-bridges in M1 and all
+                    % binding sites off
+                    obj.myofilaments.y(1)=1.0;
+                    obj.myofilaments.y(end-1) = 1.0;                    
                 
                 case '4state_with_SRX'
                     obj.myofilaments.y_length = ...

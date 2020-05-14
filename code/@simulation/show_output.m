@@ -8,12 +8,13 @@ addOptional(p,'t_counter',[]);
 parse(p,varargin{:});
 p = p.Results;
 
-
-if (isempty(obj.sim_output.subplots))
+if ((isempty(obj.sim_output.subplots)) && ...
+        (obj.myosim_options.figure_simulation_output > 0))
+    
     % make a figure
     obj.sim_output.subplots = ...
         initialise_publication_quality_figure( ...
-                'figure_handle',1, ...
+                'figure_handle',obj.myosim_options.figure_simulation_output, ...
                 'no_of_panels_wide',2, ...
                 'no_of_panels_high',4, ...
                 'right_margin',1, ...
@@ -24,6 +25,8 @@ if (isempty(obj.sim_output.subplots))
                 'axes_padding_right',0.5, ...
                 'panel_label_font_size',0);
 end
+
+figure(obj.myosim_options.figure_simulation_output);
 
 subplot(obj.sim_output.subplots(1));
 cla;
@@ -102,7 +105,7 @@ xlim([0 max(obj.sim_output.time_s)]);
 
 
 switch (obj.myosim_model.hs_props.kinetic_scheme)
-    case '3state_with_SRX';
+    case '3state_with_SRX'
         subplot(obj.sim_output.subplots(6));
         cla
         hold on;
@@ -124,8 +127,31 @@ switch (obj.myosim_model.hs_props.kinetic_scheme)
             'buffer',[0 10], ...
             'xscale',0.3);
         xlim([0 max(obj.sim_output.time_s)]);
+
+    case '3state_with_SRX_and_exp_k4'
+        subplot(obj.sim_output.subplots(6));
+        cla
+        hold on;
+        for j=1:obj.m.no_of_half_sarcomeres
+            h=[];
+            h(1)=plot(obj.sim_output.time_s,obj.sim_output.M1(:,j),':', ...
+                'Color',p.color_map(j,:), ...
+                'LineWidth',p.trace_line_width);
+            h(2)=plot(obj.sim_output.time_s,obj.sim_output.M2(:,j),'-', ...
+                'Color',p.color_map(j,:), ...
+                'LineWidth',p.trace_line_width);
+            h(3)=plot(obj.sim_output.time_s,obj.sim_output.M3(:,j),'--', ...
+                'Color',p.color_map(j,:), ...
+                'LineWidth',p.trace_line_width);
+        end
+        legendflex(h,{'M1','M2','M3'}, ...
+            'nrow',1, ...
+            'anchor',[2 6], ...
+            'buffer',[0 10], ...
+            'xscale',0.3);
+        xlim([0 max(obj.sim_output.time_s)]);        
         
-    case '4state_with_SRX';
+    case '4state_with_SRX'
         subplot(obj.sim_output.subplots(6));
         cla
         hold on;
@@ -166,6 +192,14 @@ for j=1:obj.m.no_of_half_sarcomeres
                 'LineWidth',p.trace_line_width);
             ylabel('M3 distributions');
             xlim([min(obj.m.hs(1).myofilaments.x) max(obj.m.hs(1).myofilaments.x)]);
+            
+        case '3state_with_SRX_and_exp_k4'
+            plot(obj.m.hs(1).myofilaments.x, ...
+                squeeze(obj.sim_output.cb_pops(t_index,j,:)),'-', ...
+                'Color',p.color_map(j,:), ...
+                'LineWidth',p.trace_line_width);
+            ylabel('M3 distributions');
+            xlim([min(obj.m.hs(1).myofilaments.x) max(obj.m.hs(1).myofilaments.x)]);            
             
         case '4state_with_SRX'
             plot(obj.m.hs(1).myofilaments.x, ...

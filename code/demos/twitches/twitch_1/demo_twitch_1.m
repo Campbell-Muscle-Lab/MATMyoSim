@@ -22,7 +22,7 @@ sim_output = simulation_driver( ...
 sim = load(model_output_file_string,'-mat')
 sim_output = sim.sim_output
 
-figure(2);
+figure(3);
 clf;
 subplot(2,1,1);
 plot(sim_output.time_s,sim_output.muscle_force,'b-');

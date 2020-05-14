@@ -10,19 +10,19 @@ update_json_model_file( ...
 
 % Get the options
 json_struct = loadjson(opt_structure.simulation_options_file_string);
-obj.myosim_options = json_struct.MyoSim_options;
+obj.myosim_options = json_struct.MyoSim_options
+
+o = obj.myosim_options
 
 % Cycle through the trials
 
 job_structure = opt_structure.job;
 
-if (opt_structure.run_simulations_in_parallel)
-    
-    switch opt_structure.fit_mode
-        case 'fit_in_time_domain'
-
+switch opt_structure.fit_mode
+    case 'fit_in_time_domain'
+        if (numel(job_structure)>1)
             parfor i=1:numel(job_structure)
-                
+
                 % Pull off the target data
                 target_data{i} = dlmread(job_structure{i}.target_file_string);
 
@@ -36,11 +36,23 @@ if (opt_structure.run_simulations_in_parallel)
                         'fit_variable',opt_structure.fit_variable, ...
                         'target_data',target_data{i});
             end
-            
-        otherwise
-            error('Fit mode not yet implemented');
-    end
-        
+        else
+            % Pull off the target data
+            target_data{1} = dlmread(job_structure{1}.target_file_string);
+
+            % Evaluate the trial
+            [trial_e(1), sim_output{1}, y_attempt{1}, target_data{1}] = ...
+                evaluate_single_trial( ...
+                    'model_json_file_string',opt_structure.model_working_file_string, ...
+                    'simulation_protocol_file_string',job_structure{1}.protocol_file_string, ...
+                    'options_file_string',opt_structure.simulation_options_file_string, ...
+                    'fit_mode',opt_structure.fit_mode, ...
+                    'fit_variable',opt_structure.fit_variable, ...
+                    'target_data',target_data{1});
+        end
+    otherwise
+        error('Fit mode not yet implemented');
+
 end
 
 % Calculate e
