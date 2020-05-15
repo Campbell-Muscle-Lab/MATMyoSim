@@ -17,7 +17,7 @@ Myosin heads transition between an OFF, an ON, and a force-generating state. Bin
 
 The fluxes are as defined in [PMC6084639](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6084639/) except that
 
-J4 = k_4_0 + exp(-k_4_1 * x)
+J4 = k_4_0 * exp(-k_4_1 * x)
 
 The model parameters that need to be defined in the [model file](..//..//structures//model//model.html) file are:
 

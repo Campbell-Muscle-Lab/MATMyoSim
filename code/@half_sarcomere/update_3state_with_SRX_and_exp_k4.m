@@ -22,7 +22,7 @@ r3 = obj.parameters.k_3 * ...
                     obj.parameters.temperature));
 r3(r3>obj.parameters.max_rate)=obj.parameters.max_rate;
 
-r4 = obj.parameters.k_4_0 + exp(-obj.parameters.k_4_1 * obj.myofilaments.x);
+r4 = obj.parameters.k_4_0 * exp(-obj.parameters.k_4_1 * obj.myofilaments.x);
 r4(r4>obj.parameters.max_rate)=obj.parameters.max_rate;
 
 % Evolve the system

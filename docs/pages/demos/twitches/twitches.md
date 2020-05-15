@@ -1,7 +1,7 @@
 ---
 title: Twitches
 has_children: True
-nav_order: 3
+nav_order: 2
 parent: Demos
 ---
 
