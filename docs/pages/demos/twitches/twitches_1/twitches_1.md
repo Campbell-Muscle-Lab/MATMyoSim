@@ -11,8 +11,10 @@ This demo shows how to run a simulation of a single twitch
 
 ## Instructions
 
-+ In MATLAB, change directory to `repo\code\demos\twitches\twitches_1`
-+ Open and run twitch_1_demo.m
++ Launch MATLAB.
++ Change directory to the `MATMyoSim\code\demos\twitches\twitches_1` folder in MATLAB.
++ Open `demo_twitch_1.m`.
++ Press <kbd>F5</kbd> to run the demo.
 
 ## Code
 
