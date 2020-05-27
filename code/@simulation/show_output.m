@@ -3,7 +3,7 @@ function show_output(obj,varargin)
 
 p = inputParser;
 addOptional(p,'trace_line_width',1);
-addOptional(p,'color_map',[1 0 0 ; 0 1 0 ; 0 0 1 ; jet(20)]);
+addOptional(p,'color_map',[1 0 0 ; 0 1 0 ; 0 0 1]);
 addOptional(p,'t_counter',[]);
 parse(p,varargin{:});
 p = p.Results;
@@ -27,6 +27,13 @@ if ((isempty(obj.sim_output.subplots)) && ...
 end
 
 figure(obj.myosim_options.figure_simulation_output);
+
+% Check colormap is big enough
+[~, no_of_half_sarcomeres] = size(obj.sim_output.hs_length);
+[~, cm_size] = size(p.color_map);
+if (no_of_half_sarcomeres > cm_size)
+    p.color_map = jet(no_of_half_sarcomeres);
+end
 
 subplot(obj.sim_output.subplots(1));
 cla;

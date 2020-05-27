@@ -55,6 +55,7 @@ classdef simulation < handle
             NaN_array = NaN * ones(obj.sim_output.no_of_time_points,1);
             obj.sim_output.muscle_force = NaN_array;
             obj.sim_output.muscle_length = NaN_array;
+            obj.sim_output.series_extension = NaN_array;
             NaN_matrix = NaN*ones(obj.sim_output.no_of_time_points, ...
                 obj.m.no_of_half_sarcomeres);
             obj.sim_output.f_overlap = NaN_matrix;
@@ -102,6 +103,8 @@ classdef simulation < handle
             % Load in the options
             json_struct = loadjson(options_json_file_string);
             obj.myosim_options = json_struct.MyoSim_options;
+            f = options_json_file_string
+            b = obj.myosim_options
         end
         
         function obj = implement_protocol(obj)
@@ -136,6 +139,8 @@ classdef simulation < handle
                     obj.m.muscle_force;
                 obj.sim_output.muscle_length(t_counter) = ...
                     obj.m.muscle_length;
+                obj.sim_output.series_extension(t_counter) = ...
+                    obj.m.series_extension;
                 for i=1:obj.m.no_of_half_sarcomeres
                     obj.sim_output.f_overlap(t_counter,i) = ...
                         obj.m.hs(i).f_overlap;
