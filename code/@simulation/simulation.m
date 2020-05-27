@@ -103,8 +103,6 @@ classdef simulation < handle
             % Load in the options
             json_struct = loadjson(options_json_file_string);
             obj.myosim_options = json_struct.MyoSim_options;
-            f = options_json_file_string
-            b = obj.myosim_options
         end
         
         function obj = implement_protocol(obj)
@@ -114,6 +112,11 @@ classdef simulation < handle
             if ((obj.m.series_k_linear == 0) && ...
                     (obj.m.no_of_half_sarcomeres == 1))
                 obj.m.hs(1).hs_length = obj.m.muscle_length;
+            end
+
+            % Draw rates
+            if (obj.myosim_options.figure_rates>0)
+                draw_rates(obj);
             end
             
             for t_counter = 1:obj.sim_output.no_of_time_points
@@ -128,11 +131,6 @@ classdef simulation < handle
                     obj.myosim_protocol.dhsl(t_counter), ...
                     10^(-obj.myosim_protocol.pCa(t_counter)), ...
                     obj.myosim_protocol.Mode(t_counter));
-                
-                % Draw rates on first iteration
-                if (t_counter==1)
-                    draw_rates(obj);
-                end
                 
                 % Store results
                 obj.sim_output.muscle_force(t_counter) = ...
