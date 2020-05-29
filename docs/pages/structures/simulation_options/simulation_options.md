@@ -14,7 +14,8 @@ Optimization structures are stored using the JSON format. Here is an example.
 	"MyoSim_options":
 	{
         "drawing_skip": 200,
-        "figure_simulation_output": 1
+        "figure_simulation_output": 1,
+		"figure_rates": 2
 	}
 }
 ````
@@ -24,4 +25,8 @@ An integer, that defines the number of time-steps between updates to the simulat
 
 ### figure_simulation_output
 
-The number of a MATLAB figure showing the simulation output. Set to 0 to prevent showing the figure.
+The number of a MATLAB figure showing the simulation output. Set to 0 to prevent showing the figure
+
+### figure_rates
+
+The number of a MATLAB figure showing the rate constants used for the simulation. Set to 0 to prevent showing the figure.
