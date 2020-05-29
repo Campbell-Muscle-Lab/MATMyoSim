@@ -91,12 +91,18 @@ This structure defines the properties of the half-sarcomeres
 
 ### parameters
 
-The parameters needed for this section depend on the kinetic scheme that is being used.
+The parameters needed for this section depend on the [kinetic scheme](../../kinetic_schemes/kinetics_schemes.html) that is being used.
 
 #### Passive force
 
 if `passive_force_mode` is `linear`
 + F_pas = passive_k_linear * (hs_length - passive_hsl_slack)
+
+if `passive_force_mode` is `exponential`
++ hs_length > passive_hsl_slack
+  + F_pas = passive_sigma * exp((hs_length - passive_hsl_slack) / passive_L)
++ else
+  + F_pas = passive_sigma * exp(-(hs_length - passive_hsl_slack) / passive_L)
 
 #### Other
 

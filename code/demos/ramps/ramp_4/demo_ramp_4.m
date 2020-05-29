@@ -1,12 +1,13 @@
-function demo_ramp_2
+function demo_ramp_4
 % Function illustrates how to run a simulation of a single-half-sarcomere
-% with an exponential passive elastic component and no cycling cross-bridges
+% with a linear passive elastic component and cycling cross-bridges that
+% generate active force
 
 % Variables
-protocol_file_string = 'ramp_2_protocol.txt';
-model_parameters_json_file_string = 'ramp_2_parameters.json';
-options_file_string = 'ramp_2_options.json';
-model_output_file_string = '..\..\temp\ramp_2_output.myo';
+protocol_file_string = 'ramp_4_protocol.txt';
+model_parameters_json_file_string = 'ramp_4_parameters.json';
+options_file_string = 'ramp_4_options.json';
+model_output_file_string = '..\..\temp\ramp_4_output.myo';
 
 % Make sure the path allows us to find the right files
 addpath(genpath('..\..\..\..\code'));

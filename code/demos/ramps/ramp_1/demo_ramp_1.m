@@ -1,12 +1,12 @@
-function demo_twitch_1
+function demo_ramp_1
 % Function illustrates how to run a simulation of a single-half-sarcomere
-% held isometric and activated by a transient pulse of Ca2+
+% with a linear passive elastic component and no cycling cross-bridges
 
 % Variables
-protocol_file_string = 'protocol.txt';
-model_parameters_json_file_string = 'twitch_1_model.json';
-options_file_string = 'twitch_1_options.json';
-model_output_file_string = '..\..\temp\twitch_1_output.myo';
+protocol_file_string = 'ramp_1_protocol.txt';
+model_parameters_json_file_string = 'ramp_1_parameters.json';
+options_file_string = 'ramp_1_options.json';
+model_output_file_string = '..\..\temp\ramp_1_output.myo';
 
 % Make sure the path allows us to find the right files
 addpath(genpath('..\..\..\..\code'));
@@ -30,3 +30,4 @@ ylabel('Force (N m^{-2})');
 subplot(2,1,2);
 plot(sim_output.time_s,sim_output.hs_length,'b-');
 ylabel('Half-sarcomere length (nm)');
+xlabel('Time (s)');

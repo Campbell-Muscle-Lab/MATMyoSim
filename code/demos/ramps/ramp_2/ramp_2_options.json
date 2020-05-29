@@ -2,6 +2,7 @@
 	"MyoSim_options":
 	{
         "drawing_skip": 200,
-        "figure_simulation_output": 1
+		"figure_simulation_output": 1,
+		"figure_rates": 0
 	}
 }

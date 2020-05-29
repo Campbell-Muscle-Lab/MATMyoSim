@@ -1,20 +1,16 @@
 function demo_ramp_3
 % Function illustrates how to run a simulation of a single-half-sarcomere
-% connected in series with a spring, activated at a constant pCa
-% Myosin heads cycle and generate active force
+% with a linear passive elastic component and cycling cross-bridges
+% that do not generate active force
 
 % Variables
-protocol_file_string = '..\..\temp\ramp_3_protocol.txt';
+protocol_file_string = 'ramp_3_protocol.txt';
 model_parameters_json_file_string = 'ramp_3_parameters.json';
 options_file_string = 'ramp_3_options.json';
 model_output_file_string = '..\..\temp\ramp_3_output.myo';
 
 % Make sure the path allows us to find the right files
-addpath('..\..\..\generate_protocols','..\..\..\..\code');
-
-% Generate a new protocol
-generate_triangle_protocol( ...
-    'output_file_string', protocol_file_string);
+addpath(genpath('..\..\..\..\code'));
 
 % Run a simulation
 sim_output = simulation_driver( ...
@@ -35,3 +31,4 @@ ylabel('Force (N m^{-2})');
 subplot(2,1,2);
 plot(sim_output.time_s,sim_output.hs_length,'b-');
 ylabel('Half-sarcomere length (nm)');
+xlabel('Time (s)');

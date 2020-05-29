@@ -4,7 +4,7 @@
         "muscle_props":
         {
             "no_of_half_sarcomeres": 1,
-            "series_k_linear": 5e3
+            "series_k_linear": 0
         },
         "hs_props":
         {
@@ -34,8 +34,8 @@
                 "k_off": 200,
                 "k_coop": 10,
                 "passive_force_mode": "linear",
-                "passive_hsl_slack": 1200,
-                "passive_k_linear": 100,
+                "passive_hsl_slack": 1250,
+                "passive_k_linear": 10,
                 "compliance_factor": 0.5,
                 "cb_number_density": 6.9e16,
                 "k_boltzmann": 1.38e-23,
