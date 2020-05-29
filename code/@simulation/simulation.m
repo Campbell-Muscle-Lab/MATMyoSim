@@ -113,18 +113,14 @@ classdef simulation < handle
                     (obj.m.no_of_half_sarcomeres == 1))
                 obj.m.hs(1).hs_length = obj.m.muscle_length;
             end
-
-            % Draw rates
-            if (obj.myosim_options.figure_rates>0)
-                draw_rates(obj);
-            end
             
             for t_counter = 1:obj.sim_output.no_of_time_points
-                
+
+                % Keep display active
                 if (mod(t_counter,obj.myosim_options.drawing_skip)==0)
                     t_counter = t_counter
                 end
-                
+
                 % Implement the time step
                 obj.m.implement_time_step( ...
                     obj.myosim_protocol.dt(t_counter), ...
@@ -206,7 +202,15 @@ classdef simulation < handle
                             error('cb scheme not yet implemented');
                     end
                 end
-               
+                                
+                % Draw rates if required on first time-step
+                if (t_counter==1)
+                    if (obj.myosim_options.figure_rates>0)
+                        draw_rates(obj);
+                    end
+                end
+                
+                % Update display if required
                 if (obj.myosim_options.figure_simulation_output)
                     if ((mod(t_counter,obj.myosim_options.drawing_skip)==0) || ...
                             (t_counter == obj.sim_output.no_of_time_points))

@@ -71,7 +71,7 @@ In MatMyoSim, a muscle is composed of 1 or more half-sarcomeres connected in ser
 This structure defines the properties of the half-sarcomeres
 
 + kinetic_scheme - a string defining the kinetic scheme for myosin heads. Currently one of:
-  + 3state_with_SRX
+  + [3state_with_SRX](../../kinetics_schemes/3state_with_SRX/3state_with_SRX.html)
   + [3state_with_SRX_and_exp_k4](../../kinetic_schemes/3state_with_SRX_and_exp_k4/3state_with_SRX_and_exp_k4.html)
   + 4state_with_SRX
 
