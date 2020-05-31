@@ -2,7 +2,7 @@
 title: Define your own
 has_children: false
 parent: Kinetic schemes
-nav_order: 2
+nav_order: 5
 ---
 
 # Define your own scheme

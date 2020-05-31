@@ -5,7 +5,7 @@ parent: Ramps
 grand_parent: Demos
 ---
 
-# Ramp 3 demonstration
+# Ramp 4 demonstration
 
 This demo shows how to run a simulation of a single sarcomere subjected to a ramp, hold, and then release protocol.
 

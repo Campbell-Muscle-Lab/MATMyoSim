@@ -44,7 +44,7 @@ classdef simulation < handle
             obj.m = muscle(obj.myosim_model);
             
             % Load in the protocol
-            obj.myosim_protocol = ezread2(simulation_protocol_file_string);
+            obj.myosim_protocol = readtable(simulation_protocol_file_string);
             
             % Prepare the output
             obj.sim_output = [];
