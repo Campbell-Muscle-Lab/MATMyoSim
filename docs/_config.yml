@@ -3,11 +3,11 @@ remote_theme: pmarsceill/just-the-docs
 # Auxiliary links for the upper right navigation.
 aux_links:
   "Campbell Muscle Lab":
-  - "https://www.campbellmusclelab.org"
+  - "http://www.campbellmusclelab.org"
   "Lab GitHub":
-  - "https://campbell-muscle-lab.github.io"
+  - "http://campbell-muscle-lab.github.io"
   "MATMyoSim Repo":
-  - "https://github.com/Campbell-Muscle-Lab/MATMyoSim"
+  - "http://github.com/Campbell-Muscle-Lab/MATMyoSim"
 
 # Not a big fan of dark mode. I think the light looks better.
 # color_scheme: "dark"
