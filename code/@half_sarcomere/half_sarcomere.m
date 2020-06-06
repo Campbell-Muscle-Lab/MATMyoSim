@@ -75,45 +75,28 @@ classdef half_sarcomere < handle
                             % no of x_bins
                             
             % Set up the y_vector which is used for kinetics
-            switch (obj.kinetic_scheme)
-                
-                case '3state_with_SRX'
-                    obj.myofilaments.y_length = ...
-                        obj.myofilaments.no_of_x_bins + 4;
-                    obj.myofilaments.y = ...
-                        zeros(obj.myofilaments.y_length,1);
-                    
-                    % Start with all the cross-bridges in M1 and all
-                    % binding sites off
-                    obj.myofilaments.y(1)=1.0;
-                    obj.myofilaments.y(end-1) = 1.0;
-                    
-                case '3state_with_SRX_and_exp_k4'
-                    obj.myofilaments.y_length = ...
-                        obj.myofilaments.no_of_x_bins + 4;
-                    obj.myofilaments.y = ...
-                        zeros(obj.myofilaments.y_length,1);
-                    
-                    % Start with all the cross-bridges in M1 and all
-                    % binding sites off
-                    obj.myofilaments.y(1)=1.0;
-                    obj.myofilaments.y(end-1) = 1.0;                    
-                
-                case '4state_with_SRX'
-                    obj.myofilaments.y_length = ...
-                        (2*obj.myofilaments.no_of_x_bins) + 4;
-                    obj.myofilaments.y = ...
-                        zeros(obj.myofilaments.y_length,1);
-                    
-                    % Start with all cross-bridges in M1 and all
-                    % binding sites off
-                    obj.myofilaments.y(1) = 1.0;
-                    obj.myofilaments.y(end-1) = 1.0;
-                    
-                otherwise
-                    error(sprintf( ...
-                        '%s kinetics scheme not yet implemented in half_sarcomere class', ...
-                        obj.kinetic_scheme));
+            if (startsWith(obj.kinetic_scheme, '3state_with_SRX'))
+                obj.myofilaments.y_length = ...
+                    obj.myofilaments.no_of_x_bins + 4;
+                obj.myofilaments.y = ...
+                    zeros(obj.myofilaments.y_length,1);
+
+                % Start with all the cross-bridges in M1 and all
+                % binding sites off
+                obj.myofilaments.y(1)=1.0;
+                obj.myofilaments.y(end-1) = 1.0;
+            end
+            
+            if (startsWith(obj.kinetic_scheme, '4state_with_SRX'))
+                obj.myofilaments.y_length = ...
+                    (2*obj.myofilaments.no_of_x_bins) + 4;
+                obj.myofilaments.y = ...
+                    zeros(obj.myofilaments.y_length,1);
+
+                % Start with all cross-bridges in M1 and all
+                % binding sites off
+                obj.myofilaments.y(1) = 1.0;
+                obj.myofilaments.y(end-1) = 1.0;
             end
                         
             % Handle other parameters
@@ -149,7 +132,10 @@ classdef half_sarcomere < handle
         
         evolve_kinetics(obj,time_step);
         update_3state_with_SRX(obj,time_step);
+        update_3state_with_SRX_and_exp_k4(obj,time_step);
+        update_3state_with_SRX_and_energy_barrier(obj,time_step);
         update_4state_with_SRX(obj,time_step);
+        update_4state_with_SRX_and_exp_k7(obj,time_step);
         
         move_cb_distribution(obj,delta_hsl);
         update_forces(obj);

@@ -16,7 +16,7 @@ Before you run a simulation you need to create 3 text files which define
     + the states that myosin heads can cycle between
   + the parallel elastic component responsible for resting tension
   + values for every parameter in the model
-+ a [protocol](../protocol/protocol.html)
++ a [protocol](../protocols/protocols.html)
   + a sequence of instructions that define the following conditions for every time-step in the simulation
     + the duration of the time-step in s
     + the activating Ca<sup>2+</sup> concentration (defined as pCa = -log<sub>10</sub>[Ca<sup>2+</sup>])

@@ -28,6 +28,7 @@ end
 + Then add a new case in to the constructor in `repo\code\@half_sarcomere\half_sarcomere.m`
   + This code should initialise the y_vector holding the cross-bridge populations and the thin filament state variables.
 
++ Then add the method `update_my_scheme(obj, time_step)` to teh "other methods in half-sarcomere.m
 
 + Then add a new case in to `repo\code\@half_sarcomere\implement_time_step.m`
   + This code should unpack the y_vector holding the cross-bridge populations
@@ -51,4 +52,5 @@ end
 
 + Then add a new case in `repo\code\@simulation\draw_rates.m`
   + This code should create a figure showing the rate functions for your scheme. The plots can be as simple or as sophisticated as you like.
+
 
