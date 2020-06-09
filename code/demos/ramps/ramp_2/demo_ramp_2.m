@@ -6,10 +6,10 @@ function demo_ramp_2
 protocol_file_string = 'ramp_2_protocol.txt';
 model_parameters_json_file_string = 'ramp_2_parameters.json';
 options_file_string = 'ramp_2_options.json';
-model_output_file_string = '..\..\temp\ramp_2_output.myo';
+model_output_file_string = '../../temp/ramp_2_output.myo';
 
 % Make sure the path allows us to find the right files
-addpath(genpath('..\..\..\..\code'));
+addpath(genpath('../../../../code'));
 
 % Run a simulation
 sim_output = simulation_driver( ...
