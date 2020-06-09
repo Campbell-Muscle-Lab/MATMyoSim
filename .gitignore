@@ -1,3 +1,4 @@
 **/*.asv
 **/_site/**
+Gemfile.lock
 **/fitting/time_domain_3/**

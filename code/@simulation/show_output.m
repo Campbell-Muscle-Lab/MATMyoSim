@@ -221,5 +221,3 @@ for j=1:obj.m.no_of_half_sarcomeres
     end
           
 end
-
-drawnow;

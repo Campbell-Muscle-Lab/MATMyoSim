@@ -189,6 +189,7 @@ classdef simulation < handle
                 if (t_counter==1)
                     if (obj.myosim_options.figure_rates>0)
                         draw_rates(obj);
+                        drawnow;
                     end
                 end
                 
@@ -197,6 +198,7 @@ classdef simulation < handle
                     if ((mod(t_counter,obj.myosim_options.drawing_skip)==0) || ...
                             (t_counter == obj.sim_output.no_of_time_points))
                         show_output(obj,'t_counter',t_counter);
+                        drawnow;
                     end
                 end
             end
