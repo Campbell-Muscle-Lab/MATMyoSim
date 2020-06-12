@@ -66,7 +66,18 @@ classdef simulation < handle
             obj.sim_output.pas_force = NaN_matrix;
             obj.sim_output.hs_length = NaN_matrix;
             obj.sim_output.Ca = NaN_matrix;
-        
+
+            if (startsWith(obj.myosim_model.hs_props.kinetic_scheme, ...
+                    '2state'))
+
+                obj.sim_output.M1 = NaN_matrix;
+                obj.sim_output.M2 = NaN_matrix;
+                obj.sim_output.cb_pops = NaN * ones( ...
+                        obj.sim_output.no_of_time_points, ...
+                        obj.m.no_of_half_sarcomeres, ...
+                        obj.m.hs(1).myofilaments.no_of_x_bins);
+            end                        
+
             if (startsWith(obj.myosim_model.hs_props.kinetic_scheme, ...
                     '3state_with_SRX'))
 
@@ -145,6 +156,20 @@ classdef simulation < handle
                         obj.m.hs(i).hs_length;
                     obj.sim_output.Ca(t_counter,i) = ...
                         obj.m.hs(i).Ca;
+
+                    if (startsWith(obj.myosim_model.hs_props.kinetic_scheme, ...
+                        '2state'))
+
+                        obj.sim_output.M1(t_counter,i) = ...
+                            obj.m.hs(i).state_pops.M1;
+                        obj.sim_output.M2(t_counter,i) = ...
+                            obj.m.hs(i).state_pops.M2;
+                        % Pull out the bin_distributions which need
+                        % an extra dimension
+                        M2_indices = 1+(1:obj.m.hs(i).myofilaments.no_of_x_bins);
+                        obj.sim_output.cb_pops(t_counter,i,:) = ...
+                            obj.m.hs(i).myofilaments.y(M2_indices);
+                    end
                     
                     if (startsWith(obj.myosim_model.hs_props.kinetic_scheme, ...
                             '3state_with_SRX'))

@@ -14,6 +14,14 @@ obj.update_forces;
 
 % Store pops
 flag = 1;
+
+if startsWith(obj.kinetic_scheme, '2state')
+    flag = 0;
+    obj.state_pops.M1 = obj.myofilaments.y(1);
+    obj.state_pops.M2 = ...
+        sum(obj.myofilaments.y(1+(1:obj.myofilaments.no_of_x_bins)));
+end
+
 if startsWith(obj.kinetic_scheme, '3state_with_SRX')
     flag = 0;
     obj.state_pops.M1 = obj.myofilaments.y(1);

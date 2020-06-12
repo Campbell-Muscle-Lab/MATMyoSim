@@ -13,6 +13,7 @@ Here are the steps to add a new scheme called `my_scheme`
 
 + Define your kinetic scheme and write down equations for the fluxes between each transition. These will become a set of ordinary differential equations that define the rate of change of each population.
 
+
 + Then write a new function `update_my_scheme.m` that solves the rate equations. Save this in `repo\code\@half_sarcomere`
   + use `update_3state_with_SRX.m` as an example.
 
@@ -28,7 +29,7 @@ end
 + Then add a new case in to the constructor in `repo\code\@half_sarcomere\half_sarcomere.m`
   + This code should initialise the y_vector holding the cross-bridge populations and the thin filament state variables.
 
-+ Then add the method `update_my_scheme(obj, time_step)` to teh "other methods in half-sarcomere.m
++ Then add the method `update_my_scheme(obj, time_step)` to the "other methods in half-sarcomere.m
 
 + Then add a new case in to `repo\code\@half_sarcomere\implement_time_step.m`
   + This code should unpack the y_vector holding the cross-bridge populations
@@ -53,4 +54,6 @@ end
 + Then add a new case in `repo\code\@simulation\draw_rates.m`
   + This code should create a figure showing the rate functions for your scheme. The plots can be as simple or as sophisticated as you like.
 
++ Then add a new case in `repo\code\@simulation\show_output.m`
+  + This code should show the cross-bridge distributions for your chosen scheme.
 

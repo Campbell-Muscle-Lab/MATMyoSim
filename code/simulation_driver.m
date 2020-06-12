@@ -29,5 +29,11 @@ sim_output = myosim_simulation.sim_output;
 
 % Save simulation_output
 if (~isempty(p.output_file_string))
+    % Check directory exists
+    output_dir = fileparts(p.output_file_string);
+    if (~isdir(output_dir))
+        sprintf('Creating output directory: %s', fullfile(cd,output_dir))
+        [status, msg, msgID] = mkdir(output_dir);
+    end
     save(p.output_file_string,'sim_output');
 end

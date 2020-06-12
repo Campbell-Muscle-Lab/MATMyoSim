@@ -2,7 +2,7 @@
 title: Model
 has_children: false
 parent: Structures
-nav_order: 3
+nav_order: 1
 ---
 
 # Model

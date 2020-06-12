@@ -3,6 +3,17 @@ function check_new_force(obj,new_length)
 
 delta_hs_length = new_length - obj.hs_length;
 
+if (startsWith(obj.kinetic_scheme, '2state'))
+    bin_pops = obj.myofilaments.y(1+(1:obj.myofilaments.no_of_x_bins));
+    temp_cb_force = ...
+            obj.parameters.cb_number_density * obj.parameters.k_cb * 1e-9 * ...
+            sum(bin_pops' .* ...
+                (obj.myofilaments.x + obj.parameters.x_ps + ...
+                    (obj.parameters.compliance_factor * delta_hs_length)));
+
+    delta_cb_force = temp_cb_force - obj.cb_force;
+end
+
 if (startsWith(obj.kinetic_scheme, '3state_with_SRX'))
     bin_pops = obj.myofilaments.y(2+(1:obj.myofilaments.no_of_x_bins));
     temp_cb_force = ...
