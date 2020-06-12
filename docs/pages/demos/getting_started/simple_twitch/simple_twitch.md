@@ -1,19 +1,19 @@
 ---
-title: Twitches 1
-nav_order: 1
-parent: Twitches
+title: Simple twitch
+nav_order: 5
+parent: Getting started
 grand_parent: Demos
 ---
 
-# Twitch 1 demonstration
+# Demo of simple twitch
 
 This demo shows how to run a simulation of a single twitch
 
 ## Instructions
 
 + Launch MATLAB.
-+ Change directory to the `MATMyoSim\code\demos\twitches\twitches_1` folder in MATLAB.
-+ Open `demo_twitch_1.m`.
++ Change directory to the `MATMyoSim\code\demos\getting_started\simple_twitch` folder in MATLAB.
++ Open `demo_simple_twitch_1.m`.
 + Press <kbd>F5</kbd> to run the demo.
 
 ## Code

@@ -9,7 +9,7 @@ nav_order: 2
 
 This scheme is a modification of that described in [PMC6084639](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6084639/). See the publication for additional details.
 
-See [twitch_1](..//..//demos//twitches//twitch_1//twitch_1.html) for an example simulation using this scheme.
+See [twitch_1](../../demos/getting_started/simple_twitch/simple_twitch.html) for an example simulation using this scheme.
 
 Myosin heads transition between an OFF, an ON, and a force-generating state. Binding sites on actin switch between states that are unavailable and available for myosin heads to attach to.
 
