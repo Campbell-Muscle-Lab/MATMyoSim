@@ -5,9 +5,26 @@ parent: Structures
 nav_order: 4
 ---
 
-## Optimization structure
+# Optimization structure
 
-Optimization structures are stored using the JSON format. Here is an example.
+Optimization structures are stored using the JSON format. Each file contains:
+
++ header information
++ job data
+  + defined as for [batch stuctures](../batch/batch.html)
++ parameter data
++ (optional) initial_delta_hsl
++ (optional) constraints
+
+## Header information
+
+## Job data
+
+## Parameter data
+
+## Initial_delta_hsl
+
+## Constraints
 
 ````
 {
