@@ -13,7 +13,7 @@ for i=1:numel(pCa_values)
         [10 10]*pCa_values(i));
     
     % Make the directory if required
-    path_string = fileparts(file_string);
+    path_string = fileparts(fullfile(cd, file_string));
     if (~isdir(path_string))
         mkdir(path_string);
     end

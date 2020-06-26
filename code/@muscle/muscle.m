@@ -5,6 +5,7 @@ classdef muscle < handle
         % muscle class
         
         no_of_half_sarcomeres;
+        series_k_linear_per_hs;
         series_k_linear;
         muscle_length;
         series_extension = 0;
@@ -41,10 +42,15 @@ classdef muscle < handle
                     muscle_props.(muscle_field_names{i});
             end
             
+            % Correc the series compliance for the number of
+            % half-sarcomeres
+            obj.series_k_linear = obj.series_k_linear_per_hs / ...
+                obj.no_of_half_sarcomeres;
+            
             % Now create half_sarcomeres, updating muscle length as we go
             obj.muscle_length = 0;
             for hs_counter = 1:obj.no_of_half_sarcomeres
-                obj.hs(hs_counter) = half_sarcomere(hs_props);
+                obj.hs(hs_counter) = half_sarcomere(hs_props, hs_counter);
                 obj.muscle_length = obj.muscle_length + ...
                     obj.hs(hs_counter).hs_length;
             end

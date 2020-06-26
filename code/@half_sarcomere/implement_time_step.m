@@ -1,10 +1,11 @@
-function implement_time_step(obj,time_step,delta_hsl,Ca_concentration)
+function implement_time_step(obj,time_step,delta_hsl,Ca_concentration, ...
+                                m_props)
 
 % Update Ca
 obj.Ca = Ca_concentration;
 
 % Update kinetics
-obj.evolve_kinetics(time_step);
+obj.evolve_kinetics(time_step, m_props);
 
 % Move distributions
 obj.move_cb_distribution(delta_hsl);

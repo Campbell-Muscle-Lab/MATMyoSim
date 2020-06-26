@@ -2,7 +2,7 @@ function obj = impose_force_balance(obj,mode_value)
 % Function updates the length of each half-sarcomere and
 % the series component to maintain force balance
 
-if ((obj.no_of_half_sarcomeres==1)&(obj.series_k_linear>1e10))
+if ((obj.no_of_half_sarcomeres==1) & (obj.series_k_linear == 0))
     obj.series_extension=0;
     dhsl = obj.muscle_length - obj.hs(1).hs_length;
     obj.hs(1).move_cb_distribution(dhsl);

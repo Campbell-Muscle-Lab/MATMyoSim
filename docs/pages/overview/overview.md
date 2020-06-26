@@ -6,29 +6,25 @@ nav_order: 4
 
 # Overview
 
-MATMyoSim is software that simulates the mechanical properties of half-sarcomeres using cross-bridge distribution techniques.
+MATMyoSim is software that simulates the mechanical properties of half-sarcomeres using cross-bridge distribution techniques. It is designed as a research tool that can be used to test hypotheses and to help produce new insights into experimental data.
 
-Before you run a simulation you need to create 3 text files which define
-+ a [model](../structures/model/model.html) which describes
-  + a muscle
-    + 1 or more half-sarcomeres in series (that is, a myofibril) with the option of a series elastic componentand an optional series elastic component
-  + a [kinetic scheme](../kinetic_schemes/kinetic_schemes.html)
-    + the states that myosin heads can cycle between
-  + the parallel elastic component responsible for resting tension
-  + values for every parameter in the model
-+ a [protocol](../protocols/protocols.html)
-  + a sequence of instructions that define the following conditions for every time-step in the simulation
-    + the duration of the time-step in s
-    + the activating Ca<sup>2+</sup> concentration (defined as pCa = -log<sub>10</sub>[Ca<sup>2+</sup>])
-    + the length-change in nm per half-sarcomere imposed during each time-step
-    + the mode for the time-step, that is, whether the system is under
-      + length control
-      + tension control
-      + potentially slack
-+ [simulation options](../structures/simulation_options/simulation_options.html)
-  + which describe how to run the calculations and display data
+## Simulations
+
+The calculations underlying the simulations are handled by the computer code. To run a simulation you only need to define:
+
++ a [model](../structures/model/model.html) - how the cross-bridges cycle, the passive elastic component, and whether or not multiple half-sarcomeres are linked in series to form a myofibril
++ a [protocol](../protocols/protocols.html) - a sequence of instructions that define the experiment including: the activating Ca<sup>2+</sup> concentration and any length changes or isotonic conditions that are imposed
++ [simulation options](../structures/simulation_options/simulation_options.html) - which describe how to display the data and run the calculations and display data
 
 Once you have your model, protocol, and simulation options, you can run a simulation by passing your model, protocol, and options text files to a single MATLAB function.
 
+## Other tools
+
+[Batch structures](../structures/batch/batch.html) allow you to run several simulations in parallel. This is useful if you want to simulate a tension-pCa curve or investigate how a muscle responds to stretches of different speeds.
+
+You can also fit models to experimental data using [optimization structures](../structures/optimization/optimization.html). This process adjusts the parameter values in your model until the model predictions match the experimental data to some desired tolerance.
+
+## Next steps
+
 To see examples, look at the [demos](../demos/demos.md)
-+ [twitches_1](../demos/demos/twitches/twitches_1/twitches_1.html) is a good place to start
++ [Getting started](../demos/getting_started/getting_started.html) is a good launching pad.

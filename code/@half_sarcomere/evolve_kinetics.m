@@ -1,4 +1,4 @@
-function evolve_kinetics(obj,time_step)
+function evolve_kinetics(obj, time_step, m_props)
 % Function updates kinetics for thick and thin filaments
 
 switch (obj.kinetic_scheme)
@@ -15,6 +15,9 @@ switch (obj.kinetic_scheme)
     case '3state_with_SRX_and_energy_barrier'
         update_3state_with_SRX_and_energy_barrier(obj, time_step);                
     
+    case '3state_with_SRX_and_k_thin_force'
+        update_3state_with_SRX_and_k_thin_force(obj, time_step, m_props);                
+        
     case '4state_with_SRX'
         update_4state_with_SRX(obj, time_step); 
         
