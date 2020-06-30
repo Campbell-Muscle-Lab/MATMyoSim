@@ -16,7 +16,7 @@ Models are defined in JSON format. Here is an example.
         "muscle_props":
         {
             "no_of_half_sarcomeres": 1,
-            "series_k_linear": 0
+            "series_k_linear_per_hs": 0
         },
         "hs_props":
         {
@@ -63,8 +63,11 @@ Models are defined in JSON format. Here is an example.
 In MatMyoSim, a muscle is composed of 1 or more half-sarcomeres connected in series to form a myofibril. Optionally, the myofibril can be connected in series with a spring to mimic series compliance.
 
 + no_of_half_sarcomeres - an integer defining the number of half-sarcomeres in series in the myofibril
-+ series_k_linear - the stiffness in N m<sup>-1</sup> of the series spring
++ series_k_linear_per_hs - the stiffness in N m<sup>-1</sup> of the series spring normalized to each half-sarcomere
   + set to 0 for no spring (no series compliance)
+
+Note that the total series compliance for a myofibril with n half-sarcomeres will be n * series_k_linear_per_hs. Defining the parameter in the model file relative to the half-sarcomere simplifies comparing simulations of myofibrils with different numbers of half-sarcomeres. (Each half-sarcomere will still shorten by the same amount if no_of_half_sarcomeres is changed.)
+
 
 ## hs_props
 
