@@ -1,4 +1,4 @@
-function update_forces(obj)
+function update_forces(obj, time_step, delta_hsl)
 
 if (startsWith(obj.kinetic_scheme, '2state'))
     bin_pops = obj.myofilaments.y(1+(1:obj.myofilaments.no_of_x_bins));
@@ -35,4 +35,6 @@ end
 
 obj.passive_force = obj.return_passive_force(obj.hs_length);
 
-obj.hs_force = obj.cb_force + obj.passive_force;
+obj.viscous_force = obj.parameters.viscosity * delta_hsl / time_step;
+
+obj.hs_force = obj.cb_force + obj.passive_force + obj.viscous_force;

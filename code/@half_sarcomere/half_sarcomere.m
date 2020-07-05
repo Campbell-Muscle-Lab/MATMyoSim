@@ -13,8 +13,9 @@ classdef half_sarcomere < handle
         f_on;
         f_bound;
         
-        cb_force;
-        passive_force;
+        cb_force = 0;
+        passive_force = 0;
+        viscous_force = 0;
         
         state_pops;
         
@@ -153,14 +154,15 @@ classdef half_sarcomere < handle
         update_3state_with_SRX(obj, time_step);
         update_3state_with_SRX_and_k_thin_force(obj, time_step, m_props);
         update_3state_with_SRX_and_exp_k4(obj, time_step);
-        update_3state_with_SRX_and_energy_barrier(obj, time_step);
-        update_4state_with_SRX(obj, time_step);
+        update_3state_with_SRX_and_energy_barrier(obj, time_step, m_props);
+        update_3state_with_SRX_sig_walls_and_inter_hs(obj, time_step, m_props);
+        update_4state_with_SRX(obj, time_step, m_props);
         update_4state_with_SRX_and_exp_k7(obj, time_step);
         
         move_cb_distribution(obj, delta_hsl);
-        update_forces(obj);
+        update_forces(obj, time_step, delta_hsl);
         
-        check_new_force(obj,new_length);
+        check_new_force(obj, new_length, time_step);
 
         implement_time_step(obj,time_step,delta_hsl, ...
             Ca_concentration, m_props);

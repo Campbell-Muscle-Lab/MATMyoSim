@@ -33,6 +33,7 @@
                 "k_off": 200,
                 "k_coop": 1,
                 "passive_force_mode": "exponential",
+                "passive_hsl_slack": 1000,
                 "passive_sigma": 1e-13,
                 "passive_L": 40,
                 "compliance_factor": 0.5,

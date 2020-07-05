@@ -32,7 +32,7 @@ figure(obj.myosim_options.figure_simulation_output);
 [~, no_of_half_sarcomeres] = size(obj.sim_output.hs_length);
 [~, cm_size] = size(p.color_map);
 if (no_of_half_sarcomeres > cm_size)
-    p.color_map = jet(no_of_half_sarcomeres);
+    p.color_map = parula(no_of_half_sarcomeres);
 end
 
 subplot(obj.sim_output.subplots(1));
@@ -60,6 +60,9 @@ for j=1:obj.m.no_of_half_sarcomeres
         'Color',p.color_map(j,:), ...
         'LineWidth',p.trace_line_width);
     plot(obj.sim_output.time_s,obj.sim_output.pas_force(:,j),'--', ...
+        'Color',p.color_map(j,:), ...
+        'LineWidth',p.trace_line_width);
+    plot(obj.sim_output.time_s,obj.sim_output.visc_force(:,j),'-', ...
         'Color',p.color_map(j,:), ...
         'LineWidth',p.trace_line_width);
 end
@@ -195,7 +198,6 @@ for j=1:obj.m.no_of_half_sarcomeres
             'Color',p.color_map(j,:), ...
             'LineWidth',p.trace_line_width);
         ylabel('M2 distributions');
-        xlim([min(obj.m.hs(1).myofilaments.x) max(obj.m.hs(1).myofilaments.x)]);
     end
 
     if (startsWith(obj.myosim_model.hs_props.kinetic_scheme, '3state_with_SRX'))
@@ -204,7 +206,6 @@ for j=1:obj.m.no_of_half_sarcomeres
             'Color',p.color_map(j,:), ...
             'LineWidth',p.trace_line_width);
         ylabel('M3 distributions');
-        xlim([min(obj.m.hs(1).myofilaments.x) max(obj.m.hs(1).myofilaments.x)]);
     end
 
     if (startsWith(obj.myosim_model.hs_props.kinetic_scheme, '4state_with_SRX'))
@@ -216,7 +217,10 @@ for j=1:obj.m.no_of_half_sarcomeres
             squeeze(obj.sim_output.cb_pops(t_index,j,2,:)),':', ...
             'Color',p.color_map(j,:), ...
             'LineWidth',p.trace_line_width);
-        xlim([min(obj.m.hs(1).myofilaments.x) max(obj.m.hs(1).myofilaments.x)]);  
+
     end
-          
+end
+xlim([min(obj.m.hs(1).myofilaments.x) max(obj.m.hs(1).myofilaments.x)]);
+if (isfield(obj.myosim_options, 'simulation_output_bin_pops_max'))
+    ylim([0 obj.myosim_options.simulation_output_bin_pops_max]);
 end
