@@ -11,7 +11,7 @@ obj.evolve_kinetics(time_step, m_props);
 obj.move_cb_distribution(delta_hsl);
 
 % Update forces
-obj.update_forces;
+obj.update_forces(time_step, delta_hsl);
 
 % Store pops
 flag = 1;

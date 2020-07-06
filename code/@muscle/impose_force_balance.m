@@ -1,13 +1,13 @@
-function obj = impose_force_balance(obj,mode_value)
+function [obj, delta_hsl] = impose_force_balance(obj ,mode_value, time_step)
 % Function updates the length of each half-sarcomere and
 % the series component to maintain force balance
 
 if ((obj.no_of_half_sarcomeres==1) & (obj.series_k_linear == 0))
     obj.series_extension=0;
-    dhsl = obj.muscle_length - obj.hs(1).hs_length;
-    obj.hs(1).move_cb_distribution(dhsl);
+    delta_hsl = obj.muscle_length - obj.hs(1).hs_length;
+    obj.hs(1).move_cb_distribution(delta_hsl);
     obj.hs(1).hs_length = obj.muscle_length;
-    check_new_force(obj.hs(1),obj.muscle_length);
+    check_new_force(obj.hs(1), obj.muscle_length, time_step);
     obj.muscle_force = obj.hs(1).check_force;
     return
 end
@@ -34,8 +34,8 @@ if (mode_value < 0)
 
     % Unpack the new_p array and implement
     for hs_counter = 1:obj.no_of_half_sarcomeres
-        dhsl = new_p(hs_counter) - obj.hs(hs_counter).hs_length;
-        obj.hs(hs_counter).move_cb_distribution(dhsl);
+        delta_hsl(hs_counter) = new_p(hs_counter) - obj.hs(hs_counter).hs_length;
+        obj.hs(hs_counter).move_cb_distribution(delta_hsl(hs_counter));
         obj.hs(hs_counter).hs_length = new_p(hs_counter);
     end
     obj.series_extension = return_series_extension(obj,new_p(end));
@@ -59,8 +59,8 @@ else
     
     % Unpack the new_p array and implement
     for hs_counter = 1:obj.no_of_half_sarcomeres
-        dhsl = new_p(hs_counter) - obj.hs(hs_counter).hs_length;
-        obj.hs(hs_counter).move_cb_distribution(dhsl);
+        delta_hsl(hs_counter) = new_p(hs_counter) - obj.hs(hs_counter).hs_length;
+        obj.hs(hs_counter).move_cb_distribution(delta_hsl(hs_counter));
         obj.hs(hs_counter).hs_length = new_p(hs_counter);
     end
     obj.series_extension = new_p(end);
@@ -73,7 +73,7 @@ end
     function x = length_control_muscle_system(p)
         x=zeros(numel(p),1);
         for i=1:obj.no_of_half_sarcomeres
-            check_new_force(obj.hs(i),p(i));
+            check_new_force(obj.hs(i), p(i), time_step);
             x(i) = obj.hs(i).check_force - p(end);
         end
         new_series_extension = obj.muscle_length - ...
@@ -85,7 +85,7 @@ end
     function x = tension_control_muscle_system(p)
         x=zeros(numel(p),1);
         for i=1:obj.no_of_half_sarcomeres
-            check_new_force(obj.hs(i),p(i));
+            check_new_force(obj.hs(i), p(i), time_step);
             x(i) = obj.hs(i).check_force - mode_value;
         end
         x(end) = return_series_force(obj,p(end)) - mode_value;

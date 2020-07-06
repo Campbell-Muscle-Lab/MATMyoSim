@@ -1,4 +1,4 @@
-function implement_time_step(obj,time_step,delta_hsl,Ca_value,mode_value)
+function implement_time_step(obj,time_step,delta_hsl,Ca_value,mode_value, kinetic_scheme)
 % Function implements a time_step
 
 obj.muscle_length = obj.muscle_length + obj.no_of_half_sarcomeres*delta_hsl;
@@ -7,9 +7,19 @@ if ((obj.series_k_linear > 0) || (obj.no_of_half_sarcomeres > 1))
     % We have a series component and/or multiple half-sarcomeres and
     % consequently need to impose force-balance
     
-    % Pull off the hs_forces
+    % Pull off the hs props
     for i=1:obj.no_of_half_sarcomeres
         m_props.hs_passive_force(i) = obj.hs(i).passive_force;
+        m_props.hs_active_force(i) = obj.hs(i).cb_force;
+        m_props.hs_total_force(i) = obj.hs(i).hs_force;
+        m_props.hs_bound_cb(i) = obj.hs(i).f_bound;
+        
+        if (startsWith(kinetic_scheme, '4state_with_SRX'))
+            M4_indices = (2 + obj.hs(i).myofilaments.no_of_x_bins) + ...
+                (1:obj.hs(i).myofilaments.no_of_x_bins);
+            m_props.hs_force_generating_cb(i) = ...
+                sum(obj.hs(i).myofilaments.y(M4_indices));
+        end
     end
     
     % Cycle through the half-sarcomeres implementing cross-bridge cycling
@@ -18,10 +28,10 @@ if ((obj.series_k_linear > 0) || (obj.no_of_half_sarcomeres > 1))
                                                 m_props);
     end
 
-    obj = impose_force_balance(obj,mode_value);
+    [obj, delta_hsl] = impose_force_balance(obj, mode_value, time_step);
 
     for hs_counter = 1:obj.no_of_half_sarcomeres
-        obj.hs(hs_counter).update_forces;
+        obj.hs(hs_counter).update_forces(time_step, delta_hsl(hs_counter));
     end
 else
     % Single half-sarcomere - this is faster

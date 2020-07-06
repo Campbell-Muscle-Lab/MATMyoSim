@@ -1,4 +1,4 @@
-function check_new_force(obj,new_length)
+function check_new_force(obj, new_length, time_step)
 % Function calculates the force for a given length
 
 delta_hs_length = new_length - obj.hs_length;
@@ -45,4 +45,9 @@ end
 delta_passive_force = obj.return_passive_force(new_length) - ...
     obj.return_passive_force(obj.hs_length);
 
-obj.check_force = obj.hs_force + delta_cb_force + delta_passive_force;
+% Deal with viscous force
+temp_viscous_force = obj.parameters.viscosity * delta_hs_length / time_step;
+delta_viscous_force = temp_viscous_force - obj.viscous_force;
+
+obj.check_force = obj.hs_force + delta_cb_force + delta_passive_force + ...
+                        delta_viscous_force;
