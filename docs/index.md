@@ -12,6 +12,6 @@ Here, for example, is a simulation showing how [series compliance can lead to bi
 ![Distribution figure](distribution_image.png)
 
 To get started:
-+ Try the [demos](demos/demos.html)
++ Try the [demos](pages/demos/demos.html)
 
 If you got this far, you might want to know that MyoSim was originally [developed in C++](http://www.myosim.org) and has also been ported to Python. Different versions of the software are at different stages of development. Each has its strengths and weaknesses.
