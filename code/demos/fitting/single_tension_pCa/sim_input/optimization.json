@@ -1,0 +1,44 @@
+{
+	"MyoSim_optimization":
+	{
+        "model_template_file_string": "sim_input/model_template.json",
+
+        "fit_mode": "fit_in_time_domain",
+        "fit_variable": "muscle_force",
+
+        "target_file_string": "target_data/target_force.txt",
+        
+        "best_model_folder": "../../temp/best",
+        "best_opt_file_string": "../../temp/best_twitch_model.json",
+
+        "figure_current_fit": 2,
+        "figure_optimization_progress": 3, 
+        
+        "job":
+        [
+            {
+                "model_file_string": "../../temp/model_worker.json",
+                "protocol_file_string": "sim_input/protocol.txt",
+                "options_file_string": "sim_input/sim_options.json",
+                "results_file_string": "../../temp/twitch.myo"
+            }
+        ],
+        "parameter":
+        [
+            {
+                "name": "k2",
+                "min_value": 20,
+                "max_value": 120,
+                "p_value": 0.5,
+                "p_mode": "lin"
+            },
+            {
+                "name": "k_on",
+                "min_value": 7,
+                "max_value": 8,
+                "p_value": 0.5,
+                "p_mode": "log"
+            }
+        ]
+    }
+}

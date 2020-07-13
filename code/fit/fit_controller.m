@@ -17,15 +17,15 @@ y_best = [];
 best_p = p_vector;
 
 fh = @(x)run_trial(x, opt_structure);
-
-s.solver = 'particleswarm';
-s.objective = fh;
-s.nvars = numel(p_vector);
-s.lb = zeros(numel(p_vector),1);
-s.ub = ones(numel(p_vector),1);
-s.options = optimoptions('particleswarm','Display','iter');
-
-% particleswarm(s);
+% 
+% s.solver = 'particleswarm';
+% s.objective = fh;
+% s.nvars = numel(p_vector);
+% s.lb = zeros(numel(p_vector),1);
+% s.ub = ones(numel(p_vector),1);
+% s.options = optimoptions('particleswarm','Display','iter');
+% 
+% % particleswarm(s);
 
 fminsearch(fh, p_vector);
 % n = numel(p_vector);

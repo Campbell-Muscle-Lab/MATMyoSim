@@ -132,7 +132,11 @@ classdef half_sarcomere < handle
                         class(obj.parameters.(parameter_field_names{i}));
                 end
             end
-
+            
+            % Set viscosity to 0 if missing from parameters
+            if (~isfield(obj.parameters, 'viscosity'))
+                obj.parameters.viscosity = 0;
+            end
             
             % Initialise forces
             obj.cb_force = 0;

@@ -5,7 +5,7 @@ function demo_fit_time_domain_1
 addpath(genpath('..\..\..\..\code'));
 
 % Variables
-optimization_job_file_string = 'optimization_job.json';
+optimization_job_file_string = 'optimization.json';
 
 % Code
 opt_structure = loadjson(optimization_job_file_string);
