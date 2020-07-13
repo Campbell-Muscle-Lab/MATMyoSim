@@ -15,54 +15,57 @@ N_overlap = return_f_overlap(obj);
 % Pull out the interaction terms
 no_of_half_sarcomeres = numel(m_props.hs_passive_force);
 if (no_of_half_sarcomeres >= 3)
-    
-    y_feedback = m_props.hs_force_generating_cb;
-    
+    m_bound = m_props.hs_force_generating_cb;
+
     switch (obj.hs_id)
         case 1
-            inter_hs = (2 * y_feedback(obj.hs_id)) + ...
-                y_feedback(obj.hs_id+1);
+            b = (1 + obj.parameters.inter_z) * m_bound(1) + ...
+                m_bound(2);
         case no_of_half_sarcomeres
             if (mod(no_of_half_sarcomeres, 2) == 0)
-                % Even half-sarcomere
-                inter_hs = (2 * y_feedback(obj.hs_id)) + ...
-                    y_feedback(obj.hs_id-1);
+                % Even
+                b = (1 + obj.parameters.inter_z) * m_bound(no_of_half_sarcomeres) + ...
+                    m_bound(no_of_half_sarcomeres-1);
             else
-                % Odd half-sarcomere
-                inter_hs = (2 * y_feedback(obj.hs_id)) + ...
-                    (obj.parameters.inter_z * y_feedback(obj.hs_id-1));
+                b = 2 * m_bound(no_of_half_sarcomeres) + ...
+                    obj.parameters.inter_z * m_bound(no_of_half_sarcomeres-1);
             end
         otherwise
-            if (mod(no_of_half_sarcomeres, 2) == 0)
+            if (mod(obj.hs_id, 2) == 0)
                 % Even half-sarcomere
-                inter_hs = y_feedback(obj.hs_id-1) + y_feedback(obj.hs_id) + ...
-                    (obj.parameters.inter_z * y_feedback(obj.hs_id+1));
+                b = m_bound(obj.hs_id-1) + m_bound(obj.hs_id) + ...
+                        obj.parameters.inter_z * m_bound(obj.hs_id+1);
             else
                 % Odd half-sarcomere
-                inter_hs = (obj.parameters.inter_z * y_feedback(obj.hs_id-1)) + ...
-                    y_feedback(obj.hs_id) + y_feedback(obj.hs_id+1);
+                b = obj.parameters.inter_z * m_bound(obj.hs_id-1) + ...
+                        m_bound(obj.hs_id) + m_bound(obj.hs_id+1);
             end
     end
 else
-    inter_hs = 0;
+    b = 0;
 end
 
+% Normalize
+b = b/3;
+
+act = obj.cb_force;
+
 % Pre-calculate rates
-r1 = min([obj.parameters.max_rate ...
-            obj.parameters.k_1 * ...
-                (1+(obj.parameters.k_force * obj.hs_force))]);
+r1 = obj.parameters.k_1 * (1 + obj.parameters.k_force * act);
+if (r1<0)
+    r1=0;
+end
 
 r2 = min([obj.parameters.max_rate obj.parameters.k_2]);            
 
-r3 = obj.parameters.k_3 * ...
+r3 = obj.parameters.k_3 * (1 + obj.parameters.k_3_inter_hs * b) * ...
         exp(-0.5 * obj.parameters.k_cb * (obj.myofilaments.x).^2 / ...
             (1e18 * obj.parameters.k_boltzmann * ...
                 obj.parameters.temperature));
-r3 = (1 + obj.parameters.k_3_inter_hs * inter_hs) * r3;
 r3(r3>obj.parameters.max_rate)=obj.parameters.max_rate;            
 
 r4 = obj.parameters.k_3 * exp(obj.parameters.k_4_base_energy) * ...
-        exp(0.5 * obj.parameters.k_cb * (obj.myofilaments.x).^2 / ...
+         exp(0.5 * obj.parameters.k_cb *(obj.myofilaments.x).^2 / ...
             (1e18 * obj.parameters.k_boltzmann * ...
                 obj.parameters.temperature));
 r4(r4>obj.parameters.max_rate)=obj.parameters.max_rate;
@@ -91,6 +94,14 @@ r7(r7>obj.parameters.max_rate) = obj.parameters.max_rate;
             
 r8 = obj.parameters.k_8*ones(numel(obj.myofilaments.x),1);
 
+r_on = obj.parameters.k_on * obj.Ca;
+
+r_off = obj.parameters.k_off * ...
+            (1 + obj.parameters.k_off_force * obj.passive_force)
+if (r_off < 0)
+    r_off = 0;
+end
+
 % Evolve the system
 [t,y_new] = ode23(@derivs,[0 time_step],y,[]);
 
@@ -110,6 +121,9 @@ obj.rate_structure.r5 = r5;
 obj.rate_structure.r6 = r6;
 obj.rate_structure.r7 = r7;
 obj.rate_structure.r8 = r8;
+obj.rate_structure.r_on = r_on;
+obj.rate_structure.r_off = r_off;
+
 
     % Nested function
     function dy = derivs(time_step,y)
@@ -137,10 +151,10 @@ obj.rate_structure.r8 = r8;
         J7 = r7 .* M4';
         J8 = r8 * M2;
         
-        J_on = obj.parameters.k_on * obj.Ca * (N_overlap - N_on) * ...
+        J_on = r_on * (N_overlap - N_on) * ...
                 (1 + obj.parameters.k_coop * (N_on/N_overlap));
             
-        J_off = obj.parameters.k_off * (N_on - N_bound) * ...
+        J_off = r_off * (N_on - N_bound) * ...
                 (1 + obj.parameters.k_coop * ((N_overlap - N_on)/N_overlap));
             
         % Calculate the derivs

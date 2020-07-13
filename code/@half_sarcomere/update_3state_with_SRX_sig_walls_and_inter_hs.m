@@ -11,71 +11,74 @@ N_overlap = return_f_overlap(obj);
 % Pull out the interaction terms
 no_of_half_sarcomeres = numel(m_props.hs_passive_force);
 if (no_of_half_sarcomeres >= 3)
-    
-    m_pas_force = m_props.hs_passive_force;
-    m_act_force = m_props.hs_active_force;
+    m_bound = m_props.hs_length;
+    w = 0.5;
+
     switch (obj.hs_id)
         case 1
-            pas = 2 * m_pas_force(obj.hs_id);
-            act = m_act_force(obj.hs_id) + m_act_force(obj.hs_id + 1);
+            b = (1 + obj.parameters.inter_z) * m_bound(1) + ...
+                w * m_bound(2);
         case no_of_half_sarcomeres
             if (mod(no_of_half_sarcomeres, 2) == 0)
-                % Even half-sarcomere
-                pas = 2 * m_pas_force(obj.hs_id);
-                act = m_act_force(obj.hs_id) + m_act_force(obj.hs_id - 1);
+                % Even
+                b = (1 + obj.parameters.inter_z) * m_bound(no_of_half_sarcomeres) + ...
+                    w * m_bound(no_of_half_sarcomeres-1);
             else
-                % Odd half-sarcomere
-                pas = m_pas_force(obj.hs_id) + m_pas_force(obj.hs_id -1);
-                act = 2 * m_act_force(obj.hs_id);
+                b = (1 + w) * m_bound(no_of_half_sarcomeres) + ...
+                    obj.parameters.inter_z * m_bound(no_of_half_sarcomeres-1);
             end
         otherwise
-            if (mod(no_of_half_sarcomeres, 2) == 0)
+            if (mod(obj.hs_id, 2) == 0)
                 % Even half-sarcomere
-                pas = m_pas_force(obj.hs_id) + m_pas_force(obj.hs_id + 1);
-                act = m_act_force(obj.hs_id) + m_act_force(obj.hs_id - 1);
+                b = w * m_bound(obj.hs_id-1) + m_bound(obj.hs_id) + ...
+                        obj.parameters.inter_z * m_bound(obj.hs_id+1);
             else
                 % Odd half-sarcomere
-                pas = m_pas_force(obj.hs_id) + m_pas_force(obj.hs_id - 1);
-                act = m_act_force(obj.hs_id) + m_act_force(obj.hs_id + 1);
+                b = obj.parameters.inter_z * m_bound(obj.hs_id-1) + ...
+                        m_bound(obj.hs_id) + w * m_bound(obj.hs_id+1);
             end
     end
 else
-    pas = 0;
-    act = 0;
+    b = 0;
 end
 
-% act = obj.hs_force;
+% Normalize
+b = b/3;
+b = (b-1150);
+
+act = obj.cb_force;
 
 % Pre-calculate rate
 r1 = min([obj.parameters.max_rate ...
             obj.parameters.k_1 * ...
                 (1+(obj.parameters.k_force * act))]);
 r2 = min([obj.parameters.max_rate obj.parameters.k_2]);
-r3 = obj.parameters.k_3 * ...
-            exp(-obj.parameters.k_cb * (obj.myofilaments.x).^2 / ...
+
+r3 = obj.parameters.k_3 *  ...
+        (1 + obj.parameters.k_3_inter_hs * b) * ...            
+        exp(-obj.parameters.k_cb * (obj.myofilaments.x).^2 / ...
                 (2 * 1e18 * obj.parameters.k_boltzmann * ...
                     obj.parameters.temperature));
 r3(r3>obj.parameters.max_rate)=obj.parameters.max_rate;
 
 r4 = obj.parameters.k_3 * exp(obj.parameters.k_4_base_energy) * ...
-            exp(0.5 * obj.parameters.k_cb * ...
-                (obj.myofilaments.x + obj.parameters.x_ps).^2 / ...
+            exp(0.5 * obj.parameters.k_cb *...
+                (obj.myofilaments.x + 0*obj.parameters.x_ps).^2 / ...
                 (1e18 * obj.parameters.k_boltzmann * ...
                     obj.parameters.temperature));
 r4(r4>obj.parameters.max_rate)=obj.parameters.max_rate;
 
-r_on = obj.parameters.k_on * obj.Ca * ...
-    (1 + obj.parameters.k_on_force * pas);
-if (r_on < 0)
-    r_on = 0;
-end
+r_on = obj.parameters.k_on * obj.Ca;
+r_off = obj.parameters.k_off * ...
+        (1 + obj.parameters.k_off_force * obj.passive_force);
+    
 
-if (obj.hs_id==3)
-    sprintf('act force: %g  r_1: %g', act, r1)
-end
-
-
-r_off = obj.parameters.k_off;
+sprintf('hs_id: %i b: %f  max_k3: %f',obj.hs_id, b, max(r3))
+    
+% if (obj.hs_id==2)
+%     sprintf('force: %g  r_1: %g  f_bound: %g  k_3: %g\npas_force: %g  r_off: %g', ...
+%         obj.hs_force, r1, b, max(r3), obj.passive_force, r_off)
+% end
 
 % Evolve the system
 [t,y_new] = ode23(@derivs,[0 time_step],y,[]);
@@ -91,6 +94,9 @@ obj.rate_structure.r1 = r1;
 obj.rate_structure.r2 = r2;
 obj.rate_structure.r3 = r3;
 obj.rate_structure.r4 = r4;
+
+obj.rate_structure.r_on = r_on;
+obj.rate_structure.r_off = r_off;
 
     % Nested function
     function dy = derivs(time_step,y)

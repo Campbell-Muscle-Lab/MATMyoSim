@@ -13,6 +13,7 @@ if ((obj.series_k_linear > 0) || (obj.no_of_half_sarcomeres > 1))
         m_props.hs_active_force(i) = obj.hs(i).cb_force;
         m_props.hs_total_force(i) = obj.hs(i).hs_force;
         m_props.hs_bound_cb(i) = obj.hs(i).f_bound;
+        m_props.hs_length(i) = obj.hs(i).hs_length;
         
         if (startsWith(kinetic_scheme, '4state_with_SRX'))
             M4_indices = (2 + obj.hs(i).myofilaments.no_of_x_bins) + ...
