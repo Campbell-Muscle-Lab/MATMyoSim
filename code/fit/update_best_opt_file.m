@@ -7,12 +7,12 @@ function update_best_opt_file(opt_structure, p_vector)
 best_opt_job = opt_structure;
 
 % Do the parameters first
-for i = 1 : numel(p_vector)
+for i = 1 : numel(best_opt_job.parameter)
     best_opt_job.parameter{i}.p_value = p_vector(i);
 end
 
 % Now do the constraints
-p_counter = numel(p_vector);
+p_counter = numel(best_opt_job.parameter);
 
 if (isfield(best_opt_job, 'constraint'))
     for i = 1 : numel(best_opt_job.constraint)

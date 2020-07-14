@@ -2,7 +2,7 @@ function run_batch(batch_structure)
 % Runs a batch using a parfor loop if there is more than 1 job in the batch
 
 % Cycle through the trials
-job_structure = batch_structure.job
+job_structure = batch_structure.job;
 
 if (numel(job_structure)>1)
     parfor i=1:numel(job_structure)

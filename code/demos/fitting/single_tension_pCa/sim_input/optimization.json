@@ -3,13 +3,14 @@
 	{
         "model_template_file_string": "sim_input/model_template.json",
 
-        "fit_mode": "fit_in_time_domain",
+        "fit_mode": "fit_pCa_curve",
         "fit_variable": "muscle_force",
 
-        "target_file_string": "target_data/target_force.txt",
+        "target_file_string": "target_data/target_force_pCa_data.xlsx",
+        "target_field": "force",
         
         "best_model_folder": "../../temp/best",
-        "best_opt_file_string": "../../temp/best_twitch_model.json",
+        "best_opt_file_string": "../../temp/best/single_tension_pCa.json",
 
         "figure_current_fit": 2,
         "figure_optimization_progress": 3, 
@@ -17,18 +18,63 @@
         "job":
         [
             {
-                "model_file_string": "../../temp/model_worker.json",
-                "protocol_file_string": "sim_input/protocol.txt",
+                "model_file_string": "../../temp/65/model_worker_65.json",
+                "protocol_file_string": "sim_input/65/protocol_65.txt",
                 "options_file_string": "sim_input/sim_options.json",
-                "results_file_string": "../../temp/twitch.myo"
+                "results_file_string": "../../temp/65/results_65.myo"
+            },
+            {
+                "model_file_string": "../../temp/56/model_worker_56.json",
+                "protocol_file_string": "sim_input/56/protocol_56.txt",
+                "options_file_string": "sim_input/sim_options.json",
+                "results_file_string": "../../temp/56/results_56.myo"
+            },
+            {
+                "model_file_string": "../../temp/54/model_worker_54.json",
+                "protocol_file_string": "sim_input/54/protocol_54.txt",
+                "options_file_string": "sim_input/sim_options.json",
+                "results_file_string": "../../temp/54/results_54.myo"
+            },
+            {
+                "model_file_string": "../../temp/52/model_worker_52.json",
+                "protocol_file_string": "sim_input/52/protocol_52.txt",
+                "options_file_string": "sim_input/sim_options.json",
+                "results_file_string": "../../temp/52/results_52.myo"
+            },
+            {
+                "model_file_string": "../../temp/48/model_worker_48.json",
+                "protocol_file_string": "sim_input/48/protocol_48.txt",
+                "options_file_string": "sim_input/sim_options.json",
+                "results_file_string": "../../temp/48/results_48.myo"
             }
         ],
         "parameter":
         [
             {
-                "name": "k2",
-                "min_value": 20,
-                "max_value": 120,
+                "name": "k_1",
+                "min_value": -1,
+                "max_value": 1,
+                "p_value": 0.5,
+                "p_mode": "log"
+            },
+            {
+                "name": "k_force",
+                "min_value": -5,
+                "max_value": -3,
+                "p_value": 0.5,
+                "p_mode": "log"
+            },
+            {
+                "name": "k_3",
+                "min_value": 0,
+                "max_value": 2,
+                "p_value": 0.5,
+                "p_mode": "log"
+            },
+            {
+                "name": "x_ps",
+                "min_value": 0,
+                "max_value": 5,
                 "p_value": 0.5,
                 "p_mode": "lin"
             },
@@ -38,6 +84,13 @@
                 "max_value": 8,
                 "p_value": 0.5,
                 "p_mode": "log"
+            },
+            {
+                "name": "k_coop",
+                "min_value": 0,
+                "max_value": 10,
+                "p_value": 0.5,
+                "p_mode": "lin"
             }
         ]
     }

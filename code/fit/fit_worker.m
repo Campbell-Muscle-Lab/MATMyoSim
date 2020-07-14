@@ -1,8 +1,6 @@
 function [e, trial_e, sim_output, y_attempt, target_data] = ...
     fit_worker(p_vector,opt_structure)
 
-opt_structure
-
 % Get the number of jobs in the optimization task
 no_of_jobs = numel(opt_structure.job);
 
@@ -22,7 +20,7 @@ switch opt_structure.fit_mode
     case 'fit_pCa_curve'
         
         % Pull off target data
-        target = readtable(fullfile(cd, opt_structure.target_file_string))
+        target = readtable(fullfile(cd, opt_structure.target_file_string));
         
         % Treat each curve by itself
         unique_curves = unique(target.curve);

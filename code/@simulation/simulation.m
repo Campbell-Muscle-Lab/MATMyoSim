@@ -213,16 +213,7 @@ classdef simulation < handle
                             obj.m.hs(i).myofilaments.y(M4_indices);
                     end
                 end
-                
-                for i=1:obj.m.no_of_half_sarcomeres
-                    obj.sim_output.rate_k_1(t_counter,i) = ...
-                        max(obj.m.hs(i).rate_structure.r1);
-                    obj.sim_output.rate_k_3(t_counter,i) = ...
-                        max(obj.m.hs(i).rate_structure.r3);
-                    obj.sim_output.rate_k_off(t_counter,i) = ...
-                        max(obj.m.hs(i).rate_structure.r_off);
-                end
-                               
+                                               
                 % Draw rates if required on first time-step
                 if (t_counter==1)
                     if (obj.myosim_options.figure_rates>0)

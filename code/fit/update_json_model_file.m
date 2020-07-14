@@ -3,9 +3,9 @@ function all_models = update_json_model_file(opt_structure, job_counter, ...
 % Function creates a new model file based on opt structure and p vector
 
 % Pull of the filnames we want
-original_json_model_file_string = opt_structure.model_template_file_string
+original_json_model_file_string = opt_structure.model_template_file_string;
 new_json_model_file_string = ...
-    opt_structure.job{job_counter}.model_file_string
+    opt_structure.job{job_counter}.model_file_string;
 
 % Load original model
 model_struct = loadjson(original_json_model_file_string);

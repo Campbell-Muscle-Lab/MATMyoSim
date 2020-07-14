@@ -46,7 +46,7 @@ fminsearch(fh, p_vector);
         
         if (e <= best_e)
             best_e = e;
-            y_best = y_attempt
+            y_best = y_attempt;
             best_p = p_vector;
             
             % Copy model files to best folder

@@ -2,7 +2,7 @@ function generate_protocols
 % Generates protocols for this demo
 
 % Variables
-pCa_values = [8.0 6.5 6.0 5.8 5.6 5.5 5.4 5.2 5 4.8];
+pCa_values = [6.5 5.6 5.4 5.2 4.8];
 
 % Code
 for i=1:numel(pCa_values)
