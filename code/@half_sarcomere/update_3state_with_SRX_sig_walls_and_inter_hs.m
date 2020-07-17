@@ -11,31 +11,38 @@ N_overlap = return_f_overlap(obj);
 % Pull out the interaction terms
 no_of_half_sarcomeres = numel(m_props.hs_passive_force);
 if (no_of_half_sarcomeres >= 3)
-    m_bound = m_props.hs_length;
-    w = 0.5;
+    q = m_props.hs_passive_force;
+    
+%     r0 = sqrt(1/1300);
+%     for i=1:numel(m_props.hs_length)
+%         r(i) = sqrt(1/m_props.hs_length(i));
+%         q(i) = 1 / (r(i)/r0)^2;
+%     end        
+
+    w = 1;
 
     switch (obj.hs_id)
         case 1
-            b = (1 + obj.parameters.inter_z) * m_bound(1) + ...
-                w * m_bound(2);
+            b = (1 + obj.parameters.inter_z) * q(1) + ...
+                w * q(2);
         case no_of_half_sarcomeres
             if (mod(no_of_half_sarcomeres, 2) == 0)
                 % Even
-                b = (1 + obj.parameters.inter_z) * m_bound(no_of_half_sarcomeres) + ...
-                    w * m_bound(no_of_half_sarcomeres-1);
+                b = (1 + obj.parameters.inter_z) * q(no_of_half_sarcomeres) + ...
+                    w * q(no_of_half_sarcomeres-1);
             else
-                b = (1 + w) * m_bound(no_of_half_sarcomeres) + ...
-                    obj.parameters.inter_z * m_bound(no_of_half_sarcomeres-1);
+                b = (1 + w) * q(no_of_half_sarcomeres) + ...
+                    obj.parameters.inter_z * q(no_of_half_sarcomeres-1);
             end
         otherwise
             if (mod(obj.hs_id, 2) == 0)
                 % Even half-sarcomere
-                b = w * m_bound(obj.hs_id-1) + m_bound(obj.hs_id) + ...
-                        obj.parameters.inter_z * m_bound(obj.hs_id+1);
+                b = w * q(obj.hs_id-1) + q(obj.hs_id) + ...
+                        obj.parameters.inter_z * q(obj.hs_id+1);
             else
                 % Odd half-sarcomere
-                b = obj.parameters.inter_z * m_bound(obj.hs_id-1) + ...
-                        m_bound(obj.hs_id) + w * m_bound(obj.hs_id+1);
+                b = obj.parameters.inter_z * q(obj.hs_id-1) + ...
+                        q(obj.hs_id) + w * q(obj.hs_id+1);
             end
     end
 else
@@ -44,8 +51,6 @@ end
 
 % Normalize
 b = b/3;
-b = (b-1150);
-
 act = obj.cb_force;
 
 % Pre-calculate rate
@@ -54,8 +59,7 @@ r1 = min([obj.parameters.max_rate ...
                 (1+(obj.parameters.k_force * act))]);
 r2 = min([obj.parameters.max_rate obj.parameters.k_2]);
 
-r3 = obj.parameters.k_3 *  ...
-        (1 + obj.parameters.k_3_inter_hs * b) * ...            
+r3 = obj.parameters.k_3 * ...
         exp(-obj.parameters.k_cb * (obj.myofilaments.x).^2 / ...
                 (2 * 1e18 * obj.parameters.k_boltzmann * ...
                     obj.parameters.temperature));
@@ -69,11 +73,14 @@ r4 = obj.parameters.k_3 * exp(obj.parameters.k_4_base_energy) * ...
 r4(r4>obj.parameters.max_rate)=obj.parameters.max_rate;
 
 r_on = obj.parameters.k_on * obj.Ca;
-r_off = obj.parameters.k_off * ...
-        (1 + obj.parameters.k_off_force * obj.passive_force);
+r_off = obj.parameters.k_off * exp(-b * obj.parameters.k_off_force);
+    
+if (r_off < 0)
+    r_off = 0;
+end
     
 
-sprintf('hs_id: %i b: %f  max_k3: %f',obj.hs_id, b, max(r3))
+% sprintf('hs_id: %i b: %f  max_k3: %f',obj.hs_id, b, max(r3))
     
 % if (obj.hs_id==2)
 %     sprintf('force: %g  r_1: %g  f_bound: %g  k_3: %g\npas_force: %g  r_off: %g', ...
