@@ -217,6 +217,10 @@ classdef simulation < handle
                    if (1)
                         obj.sim_output.rate_structure.k_off(t_counter,i) = ...
                             obj.m.hs(i).rate_structure.r_off;
+                        obj.sim_output.rate_structure.b_p(t_counter,i) = ...
+                            obj.m.hs(i).rate_structure.b_p;
+                        obj.sim_output.rate_structure.b_a(t_counter,i) = ...
+                            obj.m.hs(i).rate_structure.b_a;
                    end
                    
                 end

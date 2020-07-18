@@ -11,52 +11,54 @@ N_overlap = return_f_overlap(obj);
 % Pull out the interaction terms
 no_of_half_sarcomeres = numel(m_props.hs_passive_force);
 if (no_of_half_sarcomeres >= 3)
-    q = m_props.hs_passive_force;
+    q_p = m_props.hs_passive_force;
+    q_a = m_props.hs_active_force;
     
-%     r0 = sqrt(1/1300);
-%     for i=1:numel(m_props.hs_length)
-%         r(i) = sqrt(1/m_props.hs_length(i));
-%         q(i) = 1 / (r(i)/r0)^2;
-%     end        
-
-    w = 1;
+    w_p = 0;
+    w_a = 1;
 
     switch (obj.hs_id)
         case 1
-            b = (1 + obj.parameters.inter_z) * q(1) + ...
-                w * q(2);
+            b_p = (1 + obj.parameters.inter_z) * q_p(1) + ...
+                w_p * q_p(2);
+            b_a = q_a(1) + q_a(2);
         case no_of_half_sarcomeres
             if (mod(no_of_half_sarcomeres, 2) == 0)
                 % Even
-                b = (1 + obj.parameters.inter_z) * q(no_of_half_sarcomeres) + ...
-                    w * q(no_of_half_sarcomeres-1);
+                b_p = (1 + obj.parameters.inter_z) * q_p(no_of_half_sarcomeres) + ...
+                    w_p * q_p(no_of_half_sarcomeres-1);
+                b_a = q_a(no_of_half_sarcomeres-1) + q_a(no_of_half_sarcomeres);
             else
-                b = (1 + w) * q(no_of_half_sarcomeres) + ...
-                    obj.parameters.inter_z * q(no_of_half_sarcomeres-1);
+                b_p = (1 + w_p) * q_p(no_of_half_sarcomeres) + ...
+                    obj.parameters.inter_z * q_p(no_of_half_sarcomeres-1);
+                b_a = 2 * q_a(no_of_half_sarcomeres);
             end
         otherwise
             if (mod(obj.hs_id, 2) == 0)
                 % Even half-sarcomere
-                b = w * q(obj.hs_id-1) + q(obj.hs_id) + ...
-                        obj.parameters.inter_z * q(obj.hs_id+1);
+                b_p = w_p * q_p(obj.hs_id-1) + q_p(obj.hs_id) + ...
+                        obj.parameters.inter_z * q_p(obj.hs_id+1);
+                b_a = q_a(obj.hs_id-1) + q_a(obj.hs_id);
             else
                 % Odd half-sarcomere
-                b = obj.parameters.inter_z * q(obj.hs_id-1) + ...
-                        q(obj.hs_id) + w * q(obj.hs_id+1);
+                b_p = obj.parameters.inter_z * q_p(obj.hs_id-1) + ...
+                        q_p(obj.hs_id) + w_p * q_p(obj.hs_id+1);
+                b_a = q_a(obj.hs_id) + q_a(obj.hs_id+1);                    
             end
     end
 else
-    b = 0;
+    b_p = 0;
+    b_a = 0;
 end
 
 % Normalize
-b = b/3;
-act = obj.cb_force;
+b_p = b_p;
+b_a = b_a;
 
 % Pre-calculate rate
 r1 = min([obj.parameters.max_rate ...
             obj.parameters.k_1 * ...
-                (1+(obj.parameters.k_force * act))]);
+                (1+(obj.parameters.k_force * b_a))]);
 r2 = min([obj.parameters.max_rate obj.parameters.k_2]);
 
 r3 = obj.parameters.k_3 * ...
@@ -73,7 +75,7 @@ r4 = obj.parameters.k_3 * exp(obj.parameters.k_4_base_energy) * ...
 r4(r4>obj.parameters.max_rate)=obj.parameters.max_rate;
 
 r_on = obj.parameters.k_on * obj.Ca;
-r_off = obj.parameters.k_off * exp(-b * obj.parameters.k_off_force);
+r_off = obj.parameters.k_off * exp(-b_p * obj.parameters.k_off_force);
     
 if (r_off < 0)
     r_off = 0;
@@ -104,6 +106,10 @@ obj.rate_structure.r4 = r4;
 
 obj.rate_structure.r_on = r_on;
 obj.rate_structure.r_off = r_off;
+
+obj.rate_structure.b_p = b_p;
+obj.rate_structure.b_a = b_a;
+
 
     % Nested function
     function dy = derivs(time_step,y)
