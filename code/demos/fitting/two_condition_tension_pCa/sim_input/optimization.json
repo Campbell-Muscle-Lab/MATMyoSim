@@ -10,7 +10,7 @@
         "target_field": "force",
         
         "best_model_folder": "temp/best",
-        "best_opt_file_string": "temp/best_tension_pCa_model.json",
+        "best_opt_file_string": "temp/best/best_tension_pCa_model.json",
 
         "figure_current_fit": 2,
         "figure_optimization_progress": 3, 
@@ -124,7 +124,7 @@
                 "name": "k_3",
                 "min_value": 0,
                 "max_value": 2,
-                "p_value": 0.5,
+                "p_value": 0.35,
                 "p_mode": "log"
             },
             {
