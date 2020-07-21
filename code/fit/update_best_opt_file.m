@@ -19,7 +19,7 @@ if (isfield(best_opt_job, 'constraint'))
         if (isfield(best_opt_job.constraint{i}, 'parameter_multiplier'))
             for j = 1 : numel(best_opt_job.constraint{i}.parameter_multiplier)
                 p_counter = p_counter + 1;
-                best_opt_job.constraint{i}.parameter_multipler{j}.p_value = p_vector(p_counter);
+                best_opt_job.constraint{i}.parameter_multiplier{j}.p_value = p_vector(p_counter);
             end
         end
     end
@@ -31,7 +31,7 @@ out_string = strrep(out_string, '\/', '/');
 
 % Write to file
 output_file_string = fullfile(cd, opt_structure.best_opt_file_string);
-if (~isdir(fileparts(output_file_string)))
+if (~isfolder(fileparts(output_file_string)))
     mkdir(fileparts(output_file_string));
 end
 of = fopen(opt_structure.best_opt_file_string,'w');

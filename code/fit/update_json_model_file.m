@@ -113,8 +113,8 @@ all_models{job_counter} = model_struct;
 % Write it out
 % Check for directory and make it if required
 path_string = fileparts(new_json_model_file_string);
-if (~isdir(path_string))
-    mkdir(fullfile(cd, path_string));
+if (~isfolder(path_string))
+    mkdir(fullfile(cd, path_string))
 end
 
 % Dump struct to json

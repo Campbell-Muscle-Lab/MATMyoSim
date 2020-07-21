@@ -38,13 +38,7 @@ Each `job` in the batch defines a single simulation. A snippet of the file is sh
                 "options_file_string": "sim_input/sim_options.json",
                 "results_file_string": "../../temp/sim_output/64/results_64.myo"
             },
-            {
-                "protocol_file_string": "sim_input/62/protocol_62.txt",
-                "model_file_string": "sim_input/model_file.json",
-                "options_file_string": "sim_input/sim_options.json",
-                "results_file_string": "../../temp/sim_output/62/results_62.myo"
-            },
-
+            
             <SNIP>
         ]
     }

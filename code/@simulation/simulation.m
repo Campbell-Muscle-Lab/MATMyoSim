@@ -212,13 +212,6 @@ classdef simulation < handle
                         obj.sim_output.cb_pops(t_counter,i,2,:) = ...
                             obj.m.hs(i).myofilaments.y(M4_indices);
                     end
-                    
-                    % Storing rates
-                   if (1)
-                        obj.sim_output.rate_structure.k_off(t_counter,i) = ...
-                            obj.m.hs(i).rate_structure.r_off;
-                   end
-                   
                 end
                 
                 % Draw rates if required on first time-step
