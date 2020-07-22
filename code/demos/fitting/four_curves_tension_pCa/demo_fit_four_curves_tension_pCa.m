@@ -2,7 +2,7 @@ function demo_fit_four_curves_tension_pCa
 % Function demonstrates fitting a simple tension-pCa curve
 
 % Variables
-optimization_file_string = 'optimization.json';
+optimization_file_string = 'sim_input/optimization.json';
 
 % Code
 
