@@ -2,7 +2,7 @@
 title: pCa curves for length x condition
 parent: Fitting
 grand_parent: Demos
-nav_order: 6
+nav_order: 7
 ---
 
 # Fitting pCa curves for two conditions at each of two lengths.
