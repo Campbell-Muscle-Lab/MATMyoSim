@@ -1,29 +1,29 @@
 ---
-title: pCa curves for 2 conditions
+title: pCa curves for 2 lengths
 parent: Fitting
 grand_parent: Demos
-nav_order: 5
+nav_order: 6
 ---
 
-# Fitting pCa curves for two conditions
+# Fitting pCa curves for two lengths
 
-This demo shows how to fit simulations to two force pCa curves measured in the absence and presence of a drug. It is further assumed that the drug changes just one model parameter, in this case `k_2`. Thus the goal is to find a single set of model parameters that fits the first curve, and by changing only the value of `k_2` fits the second curve as well.
+This demo shows how to fit simulations to two force pCa curves measured at different lengths assuming that the model parameters are the same for both curves.
 
-The demo will be easier to follow if you have already looked at the [fitting to a single pCa curve example](../pCa_single_curve/pCa_single_curve.html).
+The demo will be easier to follow if you have already looked at the [fitting to a single pCa curve](../pCa_single_curve/pCa_single_curve.html) and [fitting two condition pCa curves](../pCa_curves_two_conditions/pCa_two_conditions.html) examples.
 
 ## Instructions
 
 + Launch MATLAB
-+ Change the MATLAB working directory to `<repo>/code/demos/fitting/two_condition_tension_pCa`
-+ Open `demo_fit_two_condition_tension_pCa.m`
++ Change the MATLAB working directory to `<repo>/code/demos/fitting/two_length_tension_pCa`
++ Open `demo_fit_two_length_tension_pCa.m`
 + Press <kbd>F5</kbd> to run the demo
 
 ## Code
 
-Here is the MATLAB code to perform the fit. As for all the fitting demos, the complexity of of the fitting process is handled by the optimization file.
+Here is the MATLAB code to perform the fit.
 
 ````
-function demo_fit_two_condition_tension_pCa
+function demo_fit_two_length_tension_pCa
 % Function demonstrates fitting a simple tension-pCa curve
 
 % Variables
@@ -54,13 +54,11 @@ The last line of code calls `fit_controller.m` which runs the optimization defin
 
 ## Optimization file
 
-Here's the optimization file. While it is quite long, the approach is very similar to that used in the [fitting to a single pCa curve example](../pCa_single_curve/pCa_single_curve.html).
+Here's the optimization file. Predictably, it is very similar to the one described in [fitting two condition pCa curves](../pCa_curves_two_conditions/pCa_two_conditions.html).
 
-This time around, the data in Excel show two curves. The label in the curve column shows which force values go with which curve.
+Again, the label in the curve column shows in the Excel file indicates which force values go with which curve in the target data.
 
 ![pCa data in excel](excel_data.png)
-
-Since each curve is defined by 6 pCa values, the full simulation consists of 12 `jobs`. For simplicity, these are separated into separate folders for combination of curve and pCa value.
 
 ````
 {
@@ -75,7 +73,7 @@ Since each curve is defined by 6 pCa values, the full simulation consists of 12 
         "target_field": "force",
         
         "best_model_folder": "temp/best",
-        "best_opt_file_string": "temp/best_tension_pCa_model.json",
+        "best_opt_file_string": "temp/best/best_tension_pCa_model.json",
 
         "figure_current_fit": 2,
         "figure_optimization_progress": 3, 
@@ -155,173 +153,76 @@ Since each curve is defined by 6 pCa values, the full simulation consists of 12 
                 "results_file_string": "temp/2/48/48.myo"
             }
         ],
-        "parameter":
-        [
-            {
-                "name": "passive_hsl_slack",
-                "min_value": 800,
-                "max_value": 850,
-                "p_value": 0.5,
-                "p_mode": "lin"
-            },
-            {
-                "name": "passive_k_linear",
-                "min_value": 0,
-                "max_value": 2,
-                "p_value": 0.5,
-                "p_mode": "log"
-            },
-            {
-                "name": "k_1",
-                "min_value": 0,
-                "max_value": 1,
-                "p_value": 0.5,
-                "p_mode": "log"
-            },
-            {
-                "name": "k_force",
-                "min_value": -5,
-                "max_value": -3,
-                "p_value": 0.5,
-                "p_mode": "log"
-            },
-            {
-                "name": "k_3",
-                "min_value": 0,
-                "max_value": 2,
-                "p_value": 0.35,
-                "p_mode": "log"
-            },
-            {
-                "name": "x_ps",
-                "min_value": 0,
-                "max_value": 5,
-                "p_value": 0.5,
-                "p_mode": "lin"
-            },
-            {
-                "name": "k_on",
-                "min_value": 7,
-                "max_value": 8,
-                "p_value": 0.5,
-                "p_mode": "log"
-            },
-            {
-                "name": "k_coop",
-                "min_value": 0,
-                "max_value": 1,
-                "p_value": 0.5,
-                "p_mode": "log"
-            }
-        ],
-        "constraint":
-        [
-            {
-                "job_number": 7,
-                "parameter_multiplier":
-                [
-                    {
-                        "name": "k_2",
-                        "base_job_number": 1,
-                        "min_value": -1,
-                        "max_value": 0,
-                        "p_value": 0.25,
-                        "p_mode": "log"
-                    }
-                ]
-            },
-            {
-                "job_number": 8,
-                "parameter_copy":
-                [
-                    {
-                        "name": "k_2",
-                        "copy_job_number": 7
-                    }
-                ]
-            },
-            {
-                "job_number": 9,
-                "parameter_copy":
-                [
-                    {
-                        "name": "k_2",
-                        "copy_job_number": 7
-                    }
-                ]
-            },
-            {
-                "job_number": 10,
-                "parameter_copy":
-                [
-                    {
-                        "name": "k_2",
-                        "copy_job_number": 7
-                    }
-                ]
-            },
-            {
-                "job_number": 11,
-                "parameter_copy":
-                [
-                    {
-                        "name": "k_2",
-                        "copy_job_number": 7
-                    }
-                ]
-            },
-            {
-                "job_number": 12,
-                "parameter_copy":
-                [
-                    {
-                        "name": "k_2",
-                        "copy_job_number": 7
-                    }
-                ]
-            }
-        ]
+		"parameter": [
+			{
+				"name": "passive_hsl_slack",
+				"min_value": 800,
+				"max_value": 850,
+				"p_value": 0.5,
+				"p_mode": "lin"
+			},
+			{
+				"name": "passive_k_linear",
+				"min_value": 0,
+				"max_value": 2,
+				"p_value": 0.5,
+				"p_mode": "log"
+			},
+			{
+				"name": "k_1",
+				"min_value": 0,
+				"max_value": 1,
+				"p_value": 0.5,
+				"p_mode": "log"
+			},
+			{
+				"name": "k_force",
+				"min_value": -5,
+				"max_value": -3,
+				"p_value": 0.5,
+				"p_mode": "log"
+			},
+			{
+				"name": "k_3",
+				"min_value": 0,
+				"max_value": 2,
+				"p_value": 0.50008379,
+				"p_mode": "log"
+			},
+			{
+				"name": "x_ps",
+				"min_value": 0,
+				"max_value": 5,
+				"p_value": 0.5,
+				"p_mode": "lin"
+			},
+			{
+				"name": "k_on",
+				"min_value": 7,
+				"max_value": 8,
+				"p_value": 0.4,
+				"p_mode": "log"
+			},
+			{
+				"name": "k_coop",
+				"min_value": 0,
+				"max_value": 1,
+				"p_value": 0.3437755959,
+				"p_mode": "log"
+			}
+		],
+        "initial_delta_hsl": [0, 0, 0, 0, 0, 0, 200, 200, 200, 200, 200, 200]
     }
 }
 ````
 
-As noted in the introduction, most of the simulation parameters should be the same for both curves. Only the `k_2` value should differ. This is handled using a constraint structure. Here's the key section from the above file.
+The only new feature in this file is the very last entry.
 
 ````
-        "constraint":
-        [
-            {
-                "job_number": 7,
-                "parameter_multiplier":
-                [
-                    {
-                        "name": "k_2",
-                        "base_job_number": 1,
-                        "min_value": -1,
-                        "max_value": 0,
-                        "p_value": 0.25,
-                        "p_mode": "log"
-                    }
-                ]
-            },
-            {
-                "job_number": 8,
-                "parameter_copy":
-                [
-                    {
-                        "name": "k_2",
-                        "copy_job_number": 7
-                    }
-                ]
-            },
-        <SNIP>
+        "initial_delta_hsl": [0, 0, 0, 0, 0, 0, 200, 200, 200, 200, 200, 200]
 ````
 
-The first constraint is a `parameter_multiplier`. This means that for `job 7`, the value of `k_2` should be the value of `k_2` in `job 1` multiplied by 0.25 (the `p_value`) of the way between 10<sup>-1</sup> and 10<sup>0</sup> on a log-scale. More succinctly, for `job 7`, `k_2` should be between 0.1 and 1 of its value for `job 2`.
-
-The second constraint is a `parameter_copy`. This is simpler. It says that the value of `k_2` for `job 8` should be the same as it was for `job 7`. Look further through the optimization file, and you will see that the value for `k_2` is also copied to jobs 9, 10, 11, and 12.
-
-Putting it all together, the second curve is simulated using the same values for all model parameters other than `k_2` which is between 10% and 100% of its value for `k_1`.
+These values define an array of half-sarcomere lengths changes that are applied to the respective `job` at the very beginning of the simulation. Thus for jobs 7 through 12, the initial half-sarcomere length will be 950 nm (defined in the `model_template_file` plus 200 nm).
 
 ## First iteration
 
@@ -340,7 +241,7 @@ Fig 4 shows a single circle. This is the value of the error function which quant
 
 ## Iterations
 
-The code will continue to run simulations adjusting the values of 9 parameters, 8 of which describe the base model, and the last of which is the parameter mulitplier that distinguishes `k_2` for the two curves. As the iterations progress, the value of the error function will trend down, indicating that the fit is getting better.
+The code will continue to run simulations adjusting the values of the model parameters in successive iterations. As the calculations progress, the value of the error function will trend down, indicating that the fit is getting better.
 
 ## Final fit
 
