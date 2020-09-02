@@ -2,6 +2,10 @@ function update_3state_with_SRX_sig_walls_and_inter_hs(obj, time_step, m_props)
 % Function updates kinetics for thick and thin filaments based on 3 state
 % system with detachment similar to that in PMC4744171
 
+if (~isfield(obj.parameters, 'k_4_1'))
+    obj.parameters.k_4_1 = 0;
+end
+
 % Pull out the myofilaments vector
 y = obj.myofilaments.y;
 
@@ -110,13 +114,9 @@ else
     b_k3 = 0;
 end
 
-% Normalize b_k3
-if (obj.parameters.k_3_hsl~=0)
-    b_k3 = obj.parameters.k_3_hsl * b_k3 / ...
-            (1 + obj.parameters.k3_inter_z + obj.parameters.k3_inter_thick);
-else
-    b_k3 = 1;
-end
+% k3
+b_k3 = movmean(q_k3,3);
+b_k3 = b_k3(obj.hs_id);
 b_af = obj.cb_force;
 
 % Pre-calculate rate
@@ -136,14 +136,15 @@ r3(r3<0) = 0;
 r4 = obj.parameters.k_3 * exp(obj.parameters.k_4_base_energy) * ...
             (1/b_k3) * ...
             exp(0.5 * obj.parameters.k_cb *...
-                (obj.myofilaments.x + 0*obj.parameters.x_ps).^2 / ...
+                (obj.myofilaments.x + obj.parameters.k_4_1*obj.parameters.x_ps).^2 / ...
                 (1e18 * obj.parameters.k_boltzmann * ...
                     obj.parameters.temperature));
 r4(r4>obj.parameters.max_rate) =obj.parameters.max_rate;
 
 r_on = obj.parameters.k_on * obj.Ca;
 
-r_off = obj.parameters.k_off * (1 + obj.parameters.k_off_force * b_pf);
+r_off = obj.parameters.k_off * (1 + obj.parameters.k_off_force * b_k3);
+% r_off = obj.parameters.k_off * q_k3(obj.hs_id);
 
 
 % Evolve the system
