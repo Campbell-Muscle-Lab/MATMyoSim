@@ -13,6 +13,9 @@ model_struct = loadjson(original_json_model_file_string);
 % Set parameter data
 par_structure = opt_structure.parameter;
 
+% Pull out par_labels
+[~,~,par_labels] = extract_p_data_from_opt_structure(opt_structure);
+
 % Get the fieldnames
 model_fields = fieldnamesr(model_struct);
 
@@ -83,12 +86,14 @@ if (isfield(opt_structure, 'constraint'))
                 par_string = sprintf('parameters.%s', ...
                     constraint.parameter_multiplier{i}.name);
 
-                % Set the multiplier value
-                p_counter = p_counter + 1;
+                % Find the right index for the p_vector
+                test_label = ...
+                    sprintf('mult_%s',constraint.parameter_multiplier{i}.name);
+                p_index = find(strcmp(par_labels, test_label));
                 
                 multiplier_value = return_parameter_value( ...
                     constraint.parameter_multiplier{i}, ...
-                    p_vector(p_counter));
+                    p_vector(p_index));
 
                 % Update model
                 update_model_struct(par_string, ...

@@ -1,4 +1,5 @@
 **/*.asv
-**/_site/**
+**/_site
+**/temp
 Gemfile.lock
 **/fitting/time_domain_3/**

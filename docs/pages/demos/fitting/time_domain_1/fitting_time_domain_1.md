@@ -111,7 +111,9 @@ so that `muscle_force` plotted against time in the
   + `sim_input/protocol.txt`
   + `sim_input/sim_options.json`
   
-matches the target force data defined in `target/target_force.txt`
+matches the target force data defined in `target/target_force.txt`.
+
+The target force data should have the same sampling rate as the protocol. It cannot be longer than the protocol. If it is shorter (as in this example) the last points of the target data and simulated data are aligned.
 
 The model file for the job will change on each iteration of the optimization. Since the repository doesn't need to track all of these changes, it is best to store the file in a temporary folder that is not tracked by Git.
 
@@ -137,6 +139,8 @@ Fig 3 summarizes how the simulation matches the target data defined in the optim
 + top panel, compares the current simulation to the target data
 + middle panel, shows the relative errors for the different trials (although there is only 1 in this case)
 + bottom panel, shows the parameter values
+
+Note how the last point in the simulation (in blue) is aligned with the last point in the target data (in black).
 
 ![summary](summary_initial.png)
 

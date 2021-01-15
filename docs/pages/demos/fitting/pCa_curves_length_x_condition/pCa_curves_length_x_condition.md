@@ -56,7 +56,7 @@ The last line of code calls `fit_controller.m` which runs the optimization defin
 
 Here's the optimization file. While it is quite long, it simply integrates the `constraint` approach described for [fitting pCa curves with two conditions](../pCa_curves_two_conditions/pCa_curves_two_conditions.html) with the `initial_delta_hsl` option described for [fitting pCa curves with two lengths](../pCa_curves_two_lengths/pCa_curves_two_lengths.html).
 
-This time around, the data in Excel show two curves. The label in the curve column shows which force values go with which curve.
+This time around, the data in Excel show four curves. The label in the curve column shows which force values go with which curve.
 
 ![pCa data in excel](excel_data.png)
 
