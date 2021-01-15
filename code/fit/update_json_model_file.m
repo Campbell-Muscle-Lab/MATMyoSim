@@ -38,6 +38,13 @@ if (isfield(opt_structure, 'initial_delta_hsl'))
             opt_structure.initial_delta_hsl(job_counter);
 end
 
+% Update cb number density if required
+if (isfield(opt_structure, 'relative_cb_number_density'))
+    model_struct.MyoSim_model.hs_props.parameters.cb_number_density = ...
+        opt_structure.relative_cb_number_density(job_counter) * ...
+            model_struct.MyoSim_model.hs_props.parameters.cb_number_density;
+end
+
 % Set counter for constrain p values
 p_counter = numel(par_structure);
 

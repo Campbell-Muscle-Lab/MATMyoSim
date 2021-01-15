@@ -3,6 +3,7 @@ function fit_controller(opt_structure, varargin)
 p = inputParser;
 addRequired(p, 'opt_structure');
 addOptional(p, 'single_run', 0);
+addOptional(p, 'output_handler', []);
 parse(p, opt_structure, varargin{:});
 p = p.Results;
 opt_structure = p.opt_structure;
@@ -81,6 +82,12 @@ fminsearch(fh, p_vector);
         
         if (p.single_run)
             error('fit_controller stopped after single run');
+        end
+        
+        
+        if (~isempty(p.output_handler))
+            p.output_handler(opt_structure, sim_output, ...
+                y_attempt, target_data, y_best)
         end
     end
 end
