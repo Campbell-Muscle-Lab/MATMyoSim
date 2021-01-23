@@ -80,14 +80,14 @@ fminsearch(fh, p_vector);
                 p_vector, best_p);
         end
         
-        if (p.single_run)
-            error('fit_controller stopped after single run');
-        end
-        
-        
         if (~isempty(p.output_handler))
             p.output_handler(opt_structure, sim_output, ...
                 y_attempt, target_data, y_best)
+        end
+        
+                
+        if (p.single_run)
+            error('fit_controller stopped after single run');
         end
     end
 end

@@ -9,7 +9,8 @@ if ((obj.series_k_linear > 0) || (obj.no_of_half_sarcomeres > 1))
     
     % Pull off the hs props
     for i=1:obj.no_of_half_sarcomeres
-        m_props.hs_passive_force(i) = obj.hs(i).passive_force;
+        m_props.hs_intracellular_passive_force(i) = ...
+            obj.hs(i).intracellular_passive_force;
         m_props.hs_active_force(i) = obj.hs(i).cb_force;
         m_props.hs_total_force(i) = obj.hs(i).hs_force;
         m_props.hs_bound_cb(i) = obj.hs(i).f_bound;
@@ -36,8 +37,9 @@ if ((obj.series_k_linear > 0) || (obj.no_of_half_sarcomeres > 1))
     end
 else
     % Single half-sarcomere - this is faster
-    m_props.hs_passive_force = obj.hs.passive_force;
-    obj.hs(1).implement_time_step(time_step,delta_hsl,Ca_value, m_props);
+    m_props.hs_intracellular_passive_force = ...
+        obj.hs(1).intracellular_passive_force;
+    obj.hs.implement_time_step(time_step,delta_hsl,Ca_value, m_props);
     obj.series_extension = 0;
     obj.muscle_length = obj.muscle_length + delta_hsl;
     obj.hs(1).hs_length = obj.hs(1).hs_length + delta_hsl;

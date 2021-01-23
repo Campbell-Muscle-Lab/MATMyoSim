@@ -48,6 +48,15 @@ if (isfield(opt_structure, 'relative_cb_number_density'))
             model_struct.MyoSim_model.hs_props.parameters.cb_number_density;
 end
 
+% Update intra and extracellular passive proportions if required
+if (isfield(opt_structure, 'intracellular_passive_proportion'))
+    model_struct.MyoSim_model.hs_props.parameters.intracellular_passive_proportion = ...
+        opt_structure.intracellular_passive_proportion(job_counter);
+        
+    model_struct.MyoSim_model.hs_props.parameters.extracellular_passive_proportion = ...
+        (1-opt_structure.intracellular_passive_proportion(job_counter));
+end
+
 % Set counter for constrain p values
 p_counter = numel(par_structure);
 

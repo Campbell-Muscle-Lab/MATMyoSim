@@ -14,8 +14,9 @@ classdef half_sarcomere < handle
         f_bound;
         
         cb_force = 0;
-        passive_force = 0;
+        intracellular_passive_force = 0;
         viscous_force = 0;
+        extracellular_passive_force = 0;
         
         state_pops;
         
@@ -138,10 +139,28 @@ classdef half_sarcomere < handle
                 obj.parameters.viscosity = 0;
             end
             
+            % Set intracellular and extracellular passive proportions
+            % if missing
+            if (~isfield(obj.parameters, ...
+                    'intracellular_passive_proportion'))
+                obj.parameters.intracellular_passive_proportion = 1;
+            end
+            if (~isfield(obj.parameters, ...
+                    'extracellular_passive_proportion'))
+                obj.parameters.extracellular_passive_proportion = 0;
+            end
+            
             % Initialise forces
             obj.cb_force = 0;
-            obj.passive_force = return_passive_force(obj,obj.hs_length);
-            obj.hs_force = obj.cb_force + obj.passive_force;
+            obj.intracellular_passive_force = ...
+                return_intracellular_passive_force(obj, obj.hs_length);
+            obj.extracellular_passive_force = ...
+                return_extracellular_passive_force(obj, obj.hs_length);
+            
+            obj.hs_force = obj.cb_force + ...
+                obj.intracellular_passive_force + ...
+                obj.extracellular_passive_force;
+                
 
             % Intialise_populations
             obj.f_on = 0;

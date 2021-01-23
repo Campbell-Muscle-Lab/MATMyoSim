@@ -33,8 +33,13 @@ if (startsWith(obj.kinetic_scheme, '4state_with_SRX'))
                 sum((obj.myofilaments.x + obj.parameters.x_ps) .* M4'));
 end
 
-obj.passive_force = obj.return_passive_force(obj.hs_length);
+obj.intracellular_passive_force = ...
+    obj.return_intracellular_passive_force(obj.hs_length);
+
+obj.extracellular_passive_force = ...
+    obj.return_extracellular_passive_force(obj.hs_length);
 
 obj.viscous_force = obj.parameters.viscosity * delta_hsl / time_step;
 
-obj.hs_force = obj.cb_force + obj.passive_force + obj.viscous_force;
+obj.hs_force = obj.cb_force + obj.intracellular_passive_force + ...
+    obj.viscous_force + obj.extracellular_passive_force;
