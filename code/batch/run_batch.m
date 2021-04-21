@@ -27,3 +27,10 @@ else
         'output_file_string', ...
             job_structure{1}.results_file_string);
 end    
+
+end
+
+function kens_test(i)
+   sprintf('kens_test_%f',i)
+    pause(0.1*i)
+end

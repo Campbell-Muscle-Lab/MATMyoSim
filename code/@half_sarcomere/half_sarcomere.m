@@ -12,12 +12,21 @@ classdef half_sarcomere < handle
         f_overlap;
         f_on;
         f_bound;
+
+        % Stresses
+        cb_stress;
+        intracellular_passive_stress;
+        myofibrillar_stress;
+        extracellular_passive_stress;
+        viscous_stress = 0;
         
-        cb_force = 0;
-        intracellular_passive_force = 0;
-        viscous_force = 0;
-        extracellular_passive_force = 0;
-        
+        % Forces (which allow for different cross-sectional areas
+        cb_force;
+        intracellular_passive_force;
+        extracellular_passive_force;
+        viscous_force;
+                
+        % Other stuff
         state_pops;
         
         Ca;                  % Ca concentration (in M)
@@ -139,28 +148,33 @@ classdef half_sarcomere < handle
                 obj.parameters.viscosity = 0;
             end
             
-            % Set intracellular and extracellular passive proportions
-            % if missing
-            if (~isfield(obj.parameters, ...
-                    'intracellular_passive_proportion'))
-                obj.parameters.intracellular_passive_proportion = 1;
-            end
-            if (~isfield(obj.parameters, ...
-                    'extracellular_passive_proportion'))
-                obj.parameters.extracellular_passive_proportion = 0;
-            end
+            % Initialise stresses
+            obj.cb_stress = 0;
+            [obj.intracellular_passive_stress, ...
+                obj.extracellular_passive_stress] = ...
+                return_passive_forces(obj, obj.hs_length);
+            obj.myofibrillar_stress = obj.intracellular_passive_stress;
+            obj.viscous_stress = 0;
             
-            % Initialise forces
-            obj.cb_force = 0;
-            obj.intracellular_passive_force = ...
-                return_intracellular_passive_force(obj, obj.hs_length);
-            obj.extracellular_passive_force = ...
-                return_extracellular_passive_force(obj, obj.hs_length);
-            
-            obj.hs_force = obj.cb_force + ...
-                obj.intracellular_passive_force + ...
-                obj.extracellular_passive_force;
-                
+            % And now forces
+            obj.cb_force = (1.0 - obj.parameters.prop_fibrosis) * ...
+                    obj.parameters.prop_myofilaments * ...
+                        obj.cb_stress;
+
+            obj.intracellular_passive_force = (1.0 - obj.parameters.prop_fibrosis) * ...
+                                obj.parameters.prop_myofilaments * ...
+                                    obj.intracellular_passive_stress;
+
+            obj.viscous_force = (1.0 - obj.parameters.prop_fibrosis) * ...
+                                 obj.parameters.prop_myofilaments * ...
+                                    obj.viscous_stress;
+
+            obj.extracellular_passive_force = obj.parameters.prop_fibrosis * ...
+                                obj.extracellular_passive_stress;
+
+            % Add up the forces to get the true force
+            obj.hs_force = obj.cb_force + obj.intracellular_passive_force + ...
+                            obj.viscous_force + obj.extracellular_passive_force;
 
             % Intialise_populations
             obj.f_on = 0;
@@ -183,9 +197,9 @@ classdef half_sarcomere < handle
         update_4state_with_SRX_and_exp_k7(obj, time_step);
         
         move_cb_distribution(obj, delta_hsl);
-        update_forces(obj, time_step, delta_hsl);
+        update_stresses(obj, time_step, delta_hsl);
         
-        check_new_force(obj, new_length, time_step);
+        check_new_stress(obj, new_length, time_step);
 
         implement_time_step(obj,time_step,delta_hsl, ...
             Ca_concentration, m_props);

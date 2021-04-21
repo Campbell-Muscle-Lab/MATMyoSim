@@ -1,0 +1,42 @@
+{
+	"MyoSim_optimization":
+	{
+        "model_template_file_string": "model_parameters.json",
+        "model_working_file_string": "..\\..\\temp\\model_worker.json",
+        "simulation_options_file_string": "sim_options.json",
+        "best_model_file_string": "..\\..\\temp\\best_model.json",
+        "fit_mode": "fit_in_time_domain",
+        "fit_variable": "muscle_force",
+        "run_simulations_in_parallel": 1,
+
+        "figure_current_fit": 2,
+        "figure_optimization_progress": 3, 
+        
+        "job":
+        [
+            {
+                "protocol_file_string": "protocol.txt",
+                "results_file_string": "..\\..\\temp\\temp.myo",
+                "target_file_string": "target_force.txt"
+            }
+        ],
+
+        "parameter":
+        [
+            {
+                "name": "passive_hsl_slack",
+                "min_value": 800,
+                "max_value": 1500,
+                "p_value": 0.1,
+                "p_mode": "lin"
+            },
+            {
+                "name": "passive_k_linear",
+                "min_value": 1,
+                "max_value": 3,
+                "p_value": 0.75,
+                "p_mode": "log"
+            }
+        ]
+    }
+}

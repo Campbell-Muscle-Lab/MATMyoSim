@@ -1,0 +1,47 @@
+{
+    "MyoSim_model":
+    {
+        "muscle_props":
+        {
+            "no_of_half_sarcomeres": 1,
+            "series_k_linear": 5e3
+        },
+        "hs_props":
+        {
+            "kinetic_scheme": "3state_with_SRX",
+            "hs_length": 1300,
+            "myofilaments":
+            {
+                "bin_min": -10,
+                "bin_max": 10,
+                "bin_width": 0.5,
+                "thick_filament_length": 815,
+                "thin_filament_length": 1120,
+                "bare_zone_length": 80,
+                "k_falloff": 0
+            },
+            "parameters":
+            {
+                "k_1": 1000,
+                "k_force": 0.0,
+                "k_2": 0.1,
+                "k_3": 0,
+                "k_4_0": 20,
+                "k_4_1": 0.1,
+                "k_cb": 0.001,
+                "x_ps": 0,
+                "k_on": 6e7,
+                "k_off": 200,
+                "k_coop": 10,
+                "passive_force_mode": "linear",
+                "passive_hsl_slack": 1200,
+                "passive_k_linear": 100,
+                "compliance_factor": 0.5,
+                "cb_number_density": 6.9e16,
+                "k_boltzmann": 1.38e-23,
+                "temperature": 288,
+                "max_rate": 5000
+            }
+        }
+    }
+}

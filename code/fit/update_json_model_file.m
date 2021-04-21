@@ -42,20 +42,12 @@ if (isfield(opt_structure, 'initial_delta_hsl'))
 end
 
 % Update cb number density if required
-if (isfield(opt_structure, 'relative_cb_number_density'))
-    model_struct.MyoSim_model.hs_props.parameters.cb_number_density = ...
-        opt_structure.relative_cb_number_density(job_counter) * ...
-            model_struct.MyoSim_model.hs_props.parameters.cb_number_density;
+if (isfield(opt_structure, 'relative_fibrosis'))
+    model_struct.MyoSim_model.hs_props.parameters.prop_fibrosis = ...
+        opt_structure.relative_fibrosis(job_counter) * ...
+            model_struct.MyoSim_model.hs_props.parameters.prop_fibrosis;
 end
 
-% Update intra and extracellular passive proportions if required
-if (isfield(opt_structure, 'intracellular_passive_proportion'))
-    model_struct.MyoSim_model.hs_props.parameters.intracellular_passive_proportion = ...
-        opt_structure.intracellular_passive_proportion(job_counter);
-        
-    model_struct.MyoSim_model.hs_props.parameters.extracellular_passive_proportion = ...
-        (1-opt_structure.intracellular_passive_proportion(job_counter));
-end
 
 % Set counter for constrain p values
 p_counter = numel(par_structure);
