@@ -57,33 +57,45 @@ classdef simulation < handle
             end
         end
         
-        function obj = implement_pendulum_protocol(obj, protocol_file_string, ...
-                            pendulum_file_string, options_file_string, ...
-                            initial_conditions)
+        function obj = implement_pendulum_protocol(obj, varargin)
             % Implements a pendulum test using the protocol file to
             % set the Ca transient at each time-point
+
+            % Handle inputs
+            p = inputParser;
+            addOptional(p, 'protocol_file_string', []);
+            addOptional(p, 'pendulum_file_string', []);
+            addOptional(p, 'options_file_string', []);
+            addOptional(p, 'dt', []);
+            addOptional(p, 'pCa', []);
+            parse(p, varargin{:});
+            p = p.Results
             
-            % Load in the protocol
-            obj.myosim_protocol = readtable(protocol_file_string);
-            pp = obj.myosim_protocol
+            % Read in the protocol file if available
+            if (~isempty(p.protocol_file_string))
+                obj.myosim_protocol = readtable(protocol_file_string);
+            else
+                % Create a protocol from the dt and pCa arrays
+                obj.myosim_protocol.dt = p.dt;
+                obj.myosim_protocol.pCa = p.pCa;
+            end
             
             % Initialize the data
             obj.initialize_myosim_data(numel(obj.myosim_protocol.dt));
             % add in the protocol position
-            obj.sim_output.pend_position = ...
+            obj.sim_output.pendulum_position = ...
                 NaN * ones(numel(obj.myosim_protocol.dt),1);
             
             % Load in the options
-            json_struct = loadjson(options_file_string);
+            json_struct = loadjson(p.options_file_string);
             obj.myosim_options = json_struct.MyoSim_options;
 
             % Open pendulum file and store pendulum properties
-            json_struct = loadjson(pendulum_file_string);
+            json_struct = loadjson(p.pendulum_file_string);
             pend = json_struct.pendulum
             
             % Initialize
-            y = initial_conditions;
-            obj.sim_output.pend_positions = y(1);
+            y = pend.initial_conditions;
             
             % Integrate over solution
             for t_counter = 1 : numel(obj.myosim_protocol.dt)
