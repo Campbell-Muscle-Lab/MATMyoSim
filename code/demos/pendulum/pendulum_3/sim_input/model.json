@@ -4,7 +4,7 @@
         "muscle_props":
         {
             "no_of_half_sarcomeres": 1,
-            "series_k_linear_per_hs": 0
+            "series_k_linear_per_hs": 1000
         },
         "hs_props":
         {
