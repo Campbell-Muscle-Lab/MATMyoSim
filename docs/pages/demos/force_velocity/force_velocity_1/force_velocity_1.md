@@ -28,7 +28,7 @@ The shortening velocity is calculated during the isotonic release phase of each 
 
 After the program finishes (it may take a minute or so) you should see a figure.
 
-<img src="force_velocity_output.png" width="50%">
+<img src="force_velocity_output.png">
 
 ## How this worked
 
