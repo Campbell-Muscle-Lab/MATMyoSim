@@ -1,10 +1,11 @@
 ---
-title: Protocols
+title: Protocol
+parent: Structures
 has_children: False
-nav_order: 7
+nav_order: 10
 ---
 
-# Protocols
+# Protocol
 
 In MATMyoSim, protocols are text files that contain 4 columns of data. Each row in the file defines the properties for the corresponding time-step in the simulation.
 
