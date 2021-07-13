@@ -18,20 +18,18 @@ classdef muscle < handle
     properties (SetAccess = private)
         % These are properties that can only be accessed from within the
         % muscle class
-        
-
     end
     
     methods
-        
+
         % Constructor
-        function obj = muscle(varargin)
-            
-            % Set up muscle
+        function obj = muscle(model_file)
+            % The muscle is defined by the model file
             
             % Start by unpacking the model
-            myosim_model = varargin{1};
-            
+            model_struct = loadjson(model_file)
+            myosim_model = model_struct.MyoSim_model;
+           
             muscle_props = myosim_model.muscle_props;
             hs_props = myosim_model.hs_props;
             

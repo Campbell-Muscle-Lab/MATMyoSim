@@ -52,7 +52,7 @@ ylabel('Muscle force');
 subplot(obj.sim_output.subplots(5));
 cla
 hold on;
-for j=1:obj.m.no_of_half_sarcomeres
+for j=1:obj.myosim_muscle.no_of_half_sarcomeres
     plot(obj.sim_output.time_s,obj.sim_output.hs_force(:,j),'-', ...
         'Color',p.color_map(j,:), ...
         'LineWidth',p.trace_line_width);
@@ -72,7 +72,7 @@ xlim([0 max(obj.sim_output.time_s)]);
 subplot(obj.sim_output.subplots(7));
 cla
 hold on
-for j=1:obj.m.no_of_half_sarcomeres
+for j=1:obj.myosim_muscle.no_of_half_sarcomeres
     plot(obj.sim_output.time_s,obj.sim_output.hs_length(:,j),'-', ...
         'Color',p.color_map(j,:), ...
         'LineWidth',p.trace_line_width);
@@ -83,7 +83,7 @@ xlim([0 max(obj.sim_output.time_s)]);
 subplot(obj.sim_output.subplots(2));
 cla;
 hold on;
-for j=1:obj.m.no_of_half_sarcomeres
+for j=1:obj.myosim_muscle.no_of_half_sarcomeres
     h=[];
     h(1) = plot(obj.sim_output.time_s,obj.sim_output.f_overlap(:,j),':', ...
         'Color',p.color_map(j,:), ...
@@ -105,7 +105,7 @@ xlim([0 max(obj.sim_output.time_s)]);
 subplot(obj.sim_output.subplots(4));
 cla
 hold on;
-for j=1:obj.m.no_of_half_sarcomeres
+for j=1:obj.myosim_muscle.no_of_half_sarcomeres
     plot(obj.sim_output.time_s,-log10(obj.sim_output.Ca(:,j)),'-', ...
         'Color',p.color_map(j,:), ...
         'LineWidth',p.trace_line_width);
@@ -114,11 +114,11 @@ ylabel('pCa');
 xlim([0 max(obj.sim_output.time_s)]);
 
 
-if (startsWith(obj.myosim_model.hs_props.kinetic_scheme, '2state'))
+if (startsWith(obj.myosim_muscle.hs(1).kinetic_scheme, '2state'))
     subplot(obj.sim_output.subplots(6));
     cla
     hold on;
-    for j=1:obj.m.no_of_half_sarcomeres
+    for j=1:obj.myosim_muscle.no_of_half_sarcomeres
         h=[];
         h(1)=plot(obj.sim_output.time_s,obj.sim_output.M1(:,j),':', ...
             'Color',p.color_map(j,:), ...
@@ -136,11 +136,11 @@ if (startsWith(obj.myosim_model.hs_props.kinetic_scheme, '2state'))
    
 end
 
-if (startsWith(obj.myosim_model.hs_props.kinetic_scheme, '3state_with_SRX'))
+if (startsWith(obj.myosim_muscle.hs(1).kinetic_scheme, '3state_with_SRX'))
     subplot(obj.sim_output.subplots(6));
     cla
     hold on;
-    for j=1:obj.m.no_of_half_sarcomeres
+    for j=1:obj.myosim_muscle.no_of_half_sarcomeres
         h=[];
         h(1)=plot(obj.sim_output.time_s,obj.sim_output.M1(:,j),':', ...
             'Color',p.color_map(j,:), ...
@@ -160,11 +160,11 @@ if (startsWith(obj.myosim_model.hs_props.kinetic_scheme, '3state_with_SRX'))
     xlim([0 max(obj.sim_output.time_s)]);
 end
 
-if (startsWith(obj.myosim_model.hs_props.kinetic_scheme, '4state_with_SRX'))
+if (startsWith(obj.myosim_muscle.hs(1).kinetic_scheme, '4state_with_SRX'))
     subplot(obj.sim_output.subplots(6));
     cla
     hold on;
-    for j=1:obj.m.no_of_half_sarcomeres
+    for j=1:obj.myosim_muscle.no_of_half_sarcomeres
         h=[];
         h(1)=plot(obj.sim_output.time_s,obj.sim_output.M1(:,j),':', ...
             'Color',p.color_map(j,:), ...
@@ -191,36 +191,37 @@ if (isempty(p.t_counter))
 else
     t_index = p.t_counter;
 end
-for j=1:obj.m.no_of_half_sarcomeres
-    if (startsWith(obj.myosim_model.hs_props.kinetic_scheme, '2state'))
-        plot(obj.m.hs(1).myofilaments.x, ...
+for j=1:obj.myosim_muscle.no_of_half_sarcomeres
+    if (startsWith(obj.myosim_muscle.hs(1).kinetic_scheme, '2state'))
+        plot(obj.myosim_muscle.hs(1).myofilaments.x, ...
             squeeze(obj.sim_output.cb_pops(t_index,j,:)),'-', ...
             'Color',p.color_map(j,:), ...
             'LineWidth',p.trace_line_width);
         ylabel('M2 distributions');
     end
 
-    if (startsWith(obj.myosim_model.hs_props.kinetic_scheme, '3state_with_SRX'))
-        plot(obj.m.hs(1).myofilaments.x, ...
+    if (startsWith(obj.myosim_muscle.hs(1).kinetic_scheme, '3state_with_SRX'))
+        plot(obj.myosim_muscle.hs(1).myofilaments.x, ...
             squeeze(obj.sim_output.cb_pops(t_index,j,:)),'-', ...
             'Color',p.color_map(j,:), ...
             'LineWidth',p.trace_line_width);
         ylabel('M3 distributions');
     end
 
-    if (startsWith(obj.myosim_model.hs_props.kinetic_scheme, '4state_with_SRX'))
-        plot(obj.m.hs(1).myofilaments.x, ...
+    if (startsWith(obj.myosim_muscle.hs(1).kinetic_scheme, '4state_with_SRX'))
+        plot(obj.myosim_muscle.hs(1).myofilaments.x, ...
             squeeze(obj.sim_output.cb_pops(t_index,j,1,:)),'-', ...
             'Color',p.color_map(j,:), ...
             'LineWidth',p.trace_line_width);
-        plot(obj.m.hs(1).myofilaments.x, ...
+        plot(obj.myosim_muscle.hs(1).myofilaments.x, ...
             squeeze(obj.sim_output.cb_pops(t_index,j,2,:)),':', ...
             'Color',p.color_map(j,:), ...
             'LineWidth',p.trace_line_width);
 
     end
 end
-xlim([min(obj.m.hs(1).myofilaments.x) max(obj.m.hs(1).myofilaments.x)]);
+xlim([min(obj.myosim_muscle.hs(1).myofilaments.x) ...
+        max(obj.myosim_muscle.hs(1).myofilaments.x)]);
 if (isfield(obj.myosim_options, 'simulation_output_bin_pops_max'))
     ylim([0 obj.myosim_options.simulation_output_bin_pops_max]);
 end
