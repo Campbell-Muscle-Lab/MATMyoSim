@@ -39,7 +39,7 @@ classdef simulation < handle
             obj.myosim_protocol = readtable(protocol_file_string);
             
             % Initialize the data
-            obj.initialize_myosim_data(numel(obj.myosim_protocol.dt))
+            obj.initialize_myosim_data(numel(obj.myosim_protocol.dt));
             
             % Load in the options
             json_struct = loadjson(options_file_string);

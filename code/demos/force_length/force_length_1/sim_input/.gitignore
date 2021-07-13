@@ -1,0 +1,4 @@
+*.txt
+! base_models
+! .gitignore
+

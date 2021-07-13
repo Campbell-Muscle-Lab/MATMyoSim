@@ -1,4 +1,5 @@
-function demo_simple_twitch% Function illustrates how to run a simulation of a single-half-sarcomere
+function demo_simple_twitch
+% Function illustrates how to run a simulation of a single-half-sarcomere
 % held isometric and activated by a transient pulse of Ca2+
 
 % Variables

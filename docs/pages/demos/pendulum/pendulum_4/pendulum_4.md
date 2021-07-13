@@ -23,7 +23,8 @@ This demo runs a single simulation with a pendulum
 
 ## Instructions
 
-+ In MATLAB, open `<repo>/code/demos/pendulum/pendulum_4/demo_pendulum_4.m`
++ In MATLAB, change the working directory to `<repo>/code/demos/pendulum/pendulum_4`
++ open `demo_pendulum_4.m`
 + Press <kbd>F5</kbd> to run
 
 ## Output

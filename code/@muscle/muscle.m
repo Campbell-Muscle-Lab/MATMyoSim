@@ -27,7 +27,7 @@ classdef muscle < handle
             % The muscle is defined by the model file
             
             % Start by unpacking the model
-            model_struct = loadjson(model_file)
+            model_struct = loadjson(model_file);
             myosim_model = model_struct.MyoSim_model;
            
             muscle_props = myosim_model.muscle_props;
