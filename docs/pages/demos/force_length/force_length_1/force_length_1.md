@@ -26,7 +26,7 @@ This demo runs a series of simulations in which a half-sarcomere is activated at
 
 After the program finishes you should see a figure.
 
-<img src="force_length_output.png" width="50%">
+<img src="force_length_output.png">
 
 ## How this worked
 
