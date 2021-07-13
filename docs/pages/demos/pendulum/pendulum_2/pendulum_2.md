@@ -1,28 +1,28 @@
 ---
-title: Pendulum 1
+title: Pendulum 2
 has_children: false
 parent: Pendulum
 grand_parent: Demos
-nav_order: 1
+nav_order: 2
 ---
 
 # Pendulum
 
 ## Overview
 
-This demo shows a pendulum connected to an un-activated muscle that has passive stiffness but is generating minimal active force.
+This demo builds on the [pendulum_1 demo](../pendulum_1/pendulum_1.html) and shows a pendulum connected to a muscle that is transiently activated.
 
 ## What this demo does
 
 This demo runs a single simulation with a pendulum
-+ released from a non-zero position
++ released from its zero position
 + connected to a MATMyoSim model that
   + has passive stiffness
-  + is not generating active force
+  + is transiently activated by bursts of Ca<sup>2+</sup>
 
 ## Instructions
 
-+ In MATLAB, open `<repo>/code/demos/pendulum/pendulum_1/demo_pendulum_1.m`
++ In MATLAB, open `<repo>/code/demos/pendulum/pendulum_2/demo_pendulum_2.m`
 + Press <kbd>F5</kbd> to run
 
 ## Output
@@ -36,6 +36,36 @@ and
 <img src="pendulum_output.png" width="50%">
 
 ## How this worked
+
+This demo is very similar to [pendulum_1 demo](../pendulum_1/pendulum_1.html) except that the pendulum is started with an initial position of 0 and an initial velocity of 0. These are defined in the last entry in `sim_input/pendulum.json`.
+
+````
+{
+    "pendulum":
+    {
+        "m": 10,
+        "L": 0.25,
+        "g": 9.81,
+        "eta": 0,
+        "hsl_scaling_factor": 500,
+        "force_scaling_factor": 1e-3,
+        "initial_conditions": [0.0, 0]
+    }
+}
+````
+
+The other key difference is that the MATMyoSim muscle is transiently activated by 2 bursts of Ca<sup>2+</sup>. These are defined in the `demo_pendulum_2.m` file.
+
+````
+
+% Brief activations
+pCa(2000:2200) = 4.5;
+pCa(4500:4700) = 4.5;
+````
+
+The first pulse generates a transient force that increases the magnitude of the pendulum's swing. The second pulse is timed to partially brake the motion.
+
+
 
 The first section of the demo code is
 

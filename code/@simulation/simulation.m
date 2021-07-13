@@ -101,7 +101,7 @@ classdef simulation < handle
             for t_counter = 1 : numel(obj.myosim_protocol.dt)
                 % Integrate the pendulum to work out the length change
                 [~, y_calc] = ode45(...
-                    @(t,y) derivs(t, y, pend, ...
+                    @(t,y) pend_derivs(t, y, pend, ...
                         obj.myosim_muscle.muscle_force), ...
                         [0 obj.myosim_protocol.dt(t_counter)], y);
                 y = y_calc(end,:);
@@ -308,7 +308,7 @@ classdef simulation < handle
     end
 end
 
-function dy = derivs(t, yy, pend, f)
+function dy = pend_derivs(t, yy, pend, f)
     dy = NaN*ones(2,1);
     dy(1)= yy(2);
     dy(2) = (-pend.force_scaling_factor * f / pend.m) - (pend.eta*yy(2) / pend.m) - ...

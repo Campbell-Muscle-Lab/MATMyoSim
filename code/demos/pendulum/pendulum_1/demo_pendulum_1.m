@@ -1,4 +1,4 @@
-function test
+function demo_pendulum_1
 
 % Variables
 model_file = 'sim_input/model.json'
@@ -15,7 +15,7 @@ sim = simulation(model_file)
 % Set up a mini protocol with the number of time-points
 % and pCa held at 9
 no_of_time_points = 5000;
-pCa = 8.0 * ones(no_of_time_points, 1);
+pCa = 9.0 * ones(no_of_time_points, 1);
 dt = 0.001*ones(no_of_time_points,1);
 
 % Implement the protocol
@@ -52,5 +52,10 @@ clf
 stackedplot(sim_output, ...
     {'pendulum_position', 'muscle_length', 'hs_length', ...
     'hs_force'}, ...
-    'XVariable', 'time_s')
-   
+    'XVariable', 'time_s', ...
+    'DisplayLabels', { ...
+        {'Pendulum','Position','(m)'}, ...
+        {'MATMyoSim','muscle','length','(nm)'}, ...
+        {'Half-sarcomere','length','(nm)'}, ...
+        {'Muscle','stress','(N m^{-2})'}});
+        
