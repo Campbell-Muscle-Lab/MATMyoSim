@@ -3,9 +3,10 @@ function implement_time_step(obj,time_step,delta_hsl,Ca_value,mode_value, kineti
 
 obj.muscle_length = obj.muscle_length + obj.no_of_half_sarcomeres*delta_hsl;
 
-if ((obj.series_k_linear > 0) || (obj.no_of_half_sarcomeres > 1))
-    % We have a series component and/or multiple half-sarcomeres and
-    % consequently need to impose force-balance
+if ((obj.series_k_linear > 0) || (obj.no_of_half_sarcomeres > 1) || ...
+        (mode_value >= 0))
+    % We have at least one of a series component, multiple half-sarcomeres
+    % or tension control and consequently need to impose force-balance
     
     % Pull off the hs props
     for i=1:obj.no_of_half_sarcomeres

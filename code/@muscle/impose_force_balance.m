@@ -2,14 +2,30 @@ function [obj, delta_hsl] = impose_force_balance(obj ,mode_value, time_step)
 % Function updates the length of each half-sarcomere and
 % the series component to maintain force balance
 
-if ((obj.no_of_half_sarcomeres==1) & (obj.series_k_linear == 0))
-    obj.series_extension=0;
-    delta_hsl = obj.muscle_length - obj.hs(1).hs_length;
-    obj.hs(1).move_cb_distribution(delta_hsl);
-    obj.hs(1).hs_length = obj.muscle_length;
-    check_new_force(obj.hs(1), obj.muscle_length, time_step);
-    obj.muscle_force = obj.hs(1).check_force;
-    return
+if ((obj.no_of_half_sarcomeres==1) && (obj.series_k_linear == 0))
+    if (mode_value < 0)
+        % Length control
+        obj.series_extension=0;
+        delta_hsl = obj.muscle_length - obj.hs(1).hs_length;
+        obj.hs(1).move_cb_distribution(delta_hsl);
+        obj.hs(1).hs_length = obj.muscle_length;
+        check_new_force(obj.hs(1), obj.muscle_length, time_step);
+        obj.muscle_force = obj.hs(1).check_force;
+        return
+    else
+        % Force control
+        obj.series_extension=0;
+        opt = optimoptions('fsolve','Display','none');
+        p = obj.hs(1).hs_length;
+        new_p = fsolve(@tension_control_single_half_sarcomere, p, opt);
+        obj.muscle_length = new_p;
+        delta_hsl = obj.muscle_length - obj.hs(1).hs_length;
+        obj.hs(1).move_cb_distribution(delta_hsl);
+        obj.hs(1).hs_length = obj.muscle_length;
+        check_new_force(obj.hs(1), obj.muscle_length, time_step);
+        obj.muscle_force = obj.hs(1).check_force;
+        return
+    end
 end
 
 % Now try and impose force balance
@@ -91,5 +107,10 @@ end
         x(end) = return_series_force(obj,p(end)) - mode_value;
     end
 
+    function x = tension_control_single_half_sarcomere(p)
+        check_new_force(obj.hs(1), p, time_step);
+        x = obj.hs(1).check_force - mode_value;
+    end
+    
 end
     

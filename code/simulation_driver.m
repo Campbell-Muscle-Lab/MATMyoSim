@@ -11,13 +11,12 @@ parse(p,varargin{:});
 p = p.Results;
 
 % Create a simulation
-myosim_simulation = simulation( ...
-    p.model_json_file_string, ...
-    p.simulation_protocol_file_string, ...
-    p.options_json_file_string);
+myosim_simulation = simulation(p.model_json_file_string);
 
 % Implement the protocol
-myosim_simulation.implement_protocol;
+myosim_simulation.implement_protocol( ...
+    p.simulation_protocol_file_string, ...
+    p.options_json_file_string);
 
 % Add in a tag if required
 if (~isempty(p.tag))
