@@ -8,6 +8,7 @@ classdef muscle < handle
         series_k_linear_per_hs;
         series_k_linear;
         muscle_length;
+        command_length;
         series_extension = 0;
         muscle_force = 0;
         
@@ -52,6 +53,7 @@ classdef muscle < handle
                 obj.muscle_length = obj.muscle_length + ...
                     obj.hs(hs_counter).hs_length;
             end
+            obj.command_length = obj.muscle_length;
             
             % Impose heterogeneity if required
             if (isfield(myosim_model,'hs_heterogeneity'))
@@ -71,6 +73,7 @@ classdef muscle < handle
         
         % Other methods
         [obj, delta_hsl] = impose_force_balance(obj, mode_value, time_step);
+        delta_hsl = return_delta_hsl_for_force_balance(obj, mode_value, time_step);
         series_extension = return_series_extension(obj,muscle_force);
         series_force = return_series_force(obj,series_extension);
         implement_time_step(obj,time_step,delta_hsl,Ca_value,Mode_value, kinetic_scheme);

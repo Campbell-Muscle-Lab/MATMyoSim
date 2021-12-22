@@ -1,4 +1,4 @@
-function out = process_SLControl_file_to_MATLAB_MyoSim(slc_file_string,varargin)
+function out = process_SLControl_file_to_MATMyoSim(slc_file_string,varargin)
 % Takes a SLControl data file and generates a protocol file
 
 p = inputParser;
@@ -14,7 +14,7 @@ addOptional(p,'smooth_fl_points',0);
 addOptional(p,'pre_points',100);
 addOptional(p,'pCa',[]);
 addOptional(p,'figure_number',0);
-addOptional(p,'force_gain',1);
+addOptional(p,'force_gain',[]);
 parse(p, slc_file_string, varargin{:});
 p = p.Results;
 
@@ -26,7 +26,11 @@ td = transform_slcontrol_record(load_slcontrol_file( ...
         p.transform_slcontrol_record_mode);
     
 % Adjust for force gain
-td.force = td.force / td.force_gain;
+if (isempty(p.force_gain))
+    td.force = td.force / td.force_gain;
+else
+    td.force = td.force / p.force_gain;
+end
     
 % Some defaults
 if (isempty(p.stop_time_s))

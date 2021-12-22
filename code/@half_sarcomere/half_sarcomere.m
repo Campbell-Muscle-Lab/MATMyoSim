@@ -8,15 +8,21 @@ classdef half_sarcomere < handle
         
         hs_length = 1050;   % the length of the half-sarcomere in nm
         hs_force = 0;       % the stress (in N m^(-2)) in the half-sarcomere
+        command_length;     % the distance between the motor and the
+                            % force transducer
+        slack_length;       % length at zero force
 
         f_overlap;
         f_on;
         f_bound;
         
         cb_force = 0;
-        intracellular_passive_force = 0;
+        int_passive_force = 0;
         viscous_force = 0;
-        extracellular_passive_force = 0;
+        ext_passive_force = 0;
+        int_total_force = 0;
+                            % force is the sum of the cb and
+                            % intracellular_passive_force
         
         state_pops;
         
@@ -64,6 +70,8 @@ classdef half_sarcomere < handle
             
             % Set length
             obj.hs_length = hs_props.hs_length;
+            obj.command_length = obj.hs_length;
+            obj.slack_length = NaN;
             
             % Set myofilament properties
             myofilament_props = hs_props.myofilaments;
@@ -117,6 +125,30 @@ classdef half_sarcomere < handle
                 obj.myofilaments.y(1) = 1.0;
                 obj.myofilaments.y(end-1) = 1.0;
             end
+            
+            if (startsWith(obj.kinetic_scheme, '6state_with_SRX'))
+                obj.myofilaments.y_length = ...
+                    (2*obj.myofilaments.no_of_x_bins) + 6;
+                obj.myofilaments.y = ...
+                    zeros(obj.myofilaments.y_length,1);
+
+                % Start with all cross-bridges in M1 and all
+                % binding sites off
+                obj.myofilaments.y(1) = 1.0;
+                obj.myofilaments.y(end-1) = 1.0;
+            end
+            
+            if (startsWith(obj.kinetic_scheme, '7state_with_SRX'))
+                obj.myofilaments.y_length = ...
+                    (3*obj.myofilaments.no_of_x_bins) + 6;
+                obj.myofilaments.y = ...
+                    zeros(obj.myofilaments.y_length,1);
+
+                % Start with all cross-bridges in M1 and all
+                % binding sites off
+                obj.myofilaments.y(1) = 1.0;
+                obj.myofilaments.y(end-1) = 1.0;
+            end
                         
             % Handle other parameters
             parameter_props = hs_props.parameters;
@@ -139,28 +171,16 @@ classdef half_sarcomere < handle
                 obj.parameters.viscosity = 0;
             end
             
-            % Set intracellular and extracellular passive proportions
-            % if missing
-            if (~isfield(obj.parameters, ...
-                    'intracellular_passive_proportion'))
-                obj.parameters.intracellular_passive_proportion = 1;
-            end
-            if (~isfield(obj.parameters, ...
-                    'extracellular_passive_proportion'))
-                obj.parameters.extracellular_passive_proportion = 0;
-            end
-            
             % Initialise forces
             obj.cb_force = 0;
-            obj.intracellular_passive_force = ...
+            obj.int_passive_force = ...
                 return_intracellular_passive_force(obj, obj.hs_length);
-            obj.extracellular_passive_force = ...
+            obj.ext_passive_force = ...
                 return_extracellular_passive_force(obj, obj.hs_length);
             
-            obj.hs_force = obj.cb_force + ...
-                obj.intracellular_passive_force + ...
-                obj.extracellular_passive_force;
-                
+            obj.int_total_force = obj.cb_force + obj.int_passive_force;
+            
+            obj.hs_force = obj.int_total_force + obj.ext_passive_force;
 
             % Intialise_populations
             obj.f_on = 0;
@@ -171,16 +191,19 @@ classdef half_sarcomere < handle
         f_overlap = return_f_overlap(obj);
         pf = return_passive_force(obj,hsl);
         
-        evolve_kinetics(obj, time_step, m_props);
+        evolve_kinetics(obj, time_step, m_props, delta_hsl);
         
         update_2state_with_poly(obj, time_step);
         update_3state_with_SRX(obj, time_step);
-        update_3state_with_SRX_and_k_thin_force(obj, time_step, m_props);
         update_3state_with_SRX_and_exp_k4(obj, time_step);
-        update_3state_with_SRX_and_energy_barrier(obj, time_step, m_props);
-        update_3state_with_SRX_sig_walls_and_inter_hs(obj, time_step, m_props);
-        update_4state_with_SRX(obj, time_step, m_props);
-        update_4state_with_SRX_and_exp_k7(obj, time_step);
+        
+        update_4state_with_SRX(obj, time_step, m_props, delta_hsl);
+        update_4state_with_SRX_and_3exp(obj, time_step, m_props, delta_hsl);
+        update_4state_with_SRX_and_4exp(obj, time_step, m_props, delta_hsl);
+        
+        update_6state_with_SRX(obj, time_step, m_props, delta_hsl);
+        
+        update_7state_with_SRX(obj, time_step, m_props, delta_hsl);
         
         move_cb_distribution(obj, delta_hsl);
         update_forces(obj, time_step, delta_hsl);

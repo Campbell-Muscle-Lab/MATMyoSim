@@ -17,8 +17,9 @@ if (startsWith(obj.kinetic_scheme, '2state'))
             'linear',0)';
     % Try to manage cbs ripped off filaments
     cbs_lost = cbs_bound_before - sum(obj.myofilaments.y(bin_indices));
-    if (cbs_lost > 0)
-        obj.myofilaments.y(1) = obj.myofilaments.y(1) + cbs_lost;
+    obj.myofilaments.y(1) = obj.myofilaments.y(1) + cbs_lost;
+    if (abs(cbs_lost) > 1e-5)
+        disp(sprintf('Warning - %.5f cbs lost during movement', cbs_lost))
     end
 end
 
@@ -33,10 +34,10 @@ if (startsWith(obj.kinetic_scheme, '3state_with_SRX'))
             'linear',0)';
     % Try to manage cbs ripped off filaments
     cbs_lost = cbs_bound_before - sum(obj.myofilaments.y(bin_indices));
-    if (cbs_lost > 1e-5)
-        disp('Warning - rapid cross-bridge movement');
-        obj.myofilaments.y(2) = obj.myofilaments.y(2) + cbs_lost;
-    end
+    obj.myofilaments.y(2) = obj.myofilaments.y(2) + cbs_lost;
+%     if (abs(cbs_lost) > 1e-5)
+%         disp(sprintf('Warning - %.5f cbs lost during movement', cbs_lost))
+%     end
 end
 
 if (startsWith(obj.kinetic_scheme, '4state_with_SRX'))
@@ -62,10 +63,76 @@ if (startsWith(obj.kinetic_scheme, '4state_with_SRX'))
     % Try to manage cbs ripped off filaments
     cbs_lost = cbs_bound_before - sum(obj.myofilaments.y(M3_indices)) - ...
                     sum(obj.myofilaments.y(M4_indices));
-    if (cbs_lost > 1e-5)
-        disp('Warning - rapid cross-bridge movement');
-        obj.myofilaments.y(2) = obj.myofilaments.y(2) + cbs_lost;
-    end
+    obj.myofilaments.y(2) = obj.myofilaments.y(2) + cbs_lost;                
+%     if (abs(cbs_lost) > 1e-5)
+%         disp(sprintf('Warning - %.5f cbs lost during movement', cbs_lost))
+%     end
+end
+
+if (startsWith(obj.kinetic_scheme, '6state_with_SRX'))
+    flag = 0;
+    interp_positions = obj.myofilaments.x - delta_x;
+
+    M3_indices = 2+(1:obj.myofilaments.no_of_x_bins);
+    M4_indices = (2+obj.myofilaments.no_of_x_bins) + ...
+        (1:obj.myofilaments.no_of_x_bins);
+    
+    cbs_bound_before = sum(obj.myofilaments.y(M3_indices)) + ...
+        sum(obj.myofilaments.y(M4_indices));
+
+    obj.myofilaments.y(M3_indices) = ...
+        interp1(obj.myofilaments.x,obj.myofilaments.y(M3_indices), ...
+            interp_positions, ...
+            'linear',0)';            
+    obj.myofilaments.y(M4_indices) = ...
+        interp1(obj.myofilaments.x,obj.myofilaments.y(M4_indices), ...
+            interp_positions, ...
+            'linear',0)';            
+
+    % Try to manage cbs ripped off filaments
+    cbs_lost = cbs_bound_before - sum(obj.myofilaments.y(M3_indices)) - ...
+                    sum(obj.myofilaments.y(M4_indices));
+    obj.myofilaments.y(2) = obj.myofilaments.y(2) + cbs_lost;                
+%     if (abs(cbs_lost) > 1e-5)
+%         disp(sprintf('Warning - %.5f cbs lost during movement', cbs_lost))
+%     end
+end
+
+if (startsWith(obj.kinetic_scheme, '7state_with_SRX'))
+    flag = 0;
+    interp_positions = obj.myofilaments.x - delta_x;
+
+    M3_indices = 2+(1:obj.myofilaments.no_of_x_bins);
+    M4_indices = (2+obj.myofilaments.no_of_x_bins) + ...
+        (1:obj.myofilaments.no_of_x_bins);
+    M5_indices = (2+(2*obj.myofilaments.no_of_x_bins)) + ...
+        (1:obj.myofilaments.no_of_x_bins);
+    
+    cbs_bound_before = sum(obj.myofilaments.y(M3_indices)) + ...
+        sum(obj.myofilaments.y(M4_indices)) + ...
+        sum(obj.myofilaments.y(M5_indices));
+
+    obj.myofilaments.y(M3_indices) = ...
+        interp1(obj.myofilaments.x,obj.myofilaments.y(M3_indices), ...
+            interp_positions, ...
+            'linear',0)';            
+    obj.myofilaments.y(M4_indices) = ...
+        interp1(obj.myofilaments.x,obj.myofilaments.y(M4_indices), ...
+            interp_positions, ...
+            'linear',0)';
+    obj.myofilaments.y(M5_indices) = ...
+        interp1(obj.myofilaments.x,obj.myofilaments.y(M5_indices), ...
+            interp_positions, ...
+            'linear',0)';                    
+
+    % Try to manage cbs ripped off filaments
+    cbs_lost = cbs_bound_before - sum(obj.myofilaments.y(M3_indices)) - ...
+                    sum(obj.myofilaments.y(M4_indices)) - ...
+                    sum(obj.myofilaments.y(M5_indices));
+    obj.myofilaments.y(2) = obj.myofilaments.y(2) + cbs_lost;                
+%     if (abs(cbs_lost) > 1e-5)
+%         disp(sprintf('Warning - %.5f cbs lost during movement', cbs_lost))
+%     end
 end
 
 if (flag==1)

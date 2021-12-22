@@ -21,9 +21,13 @@ if (target_stats.max == target_stats.min)
     error('target_data has no range');
 end
 
+% e = sum(((y_attempt(end-target_stats.n+1:end) - target_data)./ ...
+%             (target_stats.max - target_stats.min)).^2) / ...
+%             target_stats.n;
+
 e = sum(((y_attempt(end-target_stats.n+1:end) - target_data)./ ...
-            (target_stats.max - target_stats.min)).^2) / ...
-            target_stats.n;
+            target_stats.n).^2);
+        
 
 % Plot result
 if (p.figure_time_fit);

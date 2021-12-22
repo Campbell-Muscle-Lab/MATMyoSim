@@ -24,4 +24,11 @@ output.pCa(t > p.t_stop_s) = p.pre_pCa;
 
 % Output
 output_table = struct2table(output);
+parent_dir = fileparts(p.output_file_string);
+if (~isfolder(parent_dir))
+    mkdir(parent_dir);
+end
+try
+    delete(p.output_file_sring);
+end
 writetable(output_table,p.output_file_string,'delimiter','\t');

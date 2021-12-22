@@ -27,4 +27,7 @@ output.Mode(t > p.isotonic_start_s) = p.isotonic_stress;
 
 % Output
 output_table = struct2table(output);
+try
+    delete(output_file_string);
+end
 writetable(output_table,p.output_file_string,'delimiter','\t');
