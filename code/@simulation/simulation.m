@@ -2,6 +2,7 @@ classdef simulation < handle
     
     properties
         % These are properties that can be accessed from outside the class
+        MATMyoSim_code_version = '2.1.1';
         
         % The muscle
         myosim_muscle = [];
@@ -27,9 +28,37 @@ classdef simulation < handle
         
         % Constructor
         function obj = simulation(varargin)
+            % Creates a new simualtion with a muscle
+            
+            % First checks code version against model file version
+            if (~ obj.return_model_compatible(varargin{1}))
+                sprintf(...
+                    'Model file %s is not compatible with MATMyoSim code: %s', ...
+                    varargin{1}, obj.MATMyoSim_code_version);
+                error(1);
+            end
+            
             % Creates a new simulation with a muscle
             model_json_file_string = varargin{1};
             obj.myosim_muscle = muscle(model_json_file_string);
+        end
+        
+        function model_compatible = ...
+                return_model_compatible(obj, model_file_string)
+            % Check that model file is compatible with code version
+            
+            % Set model_compatible
+            model_compatible = false;
+            
+            % Load model
+            model_struct = loadjson(model_file_string);
+            
+            if (isfield(model_struct.MyoSim_model, 'code'))
+                model_version = model_struct.MyoSim_model.code;
+                code_version = obj.MATMyoSim_code_version;
+                
+                model_compatible = true;
+            end
         end
         
         function obj = implement_protocol(obj, ...

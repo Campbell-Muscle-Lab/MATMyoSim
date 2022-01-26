@@ -1,6 +1,10 @@
 {
     "MyoSim_model":
     {
+        "code":
+        {
+            "version": "2.1.1"
+        },
         "muscle_props":
         {
             "no_of_half_sarcomeres": 1,
@@ -8,7 +12,7 @@
         },
         "hs_props":
         {
-            "kinetic_scheme": "3state_with_SRX_and_exp_k4",
+            "kinetic_scheme": "3state_with_SRX",
             "hs_length": 1300,
             "myofilaments":
             {
@@ -32,9 +36,9 @@
                 "k_on": 8e7,
                 "k_off": 200,
                 "k_coop": 1,
-                "passive_force_mode": "linear",
-                "passive_hsl_slack": 1265,
-                "passive_k_linear": 14,
+                "int_passive_force_mode": "linear",
+                "int_passive_hsl_slack": 1265,
+                "int_passive_k_linear": 14,
                 "compliance_factor": 0.5,
                 "cb_number_density": 6.9e16,
                 "k_boltzmann": 1.38e-23,

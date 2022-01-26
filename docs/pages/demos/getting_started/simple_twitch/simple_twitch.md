@@ -62,14 +62,18 @@ The model is defined in `repo\code\demos\twitches\twitch_1\twitch_1.json`. See [
 {
     "MyoSim_model":
     {
+        "code":
+        {
+            "version": "2.1.1"
+        },
         "muscle_props":
         {
             "no_of_half_sarcomeres": 1,
-            "series_k_linear": 0
+            "series_k_linear_per_hs": 0
         },
         "hs_props":
         {
-            "kinetic_scheme": "3state_with_SRX_and_exp_k4",
+            "kinetic_scheme": "3state_with_SRX",
             "hs_length": 1300,
             "myofilaments":
             {
@@ -85,17 +89,17 @@ The model is defined in `repo\code\demos\twitches\twitch_1\twitch_1.json`. See [
                 "k_1": 1,
                 "k_force": 5e-4,
                 "k_2": 100,
-                "k_3": 50,
+                "k_3": 100,
                 "k_4_0": 100,
-                "k_4_1": 1,
+                "k_4_1": 0.1,
                 "k_cb": 0.001,
                 "x_ps": 5,
                 "k_on": 8e7,
                 "k_off": 200,
                 "k_coop": 1,
-                "passive_force_mode": "linear",
-                "passive_hsl_slack": 1265,
-                "passive_k_linear": 14,
+                "int_passive_force_mode": "linear",
+                "int_passive_hsl_slack": 1265,
+                "int_passive_k_linear": 14,
                 "compliance_factor": 0.5,
                 "cb_number_density": 6.9e16,
                 "k_boltzmann": 1.38e-23,
@@ -106,7 +110,6 @@ The model is defined in `repo\code\demos\twitches\twitch_1\twitch_1.json`. See [
     }
 }
 ````
-
 
 
 

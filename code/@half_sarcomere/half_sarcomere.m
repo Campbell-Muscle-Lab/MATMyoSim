@@ -41,7 +41,6 @@ classdef half_sarcomere < handle
                             
         rate_structure = [];
                             % a structure holding myofilament rates
-
     end
     
     properties (SetAccess = private)
@@ -166,9 +165,24 @@ classdef half_sarcomere < handle
                 end
             end
             
-            % Set viscosity to 0 if missing from parameters
-            if (~isfield(obj.parameters, 'viscosity'))
-                obj.parameters.viscosity = 0;
+            % Set defaults for properties that are required but may be
+            % missing from parameters
+            default_params.viscosity = 0;
+            default_params.prop_fibrosis = 0;
+            default_params.prop_myofilaments = 1;
+            default_params.int_passive_force_mode = 'linear';
+            default_params.int_passive_hsl_slack = 1000;
+            default_params.passive_k_linear = 0;
+            default_params.ext_passive_force_mode = 'linear';
+            default_params.ext_passive_hsl_slack = 1000;
+            default_params.ext_passive_k_linear = 0;
+
+            default_fields = fieldnames(default_params);
+            for i = 1 : numel(default_fields)
+                if (~isfield(obj.parameters, default_fields{i}))
+                    obj.parameters.(default_fields{i}) = ...
+                        default_params.(default_fields{i});
+                end
             end
             
             % Initialise forces
