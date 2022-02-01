@@ -4,7 +4,6 @@ function generate_protocols
 % Variables
 pCa_values = [9.0 6.4:-0.2:5.4 4.5];
 
-
 % Code
 for i=1:numel(pCa_values)
     

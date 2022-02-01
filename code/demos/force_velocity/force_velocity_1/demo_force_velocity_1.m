@@ -6,7 +6,7 @@ model_file = 'sim_input/model.json';
 options_file = 'sim_input/options.json';
 protocol_base_file = 'sim_input/prot';
 results_base_file = 'sim_output/results';
-isotonic_forces = linspace(5000, 1.2e5, 12);
+isotonic_forces = linspace(5000, 1.5e5, 12);
 no_of_time_points = 500;
 time_step = 0.001;
 isotonic_start_s = 0.4;
@@ -117,16 +117,18 @@ end
 % First the fv curve
 [x0,a,b,r_squared,stress_fit,vel_fit] = fit_hyperbola( ...
     'x_data', stress, 'y_data', velocity, ...
-    'x_fit', linspace(0, 1.2e5, 100));
+    'x_fit', linspace(0, 2e5, 100));
 subplot(3,2,5);
-plot(stress_fit, vel_fit, 'k-');
+vi = find(vel_fit>=0);
+plot(stress_fit(vi), vel_fit(vi), 'k-');
 title(sprintf('(x+a)(y+b)=b(x_0+a)\na=%g, b=%g, x_0=%g',a,b,x0));
 
 % Now the power curve
 [x0,a,b,r_squared,stress_fit,pow_fit] = fit_power_curve(...
     stress, power, ...
-    'x_fit', linspace(0, 1.2e5, 100));
+    'x_fit', linspace(0, 2e5, 100));
 subplot(3,2,6);
-plot(stress_fit, pow_fit, 'k-');
+vi = find(pow_fit>=0);
+plot(stress_fit(vi), pow_fit(vi), 'k-');
 title(sprintf('y=x*b*(((x_0+a)/(x+a))-1)\na=%g, b=%g, x_0=%g',a,b,x0));
 

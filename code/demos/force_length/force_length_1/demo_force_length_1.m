@@ -8,7 +8,7 @@ protocol_file = 'sim_input/protocol.txt';
 results_base_file = 'sim_output/results';
 no_of_time_points = 500;
 time_step = 0.001;
-hs_lengths = linspace(700, 2000, 20);
+hs_lengths = linspace(700, 2100, 40);
 
 % Make sure the path allows us to find the right files
 addpath(genpath('../../../../code'));
@@ -33,7 +33,7 @@ for i = 1 : numel(hs_lengths)
     model.MyoSim_model.hs_props.hs_length = hs_lengths(i);
     
     model_file = fullfile(cd, 'sim_input', 'hs_models', ...
-        sprintf('model_%i.json', i));
+        sprintf('model_%i.json', i))
     savejson('MyoSim_model', model.MyoSim_model, model_file);
     
     % Set up the results file
@@ -69,7 +69,7 @@ for i = 1 : numel(hs_lengths)
     hs_lengths(i) = sim_output.hs_length(1);
     total_force(i) = sim_output.hs_force(end);
     active_force(i) = sim_output.cb_force(end);
-    passive_force(i) = sim_output.intracellular_pas_force(end);
+    passive_force(i) = sim_output.int_pas_force(end);
     
     % Display the data
     subplot(4,1,2);
