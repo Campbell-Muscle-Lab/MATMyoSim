@@ -28,7 +28,7 @@ classdef simulation < handle
         
         % Constructor
         function obj = simulation(varargin)
-            % Creates a new simualtion with a muscle
+            % Creates a new simulation with a muscle
             
             % First checks code version against model file version
             if (~ obj.return_model_compatible(varargin{1}))
