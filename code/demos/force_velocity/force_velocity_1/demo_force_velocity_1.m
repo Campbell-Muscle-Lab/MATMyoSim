@@ -13,6 +13,11 @@ isotonic_start_s = 0.4;
 fit_time_s = [0.43 0.48];
 display_time_s = [0.35 0.5];
 
+% Image file for documentation
+doc_image_file = ...
+    '../../../../docs/pages/demos/force_velocity/force_velocity_1/force_velocity_output';
+
+
 % Make sure the path allows us to find the right files
 addpath(genpath('../../../../code'));
 
@@ -132,3 +137,6 @@ vi = find(pow_fit>=0);
 plot(stress_fit(vi), pow_fit(vi), 'k-');
 title(sprintf('y=x*b*(((x_0+a)/(x+a))-1)\na=%g, b=%g, x_0=%g',a,b,x0));
 
+% Save figure to file for documentation
+figure_export('output_file', doc_image_file, ...
+    'output_type', 'png');

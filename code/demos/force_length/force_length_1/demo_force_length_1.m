@@ -8,7 +8,11 @@ protocol_file = 'sim_input/protocol.txt';
 results_base_file = 'sim_output/results';
 no_of_time_points = 500;
 time_step = 0.001;
-hs_lengths = linspace(700, 2100, 40);
+hs_lengths = linspace(700, 2100, 20);
+
+% Image file for documentation
+doc_image_file = ...
+    '../../../../docs/pages/demos/force_length/force_length_1/force_length_output';
 
 % Make sure the path allows us to find the right files
 addpath(genpath('../../../../code'));
@@ -83,20 +87,25 @@ for i = 1 : numel(hs_lengths)
     plot(hs_lengths(i), passive_force(i), '^', 'Color', cm(i,:));
     
     % Add labels
-    if (i==1)
+    if (i==numel(hs_lengths))
         subplot(4,1,1);
         xlabel('Time (s)');
         ylabel('Stress (kN m^{-2})');
         
         subplot(4,1,2);
+        plot(hs_lengths, total_force, 'k-');
         ylabel('Total stress (kN m^{-2})');
+        xlabel('Half-sarcomere length (nm)');
+        ylim([0 1.2 * max(total_force)]);
         subplot(4,1,4);
         
         subplot(4,1,3);
-        xlabel('Time (s)');
-        ylabel('Acrive stress (kN m^{-2})');
+        plot(hs_lengths, active_force, 'k-');
+        xlabel('Half-sarcomere length (nm)');
+        ylabel('Active stress (kN m^{-2})');
         
         subplot(4,1,4);
+        plot(hs_lengths, passive_force, 'k-');
         xlabel('Time (s)');
         ylabel('Passive stress (kN m^{-2})');
         xlabel('Half-sarcomere length (nm)');
@@ -104,3 +113,6 @@ for i = 1 : numel(hs_lengths)
         
 end
 
+% Save figure to file for documentation
+figure_export('output_file', doc_image_file, ...
+    'output_type', 'png');
