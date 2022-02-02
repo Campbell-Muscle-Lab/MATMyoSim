@@ -1,16 +1,20 @@
 ---
-title: Force velocity 1
+title: Force velocity 7
 has_children: false
 parent: Force velocity
 grand_parent: Demos
-nav_order: 1
+nav_order: 7
 ---
 
-# Force velocity 1
+# Force velocity 7
 
 ## Overview
 
-This demo shows how to simulate an experiment that measures the force-velocity and force-power curves.
+This demo builds on the [Force velocity 1 demo](../force_velocity_1/force_velocity.html). The only difference is that the simulation uses a kinetic scheme for myosin that has 7 states rather than 3 states.
+
+## Cross-bridge scheme
+
+<img src="7_state_myosin_scheme.png">
 
 ## What this demo does
 
@@ -35,7 +39,7 @@ After the program finishes (it may take a minute or so) you should see a figure.
 The first section of the code sets up some variables and adds the MATMyoSim folders to the current path. Line 9 creates an array called `isotonic_forces` that contains 12 values evenly spaced between 5000 and 1.2e5.
 
 ````
-function demo_force_velocity_1
+function demo_force_velocity_7
 % Demo demonstrates a force_velocity curve
 
 % Variables
@@ -43,12 +47,12 @@ model_file = 'sim_input/model.json';
 options_file = 'sim_input/options.json';
 protocol_base_file = 'sim_input/prot';
 results_base_file = 'sim_output/results';
-isotonic_forces = linspace(5000, 1.2e5, 12);
-no_of_time_points = 500;
+isotonic_forces = linspace(5000, 1.1e5, 12);
+no_of_time_points = 700;
 time_step = 0.001;
-isotonic_start_s = 0.4;
-fit_time_s = [0.43 0.48];
-display_time_s = [0.35 0.5];
+isotonic_start_s = 0.6;
+fit_time_s = [0.63 0.68];
+display_time_s = [0.55 0.7];
 
 % Make sure the path allows us to find the right files
 addpath(genpath('../../../../code'));
@@ -173,16 +177,18 @@ The last section fits smooth curves to the force-velocity and force-power data.
 % First the fv curve
 [x0,a,b,r_squared,stress_fit,vel_fit] = fit_hyperbola( ...
     'x_data', stress, 'y_data', velocity, ...
-    'x_fit', linspace(0, 1.2e5, 100));
+    'x_fit', linspace(0, 2e5, 100));
 subplot(3,2,5);
-plot(stress_fit, vel_fit, 'k-');
+vi = find(vel_fit>=0);
+plot(stress_fit(vi), vel_fit(vi), 'k-');
 title(sprintf('(x+a)(y+b)=b(x_0+a)\na=%g, b=%g, x_0=%g',a,b,x0));
 
 % Now the power curve
 [x0,a,b,r_squared,stress_fit,pow_fit] = fit_power_curve(...
     stress, power, ...
-    'x_fit', linspace(0, 1.2e5, 100));
+    'x_fit', linspace(0, 2e5, 100));
 subplot(3,2,6);
-plot(stress_fit, pow_fit, 'k-');
+vi = find(pow_fit>=0);
+plot(stress_fit(vi), pow_fit(vi), 'k-');
 title(sprintf('y=x*b*(((x_0+a)/(x+a))-1)\na=%g, b=%g, x_0=%g',a,b,x0));
 ````

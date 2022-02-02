@@ -38,8 +38,6 @@ for i = 1 : numel(isotonic_forces)
     batch_structure.job{i}.results_file_string = results_file{i};
 end
 
-bs = batch_structure.job{1}
-
 % return
 
 % Now that you have all the files, run the batch jobs in parallel
