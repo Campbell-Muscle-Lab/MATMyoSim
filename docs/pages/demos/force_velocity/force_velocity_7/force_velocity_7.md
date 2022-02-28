@@ -10,7 +10,7 @@ nav_order: 7
 
 ## Overview
 
-This demo builds on the [Force velocity 1 demo](../force_velocity_1/force_velocity.html). The only difference is that the simulation uses a kinetic scheme for myosin that has 7 states rather than 3 states.
+This demo builds on the [Force velocity 1 demo](../force_velocity_1/force_velocity_1.html). The only difference is that the simulation uses a kinetic scheme for myosin that has 7 states rather than 3 states.
 
 ## Cross-bridge scheme
 
