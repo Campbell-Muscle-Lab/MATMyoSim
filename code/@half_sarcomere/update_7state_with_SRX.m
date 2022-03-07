@@ -128,7 +128,7 @@ obj.myofilaments.y(end-1) = obj.myofilaments.y(1) + (1-ac);
 obj.f_overlap = N_overlap;
 obj.f_on = obj.myofilaments.y(end);
 obj.f_bound = sum(obj.myofilaments.y(M3_ind)) + ...
-    sum(obj.myofilaments.y(M4_ind)); 
+    sum(obj.myofilaments.y(M4_ind)) + sum(obj.myofilaments.y(M5_ind)); 
 
 % Store rates
 obj.rate_structure.r1 = r1;
