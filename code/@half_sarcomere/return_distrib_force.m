@@ -3,6 +3,7 @@ function [m_force, c_force] = return_cb_force(obj, time_step, delta_hsl)
 
 % Set default value for c_force
 c_force = 0;
+m_force = 0;
 
 switch obj.kinetic_scheme
     case '2state'

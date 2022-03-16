@@ -32,9 +32,9 @@ classdef simulation < handle
             
             % First checks code version against model file version
             if (~ obj.return_model_compatible(varargin{1}))
-                sprintf(...
+                a= sprintf(...
                     'Model file %s is not compatible with MATMyoSim code: %s', ...
-                    varargin{1}, obj.MATMyoSim_code_version);
+                    varargin{1}, obj.MATMyoSim_code_version)
                 error(1);
             end
             
@@ -311,9 +311,9 @@ classdef simulation < handle
                     '2state'))
 
                     obj.sim_output.M1(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M1;
+                        obj.myosim_muscle.hs(i).m_state_pops.M1;
                     obj.sim_output.M2(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M2;
+                        obj.myosim_muscle.hs(i).m_state_pops.M2;
                     % Pull out the bin_distributions which need
                     % an extra dimension
                     M2_indices = 1+(1:obj.myosim_muscle.hs(i).myofilaments.no_of_x_bins);
@@ -325,11 +325,11 @@ classdef simulation < handle
                         '3state_with_SRX'))
 
                     obj.sim_output.M1(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M1;
+                        obj.myosim_muscle.hs(i).m_state_pops.M1;
                     obj.sim_output.M2(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M2;
+                        obj.myosim_muscle.hs(i).m_state_pops.M2;
                     obj.sim_output.M3(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M3;
+                        obj.myosim_muscle.hs(i).m_state_pops.M3;
                     % Pull out the bin_distributions which need
                     % an extra dimension
                     M3_indices = 2+(1:obj.myosim_muscle.hs(i).myofilaments.no_of_x_bins);
@@ -341,13 +341,13 @@ classdef simulation < handle
                         '4state_with_SRX'))
 
                     obj.sim_output.M1(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M1;
+                        obj.myosim_muscle.hs(i).m_state_pops.M1;
                     obj.sim_output.M2(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M2;
+                        obj.myosim_muscle.hs(i).m_state_pops.M2;
                     obj.sim_output.M3(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M3;
+                        obj.myosim_muscle.hs(i).m_state_pops.M3;
                     obj.sim_output.M4(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M4;
+                        obj.myosim_muscle.hs(i).m_state_pops.M4;
                     % Pull out the bin_distributions which need
                     % an extra dimension
                     M3_indices = 2+(1:obj.myosim_muscle.hs(i).myofilaments.no_of_x_bins);
@@ -362,17 +362,17 @@ classdef simulation < handle
                 if (startsWith(obj.myosim_muscle.hs(1).kinetic_scheme, ...
                         '6state_with_SRX'))
                     obj.sim_output.M1(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M1;
+                        obj.myosim_muscle.hs(i).m_state_pops.M1;
                     obj.sim_output.M2(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M2;
+                        obj.myosim_muscle.hs(i).m_state_pops.M2;
                     obj.sim_output.M3(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M3;
+                        obj.myosim_muscle.hs(i).m_state_pops.M3;
                     obj.sim_output.M4(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M4;
+                        obj.myosim_muscle.hs(i).m_state_pops.M4;
                     obj.sim_output.M5(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M5;
+                        obj.myosim_muscle.hs(i).m_state_pops.M5;
                     obj.sim_output.M6(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M6;
+                        obj.myosim_muscle.hs(i).m_state_pops.M6;
                     % Pull out the bin_distributions which need
                     % an extra dimension
                     M3_indices = 2+(1:obj.myosim_muscle.hs(i).myofilaments.no_of_x_bins);
@@ -387,19 +387,19 @@ classdef simulation < handle
                 if (startsWith(obj.myosim_muscle.hs(1).kinetic_scheme, ...
                         '7state_with_SRX'))
                     obj.sim_output.M1(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M1;
+                        obj.myosim_muscle.hs(i).m_state_pops.M1;
                     obj.sim_output.M2(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M2;
+                        obj.myosim_muscle.hs(i).m_state_pops.M2;
                     obj.sim_output.M3(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M3;
+                        obj.myosim_muscle.hs(i).m_state_pops.M3;
                     obj.sim_output.M4(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M4;
+                        obj.myosim_muscle.hs(i).m_state_pops.M4;
                     obj.sim_output.M5(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M5;
+                        obj.myosim_muscle.hs(i).m_state_pops.M5;
                     obj.sim_output.M6(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M6;
+                        obj.myosim_muscle.hs(i).m_state_pops.M6;
                     obj.sim_output.M7(t_counter,i) = ...
-                        obj.myosim_muscle.hs(i).state_pops.M7;
+                        obj.myosim_muscle.hs(i).m_state_pops.M7;
                     % Pull out the bin_distributions which need
                     % an extra dimension
                     M3_indices = 2+(1:obj.myosim_muscle.hs(i).myofilaments.no_of_x_bins);

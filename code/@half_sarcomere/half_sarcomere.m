@@ -16,6 +16,8 @@ classdef half_sarcomere < handle
         f_on;
         f_bound;
         
+        m_force = 0;
+        c_force = 0;
         cb_force = 0;
         int_passive_force = 0;
         viscous_force = 0;
@@ -24,7 +26,9 @@ classdef half_sarcomere < handle
                             % force is the sum of the cb and
                             % intracellular_passive_force
         
-        state_pops;
+        m_state_pops;       % myosin state populations
+        
+        c_state_pops;       % mybpc state populations
         
         Ca;                  % Ca concentration (in M)
         
@@ -88,7 +92,7 @@ classdef half_sarcomere < handle
             obj.myofilaments.no_of_x_bins = numel(obj.myofilaments.x);
                             % no of x_bins
                             
-            % Set up the y_vector which is used for kinetics
+            % Set up the y_vector which is used for myosin kinetics
             if (startsWith(obj.kinetic_scheme, '2state'))
                 obj.myofilaments.y_length = ...
                     obj.myofilaments.no_of_x_bins + 3;
@@ -111,6 +115,22 @@ classdef half_sarcomere < handle
                 % binding sites off
                 obj.myofilaments.y(1)=1.0;
                 obj.myofilaments.y(end-1) = 1.0;
+            end
+            
+            % 3 state myosin scheme with myosin binding protein C            
+            if (startsWith(obj.kinetic_scheme, ...
+                    'm_3state_with_SRX_mybpc_2state'))
+                
+                % y = [M1, M2, M3, A_off, A_on, C_1, C2]                
+                obj.myofilaments.y_length = ...
+                    (2*obj.myofilaments.no_of_x_bins) + 5;
+                obj.myofilaments.y = zeros(obj.myofilaments.y_length,1);
+                
+                % Start with all the cross-bridges in M1, binding sites off
+                % mybpc in C1
+                obj.myofilaments.y(1) = 1.0;
+                obj.myofilaments.y(3 + obj.myofilaments.no_of_x_bins) = 1.0;
+                obj.myofilaments.y(5 + obj.myofilaments.no_of_x_bins) = 1.0;
             end
             
             if (startsWith(obj.kinetic_scheme, '4state_with_SRX'))

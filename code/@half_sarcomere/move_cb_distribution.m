@@ -40,6 +40,35 @@ if (startsWith(obj.kinetic_scheme, '3state_with_SRX'))
 %     end
 end
 
+% Handle m_3state_with_SRX_mybpc_2state
+if (strcmp(obj.kinetic_scheme, 'm_3state_with_SRX_mybpc_2state'))
+    flag = 0;
+    interp_positions = obj.myofilaments.x - delta_x;
+    m_bin_indices = 2 + (1:obj.myofilaments.no_of_x_bins);
+    c_bin_indices = 5 + obj.myofilaments.no_of_x_bins + ...
+        (1:obj.myofilaments.no_of_x_bins);
+    m_bound_before = sum(obj.myofilaments.y(m_bin_indices));
+    c_bound_before = sum(obj.myofilaments.y(c_bin_indices));
+    
+    % Interpolate
+    obj.myofilaments.y(m_bin_indices) = ...
+        interp1(obj.myofilaments.x, obj.myofilaments.y(m_bin_indices), ...
+                interp_positions, ...
+                'linear', 0)';
+    obj.myofilaments.y(c_bin_indices) = ...
+        interp1(obj.myofilaments.x, obj.myofilaments.y(c_bin_indices), ...
+                inter_positions, ...
+                'linear', 0)';
+            
+    % Try to manage cbs and mybpc ripped off
+    m_lost = m_bound_before - sum(obj.myofilaments.y(m_bin_indices));
+    obj.myofilaments.y(2) = obj.myofilaments.y(2) + m_lost;
+    
+    c_lost = c_bound_before - sum(obj.myofilaments.y(c_bin_indices));
+    obj.myofilaments.y(5 + obj.myofilaments.no_of_x_bins) = ...
+        obj.myofilaments.y(5 + obj.myofilaments.no_of_x_bins) + c_lost;
+end    
+
 if (startsWith(obj.kinetic_scheme, '4state_with_SRX'))
     flag = 0;
     interp_positions = obj.myofilaments.x - delta_x;
