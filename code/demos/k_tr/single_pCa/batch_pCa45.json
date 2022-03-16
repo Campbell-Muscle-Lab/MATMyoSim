@@ -1,0 +1,14 @@
+{
+    "MyoSim_batch":
+    {
+        "job":
+        [
+            {
+                "protocol_file_string": "sim_input/45/protocol_45.txt",
+                "model_file_string": "sim_input/model_file.json",
+                "options_file_string": "sim_input/sim_options.json",
+                "results_file_string": "sim_output/45/results_45.myo"
+            }
+        ]
+    }
+}

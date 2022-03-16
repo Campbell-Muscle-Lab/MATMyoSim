@@ -6,9 +6,13 @@ pCa_values = 4.5;
 no_of_points = 1000;
 time_step = 0.001;
 k_tr_start_s = 0.5;
-k_tr_step = 20;
-k_tr_ramp_s = 5;
+k_tr_step = 200;
+k_tr_ramp_s = 0.005;
 k_tr_duration_s = 0.02;
+
+% Code
+% Make sure the path allows us to find the right files
+addpath(genpath('../../../../code'));
 
 % Generate a dhsl
 dt = time_step * ones(no_of_points, 1);
@@ -21,6 +25,10 @@ dhsl((t > k_tr_start_s) & (t <= (k_tr_start_s + k_tr_ramp_s))) = ...
 dhsl((t > (k_tr_start_s + k_tr_duration_s)) & ...
         (t <= (k_tr_start_s + k_tr_duration_s + k_tr_ramp_s))) = ...
     k_tr_step / n_ramp;
+
+m = -2 * ones(no_of_points, 1);
+m((t > k_tr_start_s) & (t <=(k_tr_start_s + k_tr_duration_s + k_tr_ramp_s))) = -1;
+
 
 
 % Code
