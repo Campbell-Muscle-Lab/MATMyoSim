@@ -234,6 +234,7 @@ classdef half_sarcomere < handle
         update_4state_with_SRX(obj, time_step, m_props, delta_hsl);
         update_4state_with_SRX_and_3exp(obj, time_step, m_props, delta_hsl);
         update_4state_with_SRX_and_4exp(obj, time_step, m_props, delta_hsl);
+        update_4state_with_SRX_and_exp_k5(obj, time_step, m_props, delta_hsl);
         
         update_6state_with_SRX(obj, time_step, m_props, delta_hsl);
         

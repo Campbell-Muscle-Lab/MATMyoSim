@@ -29,7 +29,7 @@ for i = 1 : numel(opt_struct.parameter)
         opt_struct.parameter{i}, p_vector(i));
     par_labels{i} = opt_struct.parameter{i}.name;
 end
-p_vector = p_vector
+p_vector = p_vector;
 
 % Now search through constraints
 par_counter = numel(par_labels);

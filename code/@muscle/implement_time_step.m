@@ -31,7 +31,11 @@ if ((obj.series_k_linear > 0) || (obj.no_of_half_sarcomeres > 1) || ...
     
     % Set muscle force and add series extension to muscle length
     obj.muscle_force = obj.hs(1).hs_force;
-    obj.series_extension = obj.return_series_extension(obj.muscle_force);
+    if (obj.series_k_linear > 0)
+        obj.series_extension = obj.return_series_extension(obj.muscle_force);
+    else
+        obj.series_extension = 0;
+    end
     obj.muscle_length = obj.muscle_length + obj.series_extension;
 else
     % Single half-sarcomere with rigid connection - this is faster
@@ -43,9 +47,11 @@ else
         obj.hs(1).implement_time_step(time_step, 0, Ca_value, m_props);
         
         % This checks for slack
+        isotonic_force = 0;
         opt = optimoptions('fsolve', 'Display', 'none');
         obj.hs(1).slack_length = ...
             fsolve(@tension_control_single_half_sarcomere, 0, opt);
+%         error('ken');
         
         % New hs length cannot be shorter than slack length
         new_length = max([obj.hs(1).slack_length obj.command_length]);
@@ -68,6 +74,6 @@ end
         
     function x = tension_control_single_half_sarcomere(p)
         check_new_force(obj.hs(1), p, time_step);
-        x = obj.hs(1).check_force - mode_value;
+        x = obj.hs(1).check_force - isotonic_force;
     end
 end

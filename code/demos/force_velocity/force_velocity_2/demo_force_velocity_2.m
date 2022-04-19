@@ -1,35 +1,59 @@
-function demo_force_velocity_7
-% Demo demonstrates a force_velocity curve
+function demo_force_velocity_2
+% Demo demonstrates calculating a force_velocity curve using
+% length control 
 
 % Variables
 model_file = 'sim_input/model.json';
 options_file = 'sim_input/options.json';
 protocol_base_file = 'sim_input/prot';
 results_base_file = 'sim_output/results';
-isotonic_forces = linspace(5000, 1.1e5, 12);
-no_of_time_points = 700;
+shortening_velocities = linspace(0, 2, 12);
+no_of_time_points = 600;
 time_step = 0.001;
-isotonic_start_s = 0.6;
-fit_time_s = [0.63 0.68];
-display_time_s = [0.55 0.7];
+shortening_start_s = 0.4;
+fit_time_s = [0.53 0.58];
+display_time_s = [0.35 0.6];
+
+% Image file for documentation
+doc_image_file = ...
+    '../../../../docs/pages/demos/force_velocity/force_velocity_2/force_velocity_output.png';
 
 % Make sure the path allows us to find the right files
 addpath(genpath('../../../../code'));
 
+% Get the local directory to make sure file paths are right
+base_dir = fileparts(mfilename('fullpath'));
+
+% Update model and options files
+model_file = fullfile(base_dir, model_file);
+options_file = fullfile(base_dir, options_file);
+
+% Load the model file to get the starting length
+m = loadjson(model_file);
+initial_hsl = m.MyoSim_model.hs_props.hs_length;
+
+% Set up a time vector to establish the dhsl vector
+t = cumsum(time_step * ones(no_of_time_points,1));
+si = find(t > shortening_start_s);
+
 % Generate protocols, storing files as a batch structure
 batch_structure = [];
-for i = 1 : numel(isotonic_forces)
-    protocol_file{i} = sprintf('%s_%i.txt', protocol_base_file, i);
-    results_file{i} = sprintf('%s_%i.myo', results_base_file, i);
+for i = 1 : numel(shortening_velocities)
+    protocol_file{i} = fullfile(base_dir, ...
+                        sprintf('%s_%i.txt', protocol_base_file, i));
+    results_file{i} = fullfile(base_dir, ...
+                        sprintf('%s_%i.myo', results_base_file, i));
 
-    generate_isotonic_pCa_protocol( ...
+    % Set up the dhsl vector
+    dhsl = zeros(no_of_time_points,1);
+    dhsl(si) = -shortening_velocities(i) * initial_hsl * time_step;
+    
+    generate_length_control_pCa_protocol( ...
         'time_step', time_step, ...
         'no_of_points', no_of_time_points, ...
         'during_pCa', 4.5, ...
-        'isotonic_start_s', isotonic_start_s, ...
-        'isotonic_stress', isotonic_forces(i), ...
-        'output_file_string', ...
-            sprintf('%s_%i.txt', protocol_base_file, i));
+        'dhsl', dhsl, ...
+        'output_file_string', protocol_file{i});
     
     % Add job as an element of an array
     batch_structure.job{i}.model_file_string = model_file;
@@ -38,21 +62,19 @@ for i = 1 : numel(isotonic_forces)
     batch_structure.job{i}.results_file_string = results_file{i};
 end
 
-% return
-
 % Now that you have all the files, run the batch jobs in parallel
 run_batch(batch_structure);
 
 % Now load the result files and calculate force-velocity and power
 % Display the data as you go
-figure(4);
+fig = figure(4);
 clf;
-cm = jet(numel(isotonic_forces));
+cm = jet(numel(shortening_velocities));
 
-for i = 1 : numel(isotonic_forces)
+for i = 1 : numel(shortening_velocities)
     
     % Load the simulation back in
-    sim = load(fullfile(cd,results_file{i}), '-mat');
+    sim = load(results_file{i}, '-mat');
     sim_output = sim.sim_output;
 
     % Display the full simulation
@@ -96,7 +118,7 @@ for i = 1 : numel(isotonic_forces)
     plot(stress(i), power(i), 'o', 'Color', cm(i,:));
     
     % Add labels
-    if (i == numel(isotonic_forces))
+    if (i == numel(shortening_velocities))
         for j=1:2
             subplot(3,2,j);
             xlabel('Time (s)');
@@ -135,9 +157,4 @@ plot(stress_fit(vi), pow_fit(vi), 'k-');
 title(sprintf('y=x*b*(((x_0+a)/(x+a))-1)\na=%g, b=%g, x_0=%g',a,b,x0));
 
 % Save figure to file for documentation
-
-% Image file for documentation
-doc_image_file = ...
-    '../../../../docs/pages/demos/force_velocity/force_velocity_7/force_velocity_output';
-figure_export('output_file', doc_image_file, ...
-    'output_type', 'png');
+exportgraphics(fig, doc_image_file);
