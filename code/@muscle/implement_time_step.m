@@ -16,17 +16,18 @@ if ((obj.series_k_linear > 0) || (obj.no_of_half_sarcomeres > 1) || ...
         obj.hs(hs_counter).implement_time_step(time_step,0,Ca_value, ...
                                                 m_props);
     end
+    % Adjust the muscle length
+    obj.muscle_length = ...
+        obj.muscle_length + obj.no_of_half_sarcomeres * delta_hsl;
     
-    delta_hsl = return_delta_hsl_for_force_balance(obj, mode_value, time_step);
+    dhsl_balance = return_delta_hsl_for_force_balance(obj, mode_value, time_step);
 
     % Apply length changes, summing up muscle length
-    obj.muscle_length = 0;
     for hs_counter = 1:obj.no_of_half_sarcomeres
         obj.hs(hs_counter).move_cb_distribution(delta_hsl(hs_counter));
         obj.hs(hs_counter).hs_length = obj.hs(hs_counter).hs_length + ...
-            delta_hsl(hs_counter);
+            dhsl_balance(hs_counter);
         obj.hs(hs_counter).update_forces(time_step, 0);
-        obj.muscle_length = obj.muscle_length + obj.hs(hs_counter).hs_length;
     end
     
     % Set muscle force and add series extension to muscle length
@@ -36,7 +37,6 @@ if ((obj.series_k_linear > 0) || (obj.no_of_half_sarcomeres > 1) || ...
     else
         obj.series_extension = 0;
     end
-    obj.muscle_length = obj.muscle_length + obj.series_extension;
 else
     % Single half-sarcomere with rigid connection - this is faster
     m_props = [];

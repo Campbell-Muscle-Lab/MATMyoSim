@@ -31,15 +31,9 @@ if (mode_value < 0)
     % sarcomere lengths are all equal
     opt = optimoptions('fsolve','Display','none');
     new_p = fsolve(@length_control_muscle_system,p,opt);
-
-    % Unpack the new_p array and implement
-    for hs_counter = 1:obj.no_of_half_sarcomeres
-        delta_hsl(hs_counter) = new_p(hs_counter) - obj.hs(hs_counter).hs_length;
-        obj.hs(hs_counter).move_cb_distribution(delta_hsl(hs_counter));
-        obj.hs(hs_counter).hs_length = new_p(hs_counter);
-    end
-    obj.series_extension = return_series_extension(obj,new_p(end));
-    obj.muscle_force = new_p(end);
+    
+    delta_hsl = new_p - p;
+    
 else
     % Tension control
     
@@ -56,17 +50,6 @@ else
     
     opt = optimoptions('fsolve','Display','none');
     new_p = fsolve(@tension_control_muscle_system,p,opt);
-    
-    % Unpack the new_p array and implement
-    for hs_counter = 1:obj.no_of_half_sarcomeres
-        delta_hsl(hs_counter) = new_p(hs_counter) - obj.hs(hs_counter).hs_length;
-        obj.hs(hs_counter).move_cb_distribution(delta_hsl(hs_counter));
-        obj.hs(hs_counter).hs_length = new_p(hs_counter);
-    end
-    obj.series_extension = new_p(end);
-    obj.muscle_length = sum(new_p);
-    obj.muscle_force = return_series_force(obj,new_p(end));
-  
 end
 
     % Nested functions

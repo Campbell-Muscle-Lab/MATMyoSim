@@ -15,8 +15,8 @@ addOptional(p,'Ca_content',1e-3);
 addOptional(p,'k_leak',2e-2);
 addOptional(p,'k_act',3e-1);
 addOptional(p,'k_serca',20);
-addOptional(p,'delta_half_sarcomere_length',[]);
-addOptional(p,'control_vector',[]);
+addOptional(p,'dhsl',[]);
+addOptional(p,'mode',[]);
 parse(p,varargin{:});
 p=p.Results;
 
@@ -51,17 +51,17 @@ pCa_trace = -log10(y(:,1));
 output.dt = p.time_step * ones(p.no_of_points,1);
 
 % Generate mode
-if (isempty(p.control_vector))
+if (isempty(p.mode))
     output.Mode = -2 * ones(p.no_of_points,1);
 else
-    output.Mode = p.control_vector;
+    output.Mode = p.mode;
 end
 
 % Generate dhsl
-if (isempty(p.delta_half_sarcomere_length))
+if (isempty(p.dhsl))
     output.dhsl = zeros(p.no_of_points,1);
 else
-    output.dhsl = p.delta_half_sarcomere_length;
+    output.dhsl = p.dhsl;
 end
 
 % Generate pCa
