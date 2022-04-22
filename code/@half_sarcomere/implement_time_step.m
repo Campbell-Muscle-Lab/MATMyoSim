@@ -88,6 +88,31 @@ if startsWith(obj.kinetic_scheme, '7state_with_SRX')
     obj.m_state_pops.M7 = obj.myofilaments.y(M5_indices(end)+2);
 end
 
+if startsWith(obj.kinetic_scheme, 'beard_atp')
+    flag = 0;
+    obj.m_state_pops.M1 = obj.myofilaments.y(1);
+    obj.m_state_pops.M2 = obj.myofilaments.y(2);
+
+    M3_indices = 2+(1:obj.myofilaments.no_of_x_bins);
+    M4_indices = (2+obj.myofilaments.no_of_x_bins) + ...
+        (1:obj.myofilaments.no_of_x_bins);
+    M5_indices = (2+(2*obj.myofilaments.no_of_x_bins)) + ...
+        (1:obj.myofilaments.no_of_x_bins);
+    M6_indices = (2+(3*obj.myofilaments.no_of_x_bins)) + ...
+        (1:obj.myofilaments.no_of_x_bins);
+        
+    obj.m_state_pops.M3 = ...
+        sum(obj.myofilaments.y(M3_indices));        
+    obj.m_state_pops.M4 = ...
+        sum(obj.myofilaments.y(M4_indices));
+    obj.m_state_pops.M5 = ...
+        sum(obj.myofilaments.y(M5_indices));
+    obj.m_state_pops.M6 = ...
+        sum(obj.myofilaments.y(M6_indices));
+
+    obj.m_state_pops.M7 = obj.myofilaments.y(M6_indices(end)+1);
+end
+
 % Check
 if (flag)
     error('half_sarcomere::implement_time_step, kinetic scheme undefined');

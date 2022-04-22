@@ -168,6 +168,18 @@ classdef half_sarcomere < handle
                 obj.myofilaments.y(1) = 1.0;
                 obj.myofilaments.y(end-1) = 1.0;
             end
+            
+            if (startsWith(obj.kinetic_scheme, 'beard_atp'))
+                obj.myofilaments.y_length = ...
+                    (4*obj.myofilaments.no_of_x_bins) + 5;
+                obj.myofilaments.y = ...
+                    zeros(obj.myofilaments.y_length,1);
+
+                % Start with all cross-bridges in M1 and all
+                % binding sites off
+                obj.myofilaments.y(1) = 1.0;
+                obj.myofilaments.y(end-1) = 1.0;
+            end
                         
             % Handle other parameters
             parameter_props = hs_props.parameters;
@@ -239,6 +251,8 @@ classdef half_sarcomere < handle
         update_6state_with_SRX(obj, time_step, m_props, delta_hsl);
         
         update_7state_with_SRX(obj, time_step, m_props, delta_hsl);
+        
+        update_beart_ATP(obj, time_step, m_props, delta_hsl);
         
         move_cb_distribution(obj, delta_hsl);
         update_forces(obj, time_step, delta_hsl);

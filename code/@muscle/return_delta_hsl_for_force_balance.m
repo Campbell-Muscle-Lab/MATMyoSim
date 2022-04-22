@@ -30,7 +30,8 @@ if (mode_value < 0)
     % elastic element (the total muscle length - the sum of the half-
     % sarcomere lengths are all equal
     opt = optimoptions('fsolve','Display','none');
-    new_p = fsolve(@length_control_muscle_system,p,opt);
+    
+    new_p = fsolve(@length_control_muscle_system, p, opt);
     
     delta_hsl = new_p - p;
     
@@ -59,10 +60,16 @@ end
             check_new_force(obj.hs(i), p(i), time_step);
             x(i) = obj.hs(i).check_force - p(end);
         end
-        new_series_extension = obj.muscle_length - ...
-            sum(p(1:obj.no_of_half_sarcomeres));
-        x(end) = return_series_force(obj,new_series_extension) - ...
-            p(end);
+        if (obj.series_k_linear > 0)
+            % We are trying to match series force
+            new_series_extension = obj.muscle_length - ...
+                sum(p(1:obj.no_of_half_sarcomeres));
+            x(end) = return_series_force(obj,new_series_extension) - ...
+                p(end);
+        else
+            % We are trying to constrain length
+            x(end) = obj.muscle_length - sum(p(1:(end-1)));
+        end
     end
 
     function x = tension_control_muscle_system(p)

@@ -68,7 +68,8 @@ classdef muscle < handle
 
             % Implement force balance in length control mode for the
             % initialisation step
-            impose_force_balance(obj,-2,1);
+            obj.implement_time_step(-1, 0, 9.0, -2);
+            
         end
         
         % Other methods
