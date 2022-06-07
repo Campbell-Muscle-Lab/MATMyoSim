@@ -12,6 +12,7 @@ N_overlap = return_f_overlap(obj);
 r1 = obj.parameters.k_1 * ...
         (1 + obj.parameters.k_force * max([0 obj.int_total_force]));
 r1 = min([r1 obj.parameters.max_rate]);
+r1_0 = obj.parameters.k_1;
 
 r2 = min([obj.parameters.max_rate obj.parameters.k_2]);
 
@@ -61,6 +62,7 @@ obj.f_bound = sum(obj.myofilaments.y(2+(1:obj.myofilaments.no_of_x_bins)));
 
 % Store rate structure
 obj.rate_structure.r1 = r1;
+obj.rate_structure.r1_0 = r1_0;
 obj.rate_structure.r2 = r2;
 obj.rate_structure.r3 = r3;
 obj.rate_structure.r4 = r4;

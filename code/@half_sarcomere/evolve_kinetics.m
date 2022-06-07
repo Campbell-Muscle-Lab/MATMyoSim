@@ -41,6 +41,15 @@ switch (obj.kinetic_scheme)
         
     case 'beard_atp'
         update_beard_atp(obj, time_step);
+
+    case '3D_1A'
+        update_3D_1A(obj, time_step, [], delta_hsl);
+        
+    case '3D_3A'
+        update_3D_3A(obj, time_step, [], delta_hsl);
+        
+    case '4D_3A'
+        update_4D_3A(obj, time_step, [], delta_hsl);            
     
     otherwise
         error('Undefined kinetic scheme in half_sarcomere class');

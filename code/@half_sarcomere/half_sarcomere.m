@@ -88,7 +88,7 @@ classdef half_sarcomere < handle
             obj.myofilaments.x = obj.myofilaments.bin_min : ...
                             obj.myofilaments.bin_width : ...
                                 obj.myofilaments.bin_max;
-                            % array of x_bin values
+            % array of x_bin values
             obj.myofilaments.no_of_x_bins = numel(obj.myofilaments.x);
                             % no of x_bins
                             
@@ -96,25 +96,11 @@ classdef half_sarcomere < handle
             if (startsWith(obj.kinetic_scheme, '2state'))
                 obj.myofilaments.y_length = ...
                     obj.myofilaments.no_of_x_bins + 3;
-                obj.myofilaments.y = ...
-                    zeros(obj.myofilaments.y_length, 1);
-                
-                % Start with all the cross-bridges in M1 and
-                % all binding sites off
-                obj.myofilaments.y(1) = 1.0;
-                obj.myofilaments.y(end-1) = 1.0;
             end
             
             if (startsWith(obj.kinetic_scheme, '3state_with_SRX'))
                 obj.myofilaments.y_length = ...
                     obj.myofilaments.no_of_x_bins + 4;
-                obj.myofilaments.y = ...
-                    zeros(obj.myofilaments.y_length,1);
-
-                % Start with all the cross-bridges in M1 and all
-                % binding sites off
-                obj.myofilaments.y(1)=1.0;
-                obj.myofilaments.y(end-1) = 1.0;
             end
             
             % 3 state myosin scheme with myosin binding protein C            
@@ -136,50 +122,44 @@ classdef half_sarcomere < handle
             if (startsWith(obj.kinetic_scheme, '4state_with_SRX'))
                 obj.myofilaments.y_length = ...
                     (2*obj.myofilaments.no_of_x_bins) + 4;
-                obj.myofilaments.y = ...
-                    zeros(obj.myofilaments.y_length,1);
-
-                % Start with all cross-bridges in M1 and all
-                % binding sites off
-                obj.myofilaments.y(1) = 1.0;
-                obj.myofilaments.y(end-1) = 1.0;
             end
             
             if (startsWith(obj.kinetic_scheme, '6state_with_SRX'))
                 obj.myofilaments.y_length = ...
                     (2*obj.myofilaments.no_of_x_bins) + 6;
-                obj.myofilaments.y = ...
-                    zeros(obj.myofilaments.y_length,1);
-
-                % Start with all cross-bridges in M1 and all
-                % binding sites off
-                obj.myofilaments.y(1) = 1.0;
-                obj.myofilaments.y(end-1) = 1.0;
             end
             
             if (startsWith(obj.kinetic_scheme, '7state_with_SRX'))
                 obj.myofilaments.y_length = ...
                     (3*obj.myofilaments.no_of_x_bins) + 6;
-                obj.myofilaments.y = ...
-                    zeros(obj.myofilaments.y_length,1);
-
-                % Start with all cross-bridges in M1 and all
-                % binding sites off
-                obj.myofilaments.y(1) = 1.0;
-                obj.myofilaments.y(end-1) = 1.0;
             end
             
             if (startsWith(obj.kinetic_scheme, 'beard_atp'))
                 obj.myofilaments.y_length = ...
                     (4*obj.myofilaments.no_of_x_bins) + 5;
-                obj.myofilaments.y = ...
-                    zeros(obj.myofilaments.y_length,1);
-
-                % Start with all cross-bridges in M1 and all
-                % binding sites off
-                obj.myofilaments.y(1) = 1.0;
-                obj.myofilaments.y(end-1) = 1.0;
             end
+            
+            if (strcmp(obj.kinetic_scheme, '3D_1A'))
+                obj.myofilaments.y_length = ...
+                    obj.myofilaments.no_of_x_bins + 5;
+            end
+            
+            if (strcmp(obj.kinetic_scheme, '3D_3A'))
+                obj.myofilaments.y_length = ...
+                    (3*obj.myofilaments.no_of_x_bins) + 5;
+            end
+            
+            if (strcmp(obj.kinetic_scheme, '4D_3A'))
+                obj.myofilaments.y_length = ...
+                    (3*obj.myofilaments.no_of_x_bins) + 6;
+            end
+            
+            % Start with all cross-brdiges in M1 and all
+            % binding sites off
+            obj.myofilaments.y = zeros(obj.myofilaments.y_length,1);
+            obj.myofilaments.y(1) = 1.0;
+            obj.myofilaments.y(end-1) = 1.0;
+
                         
             % Handle other parameters
             parameter_props = hs_props.parameters;
@@ -231,6 +211,7 @@ classdef half_sarcomere < handle
             % Intialise_populations
             obj.f_on = 0;
             obj.f_bound = 0;
+            obj.f_overlap = obj.return_f_overlap;
         end
         
         % Other methods
@@ -253,6 +234,10 @@ classdef half_sarcomere < handle
         update_7state_with_SRX(obj, time_step, m_props, delta_hsl);
         
         update_beart_ATP(obj, time_step, m_props, delta_hsl);
+        
+        update_3D_1A(obj, time_step, m_props, delta_hsl);
+        update_3D_3A(obj, time_step, m_props, delta_hsl);
+        update_4D_3A(obj, time_step, m_props, delta_hsl);
         
         move_cb_distribution(obj, delta_hsl);
         update_forces(obj, time_step, delta_hsl);

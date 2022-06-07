@@ -38,7 +38,9 @@ switch opt_struct.optimizer
         s.lb = zeros(numel(p_vector),1);
         s.ub = ones(numel(p_vector),1);
         s.options = optimoptions('particleswarm', ...
-                        'Display','iter')
+                        'Display','iter', ...
+                        'UseParallel',false, ...
+                        'UseVectorized',false)
 
         particleswarm(s);
         
